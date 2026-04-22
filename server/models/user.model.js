@@ -1,3 +1,4 @@
+// Modules
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 
@@ -31,11 +32,13 @@ const userSchema = new mongoose.Schema({
     }
 }, { timestamps: true });
 
+// We hashing user password pre save document
 userSchema.pre("save", async function() {
     if (!this.isModified("password")) return;
     this.password = await bcrypt.hash(this.password, 10);
 })
 
+// Method to compare user password
 userSchema.methods.comparePassword = async function(candidate) {
     return await bcrypt.compare(candidate, this.password);
 }

@@ -1,9 +1,15 @@
+// Models
 const User = require("../models/user.model");
+
+// Utils
 const AppError = require("../utils/appError");
 const catchAsync = require("../utils/catchAsync");
-const jwt = require("jsonwebtoken");
 const validatePassword = require("../utils/validatePassword");
 
+// Modules
+const jwt = require("jsonwebtoken");
+
+// Function to send token for user
 const sendToken = (res, user) => {
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRES });
 
@@ -23,6 +29,7 @@ const sendToken = (res, user) => {
     })
 }
 
+// Controller to register new user
 const register = catchAsync(async (req, res, next) => {
     const { name, email, password } = req.body;
 
@@ -44,6 +51,7 @@ const register = catchAsync(async (req, res, next) => {
     })
 })
 
+// Function to login user
 const login = catchAsync(async (req, res, next) => {
     const { email, password } = req.body;
 
@@ -80,6 +88,7 @@ const login = catchAsync(async (req, res, next) => {
     sendToken(res, user);
 })
 
+// FUnction to logout user (clear cookies section)
 const logout = catchAsync(async (req, res, next) => {
     res.clearCookie("authToken");
 
@@ -89,6 +98,7 @@ const logout = catchAsync(async (req, res, next) => {
     })
 })
 
+// Function to auto login
 const getMe = catchAsync(async (req, res, next) => {
     const user = await User.findById(req.user._id);
 

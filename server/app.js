@@ -15,6 +15,7 @@ const authRouter = require("./routers/auth.router");
 
 const app = express();
 
+// Helper middleware functions
 app.use(express.json());
 app.use(cors({
     origin: "http://localhost:5173",
@@ -25,8 +26,10 @@ app.use(cookieParser({
     credentials: true
 }))
 
+// Routers
 app.use("/api/auth", authRouter);
 
+// Global Error Handler
 app.use(globalErrorHandler);
 
 app.listen(process.env.PORT, () => {

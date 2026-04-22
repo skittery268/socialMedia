@@ -1,3 +1,4 @@
+// Function to check user password requirements
 const validatePassword = (password) => {
     let error = null;
 

@@ -1,8 +1,14 @@
+// Models
 const User = require("../models/user.model");
+
+// Utils
 const AppError = require("../utils/appError");
 const catchAsync = require("../utils/catchAsync");
+
+// Modules
 const jwt = require("jsonwebtoken");
 
+// Function to check user token
 const protect = catchAsync(async (req, res, next) => {
     const { authToken } = req.cookie;
 

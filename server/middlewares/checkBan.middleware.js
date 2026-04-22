@@ -1,5 +1,7 @@
+// Utils
 const catchAsync = require("../utils/catchAsync");
 
+// A function for checking whether a user is banned
 const checkBan = catchAsync(async (req, res, next) => {
     const user = req.user;
 
