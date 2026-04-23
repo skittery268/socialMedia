@@ -20,6 +20,8 @@ const sendToken = (res, user) => {
         sameSite: process.env.NODE_MODE === "dev" ? "Lax" : "Strict"
     })
 
+    user.password = undefined;
+
     res.status(200).json({
         status: "success",
         message: "User login successfully!",
@@ -51,7 +53,7 @@ const register = catchAsync(async (req, res, next) => {
     })
 })
 
-// Function to login user
+// Controller to login user
 const login = catchAsync(async (req, res, next) => {
     const { email, password } = req.body;
 
@@ -88,7 +90,7 @@ const login = catchAsync(async (req, res, next) => {
     sendToken(res, user);
 })
 
-// FUnction to logout user (clear cookies section)
+// Controller to logout user (clear cookies section)
 const logout = catchAsync(async (req, res, next) => {
     res.clearCookie("authToken");
 
@@ -98,7 +100,7 @@ const logout = catchAsync(async (req, res, next) => {
     })
 })
 
-// Function to auto login
+// Controller to auto login
 const getMe = catchAsync(async (req, res, next) => {
     const user = await User.findById(req.user._id);
 

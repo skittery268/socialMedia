@@ -12,6 +12,8 @@ const connectDB = require("./config/mongo.config");
 
 // Routers
 const authRouter = require("./routers/auth.router");
+const postRouter = require("./routers/post.router");
+const commentRouter = require("./routers/comment.router");
 
 const app = express();
 
@@ -28,6 +30,8 @@ app.use(cookieParser({
 
 // Routers
 app.use("/api/auth", authRouter);
+app.use("/api/posts", postRouter);
+app.use("/api/comments", commentRouter);
 
 // Global Error Handler
 app.use(globalErrorHandler);
