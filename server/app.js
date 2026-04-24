@@ -14,6 +14,7 @@ const connectDB = require("./config/mongo.config");
 const authRouter = require("./routers/auth.router");
 const postRouter = require("./routers/post.router");
 const commentRouter = require("./routers/comment.router");
+const likeRouter = require("./routers/like.router");
 
 const app = express();
 
@@ -32,6 +33,7 @@ app.use(cookieParser({
 app.use("/api/auth", authRouter);
 app.use("/api/posts", postRouter);
 app.use("/api/comments", commentRouter);
+app.use("/api/likes", likeRouter);
 
 // Global Error Handler
 app.use(globalErrorHandler);

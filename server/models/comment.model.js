@@ -11,11 +11,16 @@ const commentSchema = new mongoose.Schema({
         ref: "User",
         required: [true, "Author ID is required!"]
     },
-    likes: [{
+    postId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "User"
-    }]
-})
+        ref: "Post",
+        required: [true, "Post ID is required!"]
+    },
+    likeCount: {
+        type: Number,
+        default: 0
+    }
+}, { timestamps: true })
 
 const Comment = mongoose.model("Comment", commentSchema);
 

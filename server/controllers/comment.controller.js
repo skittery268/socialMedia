@@ -6,6 +6,21 @@ const Post = require("../models/post.model");
 const AppError = require("../utils/appError");
 const catchAsync = require("../utils/catchAsync");
 
+// Controller to get post comments
+const getPostComments = catchAsync(async (req, res, next) => {
+    const { postId } = req.params;
+
+    const comments = await Comment.find({ postId });
+
+    res.status(200).json({
+        status: "success",
+        message: "Comments returned successfully!",
+        data: {
+            comments
+        }
+    })
+})
+
 // Controller to add new comment in post
 const addCommentInPost = catchAsync(async (req, res, next) => {
     const { content } = req.body;
@@ -91,28 +106,4 @@ const editComment = catchAsync(async (req, res, next) => {
     })
 });
 
-// Controller to like comment
-const likeComment = catchAsync(async (req, res, next) => {
-    const { commentId, postId } = req.params;
-
-    const comment = await Comment.findById(commentId);
-    const post = await Post.findById(postId);
-    
-    if (!comment) {
-        return next(new AppError("Comment not found!", 404));
-    }
-
-    comment.likes.push(req.user._id);
-
-    await comment.save();
-
-    res.status(200).json({
-        status: "success",
-        message: "Comment liked successfully!",
-        data: {
-            post
-        }
-    })
-})
-
-module.exports = { addCommentInPost, deleteComment, editComment, likeComment };
+module.exports = { getPostComments, addCommentInPost, deleteComment, editComment };

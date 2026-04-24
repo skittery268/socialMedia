@@ -2,7 +2,7 @@
 const express = require("express");
 
 // Controllers
-const { getPosts, addPost, deletePost, editPost, likePost } = require("../controllers/post.controller");
+const { getPosts, addPost, deletePost, editPost } = require("../controllers/post.controller");
 
 // Middlewares
 const protect = require("../middlewares/auth.middleware");
@@ -15,10 +15,8 @@ postRouter.get("/get-posts", getPosts);
 // Route to add new post
 postRouter.post("/add-post", protect, checkBan, addPost);
 // Route to delete user post
-postRouter.delete("/delete-post", protect, checkBan, deletePost);
+postRouter.delete("/delete-post/:postId", protect, checkBan, deletePost);
 // Route to edit user post
-postRouter.patch("/edit-post", protect, checkBan, editPost);
-// Route to like user post
-postRouter.post("/like-post", protect, checkBan, likePost);
+postRouter.patch("/edit-post/:postId", protect, checkBan, editPost);
 
 module.exports = postRouter;

@@ -11,18 +11,18 @@ const postSchema = new mongoose.Schema({
         required: [true, "Author ID is required!"],
         ref: "User"
     },
-    likes: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User"
-    }],
-    comments: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Comment",
-    }],
+    likeCount: {
+        type: Number,
+        default: 0
+    },
+    commentCount: {
+        type: Number,
+        default: 0
+    },
     images: [{
         type: String
     }]
-});
+}, { timestamps: true });
 
 const Post = mongoose.model("Post", postSchema);
 

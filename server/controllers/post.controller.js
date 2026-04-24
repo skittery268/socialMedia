@@ -1,4 +1,6 @@
 // Models
+const Comment = require("../models/comment.model");
+const Like = require("../models/like.model");
 const Post = require("../models/post.model");
 
 // Utils
@@ -87,27 +89,4 @@ const editPost = catchAsync(async (req, res, next) => {
     })
 })
 
-// Controller to like post 
-const likePost = catchAsync(async (req, res, next) => {
-    const { postId } = req.params;
-
-    const post = await Post.findById(postId);
-
-    if (!post) {
-        return next(new AppError("Post not found!", 404));
-    }
-
-    post.likes.push(req.user._id);
-
-    await post.save();
-
-    res.status(200).json({
-        status: "success",
-        message: "Post liked successfully!",
-        data: {
-            post
-        }
-    })
-})
-
-module.exports = { getPosts, addPost, deletePost, editPost, likePost };
+module.exports = { getPosts, addPost, deletePost, editPost };
