@@ -1,12 +1,12 @@
 // Modules
 const express = require("express");
 
-// Controllers
-const { getPosts, addPost, deletePost, editPost } = require("../controllers/post.controller");
-
 // Middlewares
 const protect = require("../middlewares/auth.middleware");
 const checkBan = require("../middlewares/checkBan.middleware");
+
+// Controllers
+const { getPosts, addPost, deletePost, editPost } = require("../controllers/post.controller");
 
 const postRouter = express.Router();
 

@@ -19,7 +19,7 @@ const getPostComments = catchAsync(async (req, res, next) => {
             comments
         }
     })
-})
+});
 
 // Controller to add new comment in post
 const addCommentInPost = catchAsync(async (req, res, next) => {

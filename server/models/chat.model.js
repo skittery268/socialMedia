@@ -9,7 +9,7 @@ const chatSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         required: [true, "Second user ID is required!"]
     }
-}, { timestamps: true })
+}, { timestamps: true });
 
 const Chat = mongoose.model("Chat", chatSchema);
 

@@ -18,7 +18,7 @@ const getPosts = catchAsync(async (req, res, next) => {
             posts
         }
     })
-})
+});
 
 // Controller to add new post
 const addPost = catchAsync(async (req, res, next) => {
@@ -37,7 +37,7 @@ const addPost = catchAsync(async (req, res, next) => {
             post: newPost
         }
     })
-})
+});
 
 // Controller to delete user post
 const deletePost = catchAsync(async (req, res, next) => {
@@ -59,7 +59,7 @@ const deletePost = catchAsync(async (req, res, next) => {
         status: "success",
         message: "Post deleted successfully!"
     })
-})
+});
 
 // Controller to edit post content
 const editPost = catchAsync(async (req, res, next) => {
@@ -87,6 +87,6 @@ const editPost = catchAsync(async (req, res, next) => {
             post
         }
     })
-})
+});
 
 module.exports = { getPosts, addPost, deletePost, editPost };

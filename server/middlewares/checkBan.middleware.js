@@ -26,6 +26,6 @@ const checkBan = catchAsync(async (req, res, next) => {
         status: "fail",
         message: "You are permanently banned!"
     })
-})
+});
 
 module.exports = checkBan;

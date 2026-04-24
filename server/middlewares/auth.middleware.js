@@ -27,6 +27,6 @@ const protect = catchAsync(async (req, res, next) => {
     req.user = user;
 
     next();
-})
+});
 
 module.exports = protect;

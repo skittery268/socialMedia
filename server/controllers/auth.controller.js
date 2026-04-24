@@ -29,7 +29,7 @@ const sendToken = (res, user) => {
             user
         }
     })
-}
+};
 
 // Controller to register new user
 const register = catchAsync(async (req, res, next) => {
@@ -51,7 +51,7 @@ const register = catchAsync(async (req, res, next) => {
         status: "success",
         message: "User registered successfully!"
     })
-})
+});
 
 // Controller to login user
 const login = catchAsync(async (req, res, next) => {
@@ -88,7 +88,7 @@ const login = catchAsync(async (req, res, next) => {
     }
 
     sendToken(res, user);
-})
+});
 
 // Controller to logout user (clear cookies section)
 const logout = catchAsync(async (req, res, next) => {
@@ -98,7 +98,7 @@ const logout = catchAsync(async (req, res, next) => {
         status: "success",
         message: "User logged out successfully!"
     })
-})
+});
 
 // Controller to auto login
 const getMe = catchAsync(async (req, res, next) => {
@@ -111,6 +111,6 @@ const getMe = catchAsync(async (req, res, next) => {
             user
         }
     })
-})
+});
 
 module.exports = { register, login, logout, getMe };

@@ -5,6 +5,11 @@ const messageSchema = new mongoose.Schema({
         type: String,
         required: [true, "Message content is required!"]
     },
+    senderId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        required: [true, "Sender ID is required!"]
+    },
     chatId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Chat"

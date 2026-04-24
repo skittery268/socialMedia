@@ -15,25 +15,30 @@ const authRouter = require("./routers/auth.router");
 const postRouter = require("./routers/post.router");
 const commentRouter = require("./routers/comment.router");
 const likeRouter = require("./routers/like.router");
+const chatRouter = require("./routers/chat.router");
+const messageRouter = require("./routers/message.router");
+const groupRouter = require("./routers/group.router");
 
 const app = express();
 
+const origin = {
+    origin: process.env.CLIENT_URL,
+    credentials: true
+}
+
 // Helper middleware functions
 app.use(express.json());
-app.use(cors({
-    origin: "http://localhost:5173",
-    credentials: true
-}))
-app.use(cookieParser({
-    origin: "http://localhost:5173",
-    credentials: true
-}))
+app.use(cors(origin));
+app.use(cookieParser(origin));
 
 // Routers
 app.use("/api/auth", authRouter);
 app.use("/api/posts", postRouter);
 app.use("/api/comments", commentRouter);
 app.use("/api/likes", likeRouter);
+app.use("/api/chats", chatRouter);
+app.use("/api/messages", messageRouter);
+app.use("/api/groups", groupRouter);
 
 // Global Error Handler
 app.use(globalErrorHandler);
@@ -42,4 +47,4 @@ app.listen(process.env.PORT, () => {
     console.log(`Server Running on port ${process.env.PORT}`);
 
     connectDB();
-})
+});

@@ -30,7 +30,7 @@ const likePost = catchAsync(async (req, res, next) => {
             post
         }
     })
-})
+});
 
 // Controller to like comment
 const likeComment = catchAsync(async (req, res, next) => {
@@ -55,7 +55,7 @@ const likeComment = catchAsync(async (req, res, next) => {
             comment
         }
     })
-})
+});
 
 // Controller to un like post / comment
 const unLike = catchAsync(async (req, res, next) => {
@@ -89,6 +89,6 @@ const unLike = catchAsync(async (req, res, next) => {
         status: "success",
         message: "Un Like successfully!"
     })
-})
+});
 
 module.exports = { likePost, likeComment, unLike };

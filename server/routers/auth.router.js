@@ -1,11 +1,11 @@
 // Modules
 const express = require("express");
 
-// Controllers
-const { register, login, logout, getMe } = require("../controllers/auth.controller");
-
 // Middlewares
 const protect = require("../middlewares/auth.middleware");
+
+// Controllers
+const { register, login, logout, getMe } = require("../controllers/auth.controller");
 
 const authRouter = express.Router();
 

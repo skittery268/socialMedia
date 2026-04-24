@@ -7,7 +7,7 @@ const sendErrorProd = (err, res) => {
         status,
         message: err.message
     })
-}
+};
 
 // Function to send errors for developer
 const sendErrorDev = (err, res) => {
@@ -20,7 +20,7 @@ const sendErrorDev = (err, res) => {
         stack: err.stack,
         err
     })
-}
+};
 
 // Controller to global error handling
 const globalErrorHandler = (err, req, res, next) => {
@@ -29,6 +29,6 @@ const globalErrorHandler = (err, req, res, next) => {
     } else {
         sendErrorProd(err, res);
     }
-}
+};
 
 module.exports = globalErrorHandler;

@@ -17,6 +17,6 @@ const validatePassword = (password) => {
     }
 
     return error;
-}
+};
 
 module.exports = validatePassword;
