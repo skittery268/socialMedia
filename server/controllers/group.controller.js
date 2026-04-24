@@ -19,6 +19,52 @@ const getGroups = catchAsync(async (req, res, next) => {
     })
 });
 
+// Controller to join group
+const joinGroup = catchAsync(async (req, res, next) => {
+    const { memberId, groupId } = req.params;
+
+    const group = await Group.findById(groupId);
+
+    if (!group) {
+        return next(new AppError("Group not found!", 404));
+    }
+
+    group.members.push(memberId);
+
+    await group.save();
+
+    res.status(200).json({
+        status: "success",
+        message: "You successfully joined to group!",
+        data: {
+            group
+        }
+    })
+})
+
+// Controller to leave from group
+const leaveGroup = catchAsync(async (req, res, next) => {
+    const { memberId, groupId } = req.params;
+
+    const group = await Group.findById(groupId);
+
+    if (!group) {
+        return next(new AppError("Group not found!", 404));
+    }
+
+    group.members = group.members.filter(member => member.toString() != memberId.toString());
+
+    await group.save();
+
+    res.status(200).json({
+        status: "success",
+        message: "You successfully leave from this group!",
+        data: {
+            group
+        }
+    })
+})
+
 // Controller to create new group
 const createGroup = catchAsync(async (req, res, next) => {
     const { name } = req.body;
@@ -129,11 +175,11 @@ const deleteMember = catchAsync(async (req, res, next) => {
 
     res.status(200).json({
         status: "success",
-        message: "Memeber deleted with this group!",
+        message: "Memeber deleted from this group!",
         data: {
             group
         }
     })
 });
 
-module.exports = { getGroups, createGroup, deleteGroup, editGroup, addMember, deleteMember };
+module.exports = { getGroups, joinGroup, leaveGroup, createGroup, deleteGroup, editGroup, addMember, deleteMember };
