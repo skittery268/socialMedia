@@ -16,6 +16,15 @@ const validatePassword = (password) => {
         error = "Password must contain at least one number!";
     }
 
+    for (let i = 0; i < password.length; i++) {
+        if ("qwertyuiopasdfghjklzxcvbnm".includes(password[i])) {
+            error = null;
+            break;
+        }
+
+        error = "Password must contain at least one letter!";
+    }
+
     return error;
 };
 

@@ -102,13 +102,13 @@ const logout = catchAsync(async (req, res, next) => {
 
 // Controller to auto login
 const getMe = catchAsync(async (req, res, next) => {
-    const user = await User.findById(req.user._id);
+    req.user.password = undefined;
 
     res.status(200).json({
         status: "success",
         message: "Auto login successfully!",
         data: {
-            user
+            user: req.user
         }
     })
 });

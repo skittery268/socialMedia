@@ -10,7 +10,7 @@ const jwt = require("jsonwebtoken");
 
 // Function to check user token
 const protect = catchAsync(async (req, res, next) => {
-    const { authToken } = req.cookie;
+    const { authToken } = req.cookies;
 
     if (!authToken) {
         return next(new AppError("We cant identify you!", 400));
