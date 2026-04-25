@@ -20,7 +20,8 @@ const postSchema = new mongoose.Schema({
         default: 0
     },
     images: [{
-        type: String
+        url: String,
+        public_id: String
     }]
 }, { timestamps: true });
 

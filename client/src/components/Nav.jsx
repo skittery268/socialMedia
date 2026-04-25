@@ -11,6 +11,7 @@ const Nav = () => {
                     {
                         user ? (
                             <>
+                                <li><NavLink to={"/home"}>Home</NavLink></li>
                                 <li><NavLink to={"/profile"}>Profile</NavLink></li>
                                 <li><button onClick={logout}>Logout</button></li>
                             </>

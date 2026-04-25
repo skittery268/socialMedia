@@ -4,6 +4,7 @@ const express = require("express");
 // Middlewares
 const protect = require("../middlewares/auth.middleware");
 const checkBan = require("../middlewares/checkBan.middleware");
+const upload = require("../middlewares/upload.moddleware");
 
 // Controllers
 const { getPosts, addPost, deletePost, editPost } = require("../controllers/post.controller");
@@ -13,7 +14,7 @@ const postRouter = express.Router();
 // Route to get all posts
 postRouter.get("/get-posts", getPosts);
 // Route to add new post
-postRouter.post("/add-post", protect, checkBan, addPost);
+postRouter.post("/add-post", protect, checkBan, upload.array("images", 5), addPost);
 // Route to delete user post
 postRouter.delete("/delete-post/:postId", protect, checkBan, deletePost);
 // Route to edit user post

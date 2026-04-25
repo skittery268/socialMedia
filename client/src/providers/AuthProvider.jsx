@@ -7,6 +7,7 @@ import { useNavigate } from "react-router";
 // We share these functions with components
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
 
     // Function to auto login
@@ -16,8 +17,10 @@ export const AuthProvider = ({ children }) => {
                 const res = await fetchMe();
 
                 setUser(res.data.data.user);
+                setLoading(false);
             } catch (err) {
                 console.log(err);
+                setLoading(false);
             }
         }
 
@@ -62,7 +65,7 @@ export const AuthProvider = ({ children }) => {
     }
 
     return (
-        <AuthContext.Provider value={{ user, login, register, logout }}>
+        <AuthContext.Provider value={{ loading, user, login, register, logout }}>
             {children}
         </AuthContext.Provider>
     )
