@@ -49,7 +49,7 @@ const deletePost = catchAsync(async (req, res, next) => {
         return next(new AppError("Post not found!", 404));
     }
 
-    if (post.authorId.toString() != req.user._id.toString()) {
+    if (post.authorId.toString() != req.user._id.toString() && req.user.role !== "admin") {
         return next(new AppError("You cant delete this post!", 401));
     }
 

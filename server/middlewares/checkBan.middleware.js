@@ -17,12 +17,13 @@ const checkBan = catchAsync(async (req, res, next) => {
 
     if (user.banExpiresIn && user.banExpiresIn <= Date.now()) {
         user.isBanned = false;
+        user.banReason = null;
         user.banExpiresIn = null;
         await user.save();
         return next();
     }
 
-    res.status(403).json({
+    return res.status(403).json({
         status: "fail",
         message: "You are permanently banned!"
     })

@@ -24,6 +24,9 @@ const likeRouter = require("./routers/like.router");
 const chatRouter = require("./routers/chat.router");
 const messageRouter = require("./routers/message.router");
 const groupRouter = require("./routers/group.router");
+const friendRequestRouter = require("./routers/friendRequest.router");
+const friendshipRouter = require("./routers/friendship.router");
+const adminRouter = require("./routers/admin.router");
 
 // Servers
 const app = express();
@@ -84,19 +87,38 @@ app.use("/api/likes", likeRouter);
 app.use("/api/chats", chatRouter);
 app.use("/api/messages", messageRouter);
 app.use("/api/groups", groupRouter);
+app.use("/api/friendRequests", friendRequestRouter);
+app.use("/api/friendships", friendshipRouter);
+app.use("/api/admin", adminRouter);
 
 // Global Error Handler
 app.use(globalErrorHandler);
 
-// We on connection with client
+// We on connection event from client
 io.on("connection", (socket) => {
     console.log(`User with ${socket.id} id connected to server!`);
 
     socket.join(socket.userId);
 
+    socket.on("join-chat", (chatId) => {
+        socket.join(chatId);
+    });
+
+    socket.on("leave-chat", (chatId) => {
+        socket.leave(chatId);
+    });
+
+    socket.on("join-group-chat", (groupId) => {
+        socket.join(groupId);
+    });
+
+    socket.on("leave-group-chat", (groupId) => {
+        socket.leave(groupId);
+    });
+
     socket.on("disconnect", (reason) => {
         console.log(`User with ${socket.id} id disconnected because ${reason}`);
-    })
+    });
 });
 
 server.listen(process.env.PORT, () => {

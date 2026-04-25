@@ -31,15 +31,16 @@ const sendMessage = catchAsync(async (req, res, next) => {
 
     let newMessage = "";
 
-    if (mode === "chat") await Message.create({ content, senderId: req.user._id, chatId: id });
-    if (mode === "group") await Message.create({ content, senderId: req.user._id, groupId: id });
+    if (mode === "chat") newMessage = await Message.create({ content, senderId: req.user._id, chatId: id });
+    if (mode === "group") newMessage = await Message.create({ content, senderId: req.user._id, groupId: id });
+
+    const messageForClient = await newMessage.populate("senderId");
+
+    req.io.to(id.toString()).emit("new-message", messageForClient);
 
     res.status(200).json({
         status: "success",
-        message: "Message successfully sended!",
-        data: {
-            message: newMessage
-        }
+        message: "Message successfully sended!"
     })
 });
 
@@ -66,6 +67,8 @@ const deleteMessage = catchAsync(async (req, res, next) => {
 
     await Message.findByIdAndDelete(messageId);
 
+    req.io.to(mode === "chat" ? message.chatId.toString() : message.groupId.toString()).emit("delete-message", messageId);
+
     res.status(200).json({
         status: "success",
         message: "Message deleted successfully!"
@@ -74,7 +77,7 @@ const deleteMessage = catchAsync(async (req, res, next) => {
 
 // Controller to edit message
 const editMessage = catchAsync(async (req, res, next) => {
-    const { messageId } = req.params;
+    const { mode, messageId } = req.params;
     const { content } = req.body;
 
     const message = await Message.findById(messageId);
@@ -90,13 +93,13 @@ const editMessage = catchAsync(async (req, res, next) => {
     if (content) message.content = content;
 
     await message.save();
+    await message.populate("senderId");
+
+    res.io.to(mode === "chat" ? message.chatId.toString() : message.groupId.toString()).emit("edit-message", message);
 
     res.status(200).json({
         status: "success",
-        message: "Message edited successfully!",
-        data: {
-            message
-        }
+        message: "Message edited successfully!"
     })
 });
 

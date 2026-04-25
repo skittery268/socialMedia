@@ -17,6 +17,6 @@ messageRouter.post("/send-message/:mode/:id", protect, checkBan, sendMessage);
 // Route to delete message
 messageRouter.delete("/delete-message/:messageId", protect, checkBan, deleteMessage);
 // Route to edit message
-messageRouter.patch("/edit-message/:messageId", protect, checkBan, editMessage);
+messageRouter.patch("/edit-message/:mode/:messageId", protect, checkBan, editMessage);
 
 module.exports = messageRouter;
