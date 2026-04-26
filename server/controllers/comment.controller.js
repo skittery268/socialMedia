@@ -8,9 +8,7 @@ const catchAsync = require("../utils/catchAsync");
 
 // Controller to get post comments
 const getPostComments = catchAsync(async (req, res, next) => {
-    const { postId } = req.params;
-
-    const comments = await Comment.find({ postId });
+    const comments = await Comment.find();
 
     res.status(200).json({
         status: "success",
@@ -58,8 +56,8 @@ const deleteComment = catchAsync(async (req, res, next) => {
         return next(new AppError("Comment or Post not found!", 404));
     }
 
-    if (comment.authorId.toString() != req.user._id.toString()) {
-        return next(new AppError("You cant delete this post!", 401));
+    if (comment.authorId.toString() != req.user._id.toString() && req.user.role !== "admin") {
+        return next(new AppError("You cant delete this comment!", 401));
     }
 
     await Comment.findByIdAndDelete(commentId);
@@ -101,7 +99,8 @@ const editComment = catchAsync(async (req, res, next) => {
         status: "success",
         message: "Comment deleted!",
         data: {
-            post
+            post,
+            comment
         }
     })
 });

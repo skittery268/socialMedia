@@ -11,7 +11,7 @@ const { addCommentInPost, deleteComment, editComment, getPostComments } = requir
 const commentRouter = express.Router();
 
 // Route to get post comments
-commentRouter.get("/get-comments/:postId", getPostComments);
+commentRouter.get("/get-comments", getPostComments);
 // Route to add new comment in post
 commentRouter.post("/add-comment/:postId", protect, checkBan, addCommentInPost);
 // Route to delete comment from post

@@ -50,7 +50,7 @@ export const PostProvider = ({ children }) => {
     }
 
     return (
-        <PostContext.Provider value={{ posts, getPosts, addPost, deletePost, editPost }}>
+        <PostContext.Provider value={{ posts, setPosts, getPosts, addPost, deletePost, editPost }}>
             {children}
         </PostContext.Provider>
     )

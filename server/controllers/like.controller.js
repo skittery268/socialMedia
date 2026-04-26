@@ -7,6 +7,19 @@ const Post = require("../models/post.model");
 const AppError = require("../utils/appError");
 const catchAsync = require("../utils/catchAsync");
 
+// Controller to get all likes
+const getLikes = catchAsync(async (req, res, next) => {
+    const likes = await Like.find();
+
+    res.status(200).json({
+        status: "success",
+        message: "Likes successfully returned!",
+        data: {
+            likes
+        }
+    })
+});
+
 // Controller to like post
 const likePost = catchAsync(async (req, res, next) => {
     const { postId, authorId } = req.params;
@@ -21,13 +34,13 @@ const likePost = catchAsync(async (req, res, next) => {
 
     await post.save();
 
-    await Like.create({ authorId, postId });
+    const like = await Like.create({ authorId, postId });
 
     res.status(200).json({
         status: "success",
         message: "Post liked successfully!",
         data: {
-            post
+            like
         }
     })
 });
@@ -36,7 +49,7 @@ const likePost = catchAsync(async (req, res, next) => {
 const likeComment = catchAsync(async (req, res, next) => {
     const { commentId, authorId } = req.params;
 
-    const comment = await Comment.findById(postId);
+    const comment = await Comment.findById(commentId);
 
     if (!comment) {
         return next(new AppError("Comment not found!", 404));
@@ -66,18 +79,16 @@ const unLike = catchAsync(async (req, res, next) => {
     if (!like) {
         return next(new AppError("Like not found!", 404));
     }
+    const post = await Post.findById(like.postId);
+    const comment = await Comment.findById(like.commentId);
 
-    if (like.postId) {
-        const post = await Post.findById(like.postId);
-
+    if (post) {
         post.likeCount -= 1;
 
         await post.save();
     }
 
-    if (like.commentId) {
-        const comment = await Comment.findById(like.commentId);
-
+    if (comment) {
         comment.likeCount -= 1;
 
         await comment.save();
@@ -91,4 +102,4 @@ const unLike = catchAsync(async (req, res, next) => {
     })
 });
 
-module.exports = { likePost, likeComment, unLike };
+module.exports = { getLikes, likePost, likeComment, unLike };
