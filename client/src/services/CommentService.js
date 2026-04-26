@@ -13,5 +13,5 @@ export const fetchDeleteComment = async (commentId, postId) => {
 }
 
 export const fetchEditComment = async (commentId, postId, data) => {
-    return await api.patch(`/edit-comment/${commentId}/${postId}`, data);
+    return await api.patch(`/comments/edit-comment/${commentId}/${postId}`, data);
 }

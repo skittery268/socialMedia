@@ -3,6 +3,7 @@ import { usePost } from "../hooks/usePost";
 import { useAuth } from "../hooks/useAuth";
 import { useForm } from "../hooks/useForm";
 import { useLike } from "../hooks/useLike";
+import Comments from "./Comments";
 
 const ViewPosts = ({ mode }) => {
     const [formData, handleChange, handleSubmit, resetForm] = useForm({
@@ -12,6 +13,7 @@ const ViewPosts = ({ mode }) => {
     const { posts, getPosts, deletePost, editPost } = usePost();
     const { user } = useAuth();
     const [editedPostId, setEditedPostId] = useState(null);
+    
 
     useEffect(() => {
         getPosts();
@@ -62,6 +64,8 @@ const ViewPosts = ({ mode }) => {
                                                                 })
                                                             )
                                                         }
+
+                                                        <Comments p={p} />
                                                     </div>
                                                 )
                                             }
@@ -90,6 +94,8 @@ const ViewPosts = ({ mode }) => {
                                                 })
                                             )
                                         }
+
+                                        <Comments p={p} />
                                     </div>
                                 )
                             })

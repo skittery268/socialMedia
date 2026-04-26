@@ -11,7 +11,7 @@ const { getChats, createChat, deleteChat } = require("../controllers/chat.contro
 const chatRouter = express.Router();
 
 // Route to get all user chats
-chatRouter.get("/get-chats/:user2", protect, checkBan, getChats);
+chatRouter.get("/get-chats", protect, checkBan, getChats);
 // Route to create new chat with any user
 chatRouter.post("/create-chat/:user2", protect, checkBan, createChat);
 // Route to delete chat

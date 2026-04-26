@@ -7,6 +7,7 @@ import { BrowserRouter } from 'react-router';
 import { PostProvider } from './providers/PostProvider.jsx';
 import { LikeProvider } from './providers/LikeProvider.jsx';
 import { CommentProvider } from './providers/CommentProvider.jsx';
+import { ChatProvider } from './providers/ChatProvider.jsx';
 
 createRoot(document.getElementById('root')).render(
   <BrowserRouter>
@@ -14,8 +15,10 @@ createRoot(document.getElementById('root')).render(
       <PostProvider>
         <LikeProvider>
           <CommentProvider>
-            <App />
-            <ToastContainer position='bottom-left' />
+            <ChatProvider>
+              <App />
+              <ToastContainer position='bottom-left' />
+            </ChatProvider>
           </CommentProvider>
         </LikeProvider>
       </PostProvider>

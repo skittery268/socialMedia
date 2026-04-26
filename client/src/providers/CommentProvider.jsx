@@ -6,7 +6,7 @@ import { usePost } from "../hooks/usePost";
 
 export const CommentProvider = ({ children }) => {
     const [comments, setComments] = useState([]);
-    const { setPosts } = usePost();
+    const { getPosts } = usePost();
 
     const getComments = async () => {
         try {
@@ -23,6 +23,7 @@ export const CommentProvider = ({ children }) => {
             const res = await fetchAddComment(postId, data);
 
             setComments(prev => [...prev, res.data.data.comment]);
+            getPosts();
         } catch (err) {
             toast.error(err.response.data.message);
         }
@@ -33,6 +34,7 @@ export const CommentProvider = ({ children }) => {
             await fetchDeleteComment(commentId, postId);
 
             setComments(prev => prev.filter(c => c._id !== commentId));
+            getPosts();
         } catch (err) {
             toast.error(err.response.data.message);
         }
@@ -40,10 +42,9 @@ export const CommentProvider = ({ children }) => {
 
     const editComment = async (commentId, postId, data) => {
         try {
-            const res = await fetchEditComment(commentId, postId, data);
+            await fetchEditComment(commentId, postId, data);
 
-            setComments(prev => prev.map(c => c._id === commentId ? res.data.data.comment : c));
-            setPosts(prev => prev.map(p => p._id === postId ? res.data.data.post : p));
+            getComments();
         } catch (err) {
             toast.error(err.response.data.message);
         }

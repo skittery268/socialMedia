@@ -1,7 +1,7 @@
 import { api } from "../api/axios"
 
 export const fetchLikes = async () => {
-    return await api.get("/likes/get-posts");
+    return await api.get("/likes/get-likes");
 }
 
 export const fetchLikePost = async (postId, authorId) => {

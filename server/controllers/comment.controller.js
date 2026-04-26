@@ -30,9 +30,9 @@ const addCommentInPost = catchAsync(async (req, res, next) => {
         return next(new AppError("Post not found!", 404));
     }
 
-    const comment = await Comment.create({ content, authorId: req.user._id });
+    const comment = await Comment.create({ content, authorId: req.user._id, postId });
 
-    post.comments.push(comment._id);
+    post.commentCount += 1;
 
     await post.save();
 
@@ -40,6 +40,7 @@ const addCommentInPost = catchAsync(async (req, res, next) => {
         status: "success",
         message: "New comment successfully added!",
         data: {
+            comment,
             post
         }
     })
@@ -62,7 +63,7 @@ const deleteComment = catchAsync(async (req, res, next) => {
 
     await Comment.findByIdAndDelete(commentId);
 
-    post.comments = post.comments.filter(com => com._id.toString() != commentId);
+    post.commentCount -= 1;
 
     await post.save();
 
@@ -99,7 +100,6 @@ const editComment = catchAsync(async (req, res, next) => {
         status: "success",
         message: "Comment deleted!",
         data: {
-            post,
             comment
         }
     })

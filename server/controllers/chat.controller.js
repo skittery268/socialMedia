@@ -8,12 +8,10 @@ const catchAsync = require("../utils/catchAsync");
 
 // Controller to get all user chats
 const getChats = catchAsync(async (req, res, next) => {
-    const { user2 } = req.params;
-
     const chats = await Chat.find({
         $or: [
-            { user1: req.user._id, user2 },
-            { user1: user2, user2: req.user._id }
+            { user1: req.user._id },
+            { user2: req.user._id }
         ]
     });
 
