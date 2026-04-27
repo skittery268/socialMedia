@@ -11,3 +11,7 @@ export const fetchCreateChat = async (user2) => {
 export const fetchDeleteChat = async (chatId) => {
     return await api.delete(`/chats/delete-chat/${chatId}`);
 }
+
+export const fetchUsers = async () => {
+    return await api.get("/admin/get-all-users");
+}

@@ -8,6 +8,7 @@ import { PostProvider } from './providers/PostProvider.jsx';
 import { LikeProvider } from './providers/LikeProvider.jsx';
 import { CommentProvider } from './providers/CommentProvider.jsx';
 import { ChatProvider } from './providers/ChatProvider.jsx';
+import { UserProvider } from './providers/UserProvider.jsx';
 
 createRoot(document.getElementById('root')).render(
   <BrowserRouter>
@@ -16,8 +17,10 @@ createRoot(document.getElementById('root')).render(
         <LikeProvider>
           <CommentProvider>
             <ChatProvider>
-              <App />
-              <ToastContainer position='bottom-left' />
+              <UserProvider>
+                <App />
+                <ToastContainer position='bottom-left' />
+              </UserProvider>
             </ChatProvider>
           </CommentProvider>
         </LikeProvider>

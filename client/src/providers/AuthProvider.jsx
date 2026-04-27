@@ -58,6 +58,7 @@ export const AuthProvider = ({ children }) => {
             const res = await fetchLogout()
 
             toast.success(res.data.message);
+            setUser(null);
             navigate("/login");
         } catch (err) {
             toast.error(err.response.data.message);

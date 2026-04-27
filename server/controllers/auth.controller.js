@@ -61,7 +61,7 @@ const login = catchAsync(async (req, res, next) => {
         return next(new AppError("All fields is required!", 400));
     }
 
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email }).select("+password");
 
     if (!user) {
         return next(new AppError("Credentials incorrect!", 400));

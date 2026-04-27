@@ -1,31 +1,33 @@
 // Function to check user password requirements
 const validatePassword = (password) => {
-    let error = null;
+    let hasNumber = false;
+    let hasLetter = false;
 
     if (password.length < 8) {
-        error = "Password length must be 8 charackters!";
-        return error;
+        return "Password length must be 8 charackters!";
     }
 
     for (let i = 0; i < password.length; i++) {
         if ("1234567890".includes(password[i])) {
-            error = null;
-            break;
+            hasNumber = true;
         }
-
-        error = "Password must contain at least one number!";
     }
 
     for (let i = 0; i < password.length; i++) {
         if ("qwertyuiopasdfghjklzxcvbnm".includes(password[i])) {
-            error = null;
-            break;
+            hasLetter = true;
         }
-
-        error = "Password must contain at least one letter!";
     }
 
-    return error;
+    if (!hasNumber) {
+        return "Password must contain at least one number!"
+    }
+
+    if (!hasLetter) {
+        return "Password must contain at least one letter!";
+    }
+
+    return null;
 };
 
 module.exports = validatePassword;

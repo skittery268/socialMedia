@@ -1,10 +1,14 @@
 import { useState } from "react"
 import { ChatContext } from "../context/ChatContext"
 import { toast } from "react-toastify";
-import { fetchChats, fetchCreateChat, fetchDeleteChat } from "../services/ChatService";
+import { fetchChats, fetchCreateChat, fetchDeleteChat, fetchUsers } from "../services/ChatService";
+import { useAuth } from "../hooks/useAuth";
 
 export const ChatProvider = ({ children }) => {
     const [chats, setChats] = useState([]);
+    const [chat, setChat] = useState({});
+    const [users, setUsers] = useState([]);
+    const { user } = useAuth();
 
     const getUserChats = async () => {
         try {
@@ -12,7 +16,17 @@ export const ChatProvider = ({ children }) => {
 
             setChats(res.data.data.chats);
         } catch (err) {
-            toast.error(err.response.data.message);
+            console.log(err);
+        }
+    }
+
+    const getUsers = async () => {
+        try {
+            const res = await fetchUsers();
+
+            setUsers(res.data.data.users);
+        } catch (err) {
+            console.log(err);
         }
     }
 
@@ -21,6 +35,7 @@ export const ChatProvider = ({ children }) => {
             const res = await fetchCreateChat(user2);
 
             setChats(prev => [...prev, res.data.data.chat]);
+            setChat(res.data.data.chat);
         } catch (err) {
             toast.error(err.response.data.message);
         }
@@ -35,9 +50,22 @@ export const ChatProvider = ({ children }) => {
             toast.error(err.response.data.message);
         }
     }
+
+    const openChat = (user2) => {
+        const openedChat = chats.find(c => (c.user1._id === user._id && c.user2._id === user2) || (c.user2._id === user._id && c.user1._id === user2));
+
+        if (!openedChat) {
+            toast.error("Chat not found!");
+            return;
+        }
+
+        setChat(openedChat);
+    }
+
+    const closeChat = () => setChat({});
     
     return (
-        <ChatContext.Provider value={{ chats, getUserChats, addChat, deleteChat }}>
+        <ChatContext.Provider value={{ chats, users, chat, getUsers, getUserChats, addChat, deleteChat, openChat, closeChat }}>
             {children}
         </ChatContext.Provider>
     )
