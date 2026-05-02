@@ -1,11 +1,20 @@
+// React Tools
 import { useState } from "react"
+
+// Context
 import { PostContext } from "../context/PostContext"
+
+// Services
 import { fetchAddPost, fetchDeletePost, fetchEditPost, fetchPosts } from "../services/PostService";
+
+// Toastify
 import { toast } from "react-toastify";
 
+// Provider
 export const PostProvider = ({ children }) => {
     const [posts, setPosts] = useState([]);
 
+    // Function to get posts from server and set it to state
     const getPosts = async () => {
         try {
             const res = await fetchPosts();
@@ -16,6 +25,7 @@ export const PostProvider = ({ children }) => {
         }
     }
 
+    // Function to add post to server and set it to state
     const addPost = async (data) => {
         try {
             const res = await fetchAddPost(data);
@@ -27,6 +37,7 @@ export const PostProvider = ({ children }) => {
         }
     }
 
+    // Function to delete post from server and remove it from state
     const deletePost = async (postId) => {
         try {
             const res = await fetchDeletePost(postId);
@@ -38,6 +49,7 @@ export const PostProvider = ({ children }) => {
         }
     }
 
+    // Function to edit post from server and update it in state
     const editPost = async (postId, data) => {
         try {
             const res = await fetchEditPost(data, postId);

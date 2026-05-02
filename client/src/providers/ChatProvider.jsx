@@ -1,16 +1,29 @@
+// React Tools
 import { useState } from "react"
+
+// Context
 import { ChatContext } from "../context/ChatContext"
-import { toast } from "react-toastify";
+
+// Services
 import { fetchChats, fetchCreateChat, fetchDeleteChat, fetchUsers } from "../services/ChatService";
+
+// Hooks
 import { useAuth } from "../hooks/useAuth";
+
+// Toastify
+import { toast } from "react-toastify";
+
+// Configs
 import { socket } from "../configs/socket";
 
+// Provider
 export const ChatProvider = ({ children }) => {
     const [chats, setChats] = useState([]);
     const [chat, setChat] = useState({});
     const [users, setUsers] = useState([]);
     const { user } = useAuth();
 
+    // Function to get user chats from server and set it to state
     const getUserChats = async () => {
         try {
             const res = await fetchChats();
@@ -21,6 +34,7 @@ export const ChatProvider = ({ children }) => {
         }
     };
 
+    // Function to get users from server and set it to state
     const getUsers = async () => {
         try {
             const res = await fetchUsers();
@@ -31,6 +45,7 @@ export const ChatProvider = ({ children }) => {
         }
     };
 
+    // Function to create chat from server and add it to state
     const addChat = async (user2) => {
         try {
             const res = await fetchCreateChat(user2);
@@ -41,6 +56,7 @@ export const ChatProvider = ({ children }) => {
         }
     };
 
+    // Function to delete chat from server and remove it from state
     const deleteChat = async (chatId) => {
         try {
             await fetchDeleteChat(chatId);
@@ -51,6 +67,7 @@ export const ChatProvider = ({ children }) => {
         }
     };
 
+    // Function to open chat and join it in socket
     const openChat = (user2) => {
         const openedChat = chats.find(c => (c.user1._id === user._id && c.user2._id === user2) || (c.user2._id === user._id && c.user1._id === user2));
 
@@ -64,6 +81,7 @@ export const ChatProvider = ({ children }) => {
         setChat(openedChat);
     };
 
+    // Function to close chat and leave it in socket
     const closeChat = () => {
         socket.emit("leave-chat", chat._id);
         setChat({});

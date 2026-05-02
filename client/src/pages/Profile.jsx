@@ -1,10 +1,16 @@
+// React Tools
 import { useState } from "react";
+
+// Components
 import UploadPost from "../components/UploadPost";
 import ViewPosts from "../components/ViewPosts";
+
+// Hooks
 import { useAuth } from "../hooks/useAuth"
 import { useForm } from "../hooks/useForm";
 import { useGroup } from "../hooks/useGroup";
 
+// Profile page
 const Profile = () => {
     const { user } = useAuth();
     const [isOpen, setIsOpen] = useState(false);

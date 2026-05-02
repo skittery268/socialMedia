@@ -1,10 +1,19 @@
+// React Tools
 import { useEffect, useState } from "react"
+
+// Context
 import { AuthContext } from "../context/AuthContext";
+
+// Services
 import { fetchLogin, fetchLogout, fetchMe, fetchRegister } from "../services/AuthService";
+
+// Toastify
 import { toast } from "react-toastify";
+
+// React Router
 import { useNavigate } from "react-router";
 
-// We share these functions with components
+// Provider
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);

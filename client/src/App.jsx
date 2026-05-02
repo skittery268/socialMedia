@@ -1,21 +1,30 @@
+// React Router
 import { Route, Routes } from "react-router";
+
+// Components
 import Nav from "./components/Nav";
-import Register from "./pages/Register";
-import Login from "./pages/Login";
-import Profile from "./pages/Profile";
-import Home from "./pages/Home";
-import { useAuth } from "./hooks/useAuth";
 import Loading from "./components/Loading";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Users from "./components/Users";
 import Chat from "./components/Chat";
-import UsersProfile from "./pages/UsersProfile";
-import Chats from "./pages/Chats";
 import Group from "./components/Group";
 
+// Hooks
+import { useAuth } from "./hooks/useAuth";
+
+// Pages
+import Register from "./pages/Register";
+import Login from "./pages/Login";
+import Profile from "./pages/Profile";
+import Home from "./pages/Home";
+import UsersProfile from "./pages/UsersProfile";
+import Chats from "./pages/Chats";
+
 const App = () => {
+	// Check if user is authenticated
 	const { user, loading } = useAuth();
 
+	// If not user and still loading, show loading component
 	if (!user && loading) {
 		return <Loading />
 	}
@@ -24,6 +33,7 @@ const App = () => {
 		<>
 			<Nav />
 
+			{/* All Routes */}
 			<Routes>
 				<Route path="/" element={<Home />} />
 				<Route path="/register" element={<Register />} />

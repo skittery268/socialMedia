@@ -1,6 +1,8 @@
+// Hooks
 import { useAuth } from "../hooks/useAuth";
 import { useForm } from "../hooks/useForm";
 
+// Register page
 const Register = () => {
     const [formData, handleChange, handleSubmit, resetForm] = useForm({
         name: "",

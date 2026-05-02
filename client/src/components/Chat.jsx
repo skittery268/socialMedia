@@ -1,17 +1,24 @@
+// React Tools
 import { useEffect, useState } from "react";
+
+// Hooks
 import { useForm } from "../hooks/useForm";
 import { useMessage } from "../hooks/useMessage";
+
+// React Router
 import { useParams } from "react-router";
+
+// Components
 import MessageEditForm from "./MessageEditForm";
 
+// Chat component
 const Chat = () => {
     const { id } = useParams();
     const [formData, handleChange, handleSubmit, resetForm] = useForm({
         content: ""
     })
-    const [editedMessageId, setEditedMessageId] = useState(null);
-
     const { sendMessage, messages, deleteMessage, getMessages } = useMessage();
+    const [editedMessageId, setEditedMessageId] = useState(null);
 
     useEffect(() => {
         getMessages("chat", id);

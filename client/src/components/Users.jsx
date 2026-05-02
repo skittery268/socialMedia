@@ -1,7 +1,13 @@
+// React Tools
 import { useEffect } from "react";
+
+// Hooks
 import { useChat } from "../hooks/useChat";
+
+// React Router
 import { Link } from "react-router";
 
+// Users component to show all users and link to their profile
 const Users = () => {
     const { users, getUsers } = useChat();
 

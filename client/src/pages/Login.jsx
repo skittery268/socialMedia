@@ -1,6 +1,8 @@
+// Hooks
 import { useAuth } from "../hooks/useAuth";
 import { useForm } from "../hooks/useForm";
 
+// Login page
 const Login = () => {
     const [formData, handleChange, handleSubmit, resetForm] = useForm({
         email: "",

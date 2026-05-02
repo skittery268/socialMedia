@@ -1,10 +1,16 @@
+// React Tools
 import { useEffect, useState } from "react";
+
+// Hooks
 import { usePost } from "../hooks/usePost";
 import { useAuth } from "../hooks/useAuth";
 import { useForm } from "../hooks/useForm";
 import { useLike } from "../hooks/useLike";
+
+// Components
 import Comments from "./Comments";
 
+// ViewPosts component to show all posts and allow liking, editing, and deleting posts
 const ViewPosts = ({ mode }) => {
     const [formData, handleChange, handleSubmit, resetForm] = useForm({
         content: ""

@@ -1,6 +1,10 @@
+// React Router
 import { NavLink } from "react-router"
+
+// Hooks
 import { useAuth } from "../hooks/useAuth";
 
+// Navigation component
 const Nav = () => {
     const { user, logout } = useAuth();
 

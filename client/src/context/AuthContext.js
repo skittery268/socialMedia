@@ -1,4 +1,6 @@
+// React Tools
 import { createContext } from "react";
 
-// Create auth context to share functions to components
+// Create auth context 
 export const AuthContext = createContext();
+

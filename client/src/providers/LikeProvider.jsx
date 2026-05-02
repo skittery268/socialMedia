@@ -1,15 +1,27 @@
-import { toast } from "react-toastify";
-import { LikeContext } from "../context/LikeContext"
-import { usePost } from "../hooks/usePost"
-import { fetchLikePost, fetchLikes, fetchUnLike } from "../services/LikeService";
-import { useAuth } from "../hooks/useAuth";
-import { useState } from "react";
+// React Tools
+import { useState } from "react"
 
+// Context
+import { LikeContext } from "../context/LikeContext"
+
+// Hooks
+import { usePost } from "../hooks/usePost"
+import { useAuth } from "../hooks/useAuth";
+
+// Services
+import { fetchLikePost, fetchLikes, fetchUnLike } from "../services/LikeService";
+
+// Toastify
+import { toast } from "react-toastify";
+
+
+// Provider
 export const LikeProvider = ({ children }) => {
     const [likes, setLikes] = useState([]);
     const { getPosts } = usePost();
     const { user } = useAuth();
 
+    // Function to get likes from server and set it to state
     const getLikes = async () => {
         try {
             const res = await fetchLikes();
@@ -20,6 +32,7 @@ export const LikeProvider = ({ children }) => {
         }
     }
 
+    // Function to like post from server and add it to state
     const likePost = async (postId) => {
         try {
             const res = await fetchLikePost(postId, user._id);
@@ -41,6 +54,7 @@ export const LikeProvider = ({ children }) => {
     //     }
     // }
 
+    // Function to unlike from server and remove it from state
     const unLike = async (likeId) => {
         try {
             await fetchUnLike(likeId);

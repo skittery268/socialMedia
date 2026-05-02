@@ -1,7 +1,11 @@
+// React Tools
 import { useState } from "react";
+
+// Hooks
 import { useForm } from "../hooks/useForm";
 import { usePost } from "../hooks/usePost";
 
+// UploadPost component to upload a new post
 const UploadPost = () => {
     const [formData, handleChange, , resetForm] = useForm({
         content: ""

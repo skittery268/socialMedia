@@ -1,9 +1,15 @@
+// React Router
 import { Link } from "react-router";
+
+// Hooks
 import { useAuth } from "../hooks/useAuth";
 import { useChat } from "../hooks/useChat";
 import { useGroup } from "../hooks/useGroup";
+
+// React Tools
 import { useEffect } from "react";
 
+// Chats page
 const Chats = () => {
     const { user } = useAuth();
     const { chats, getUserChats, openChat } = useChat();

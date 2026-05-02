@@ -1,3 +1,4 @@
+// Loading component
 const Loading = () => {
     return (
         <div>

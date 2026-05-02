@@ -1,6 +1,8 @@
+// Hooks
 import { useForm } from "../hooks/useForm";
 import { useMessage } from "../hooks/useMessage";
 
+// Components to edit message
 const MessageEditForm = ({ mode, editedMessageId, setEditedMessageId }) => {
     const [formData, handleChange, handleSubmit, resetForm] = useForm({
         content: ""

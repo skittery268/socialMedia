@@ -1,22 +1,27 @@
+// React Tools
 import { useEffect, useState } from "react";
+
+// React Router
 import { useParams } from "react-router";
+
+// Hooks
 import { useForm } from "../hooks/useForm";
 import { useMessage } from "../hooks/useMessage";
-import MessageEditForm from "./MessageEditForm";
 import { useGroup } from "../hooks/useGroup";
 
+// Components
+import MessageEditForm from "./MessageEditForm";
+
+// Group component
 const Group = () => {
     const { id } = useParams();
     const [formData, handleChange, handleSubmit, resetForm] = useForm({
         content: ""
     })
-    const [editedMessageId, setEditedMessageId] = useState(null);
-
     const { sendMessage, messages, deleteMessage, getMessages } = useMessage();
-
-    const [isOpen, setIsOpen] = useState(false);
-
     const { groups, deleteMember } = useGroup();
+    const [editedMessageId, setEditedMessageId] = useState(null);
+    const [isOpen, setIsOpen] = useState(false);
 
     const group = groups.find(g => g._id === id);
 

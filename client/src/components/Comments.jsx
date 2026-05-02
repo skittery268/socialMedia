@@ -1,14 +1,18 @@
+// React Tools
 import { useEffect, useState } from "react";
+
+// Hooks
 import { useComment } from "../hooks/useComment";
 import { useForm } from "../hooks/useForm";
 
+// Comment component
 const Comments = ({ p }) => {
     const [formData, handleChange, handleSubmit, resetForm] = useForm({
         content: ""
     });
+    const { comments, deleteComment, addComment, getComments, editComment } = useComment();
     const [commentedPostId, setCommentedPostId] = useState(null);
     const [editedCommentId, setEditedCommentId] = useState(null);
-    const { comments, deleteComment, addComment, getComments, editComment } = useComment();
 
     useEffect(() => {
         getComments();
