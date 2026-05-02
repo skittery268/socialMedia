@@ -3,6 +3,7 @@ import { ChatContext } from "../context/ChatContext"
 import { toast } from "react-toastify";
 import { fetchChats, fetchCreateChat, fetchDeleteChat, fetchUsers } from "../services/ChatService";
 import { useAuth } from "../hooks/useAuth";
+import { socket } from "../configs/socket";
 
 export const ChatProvider = ({ children }) => {
     const [chats, setChats] = useState([]);
@@ -18,7 +19,7 @@ export const ChatProvider = ({ children }) => {
         } catch (err) {
             console.log(err);
         }
-    }
+    };
 
     const getUsers = async () => {
         try {
@@ -28,18 +29,17 @@ export const ChatProvider = ({ children }) => {
         } catch (err) {
             console.log(err);
         }
-    }
+    };
 
     const addChat = async (user2) => {
         try {
             const res = await fetchCreateChat(user2);
 
             setChats(prev => [...prev, res.data.data.chat]);
-            setChat(res.data.data.chat);
         } catch (err) {
             toast.error(err.response.data.message);
         }
-    }
+    };
 
     const deleteChat = async (chatId) => {
         try {
@@ -49,7 +49,7 @@ export const ChatProvider = ({ children }) => {
         } catch (err) {
             toast.error(err.response.data.message);
         }
-    }
+    };
 
     const openChat = (user2) => {
         const openedChat = chats.find(c => (c.user1._id === user._id && c.user2._id === user2) || (c.user2._id === user._id && c.user1._id === user2));
@@ -59,11 +59,16 @@ export const ChatProvider = ({ children }) => {
             return;
         }
 
-        setChat(openedChat);
-    }
+        socket.emit("join-chat", openedChat._id);
 
-    const closeChat = () => setChat({});
-    
+        setChat(openedChat);
+    };
+
+    const closeChat = () => {
+        socket.emit("leave-chat", chat._id);
+        setChat({});
+    };
+
     return (
         <ChatContext.Provider value={{ chats, users, chat, getUsers, getUserChats, addChat, deleteChat, openChat, closeChat }}>
             {children}

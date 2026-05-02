@@ -8,8 +8,8 @@ const catchAsync = require("../utils/catchAsync");
 
 // Controller to get all user groups
 const getGroups = catchAsync(async (req, res, next) => {
-    const groups = await Group.find({ members: { $in: [req.user._id] } });
-    
+    const groups = await Group.find({ members: { $in: [req.user._id] } }).populate("members").populate("owner").populate("admins").populate("moderators");
+
     res.status(200).json({
         status: "success",
         message: "Groups returned successfully!",
@@ -18,29 +18,6 @@ const getGroups = catchAsync(async (req, res, next) => {
         }
     })
 });
-
-// Controller to join group
-const joinGroup = catchAsync(async (req, res, next) => {
-    const { memberId, groupId } = req.params;
-
-    const group = await Group.findById(groupId);
-
-    if (!group) {
-        return next(new AppError("Group not found!", 404));
-    }
-
-    group.members.push(memberId);
-
-    await group.save();
-
-    res.status(200).json({
-        status: "success",
-        message: "You successfully joined to group!",
-        data: {
-            group
-        }
-    })
-})
 
 // Controller to leave from group
 const leaveGroup = catchAsync(async (req, res, next) => {
@@ -165,7 +142,7 @@ const deleteMember = catchAsync(async (req, res, next) => {
         return next(new AppError("Group not found!", 404));
     }
 
-    if (!group.admins.includes(req.user._id)) {
+    if (!group.admins.includes(req.user._id) && group.owner.toString() != req.user._id.toString()) {
         return next(new AppError("You cant delete members in this group!", 401));
     }
 
@@ -182,4 +159,4 @@ const deleteMember = catchAsync(async (req, res, next) => {
     })
 });
 
-module.exports = { getGroups, joinGroup, leaveGroup, createGroup, deleteGroup, editGroup, addMember, deleteMember };
+module.exports = { getGroups, leaveGroup, createGroup, deleteGroup, editGroup, addMember, deleteMember };

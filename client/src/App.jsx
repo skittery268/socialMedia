@@ -10,6 +10,8 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import Users from "./components/Users";
 import Chat from "./components/Chat";
 import UsersProfile from "./pages/UsersProfile";
+import Chats from "./pages/Chats";
+import Group from "./components/Group";
 
 const App = () => {
 	const { user, loading } = useAuth();
@@ -28,8 +30,10 @@ const App = () => {
 				<Route path="/login" element={<Login />} />
 				<Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
 				<Route path="/users" element={<ProtectedRoute><Users /></ProtectedRoute>} />
-				<Route path="/chat" element={<ProtectedRoute><Chat /></ProtectedRoute>} />
+				<Route path="/chat/:id" element={<ProtectedRoute><Chat /></ProtectedRoute>} />
+				<Route path="/group/:id" element={<ProtectedRoute><Group /></ProtectedRoute>} />
 				<Route path="/usersprofile/:id" element={<ProtectedRoute><UsersProfile /></ProtectedRoute>} />
+				<Route path="/chats" element={<ProtectedRoute><Chats /></ProtectedRoute>} />
 			</Routes>
 		</>
     )

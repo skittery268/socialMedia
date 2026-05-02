@@ -18,10 +18,6 @@ const groupSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"
     }],
-    private: {
-        type: Boolean,
-        default: false,
-    },
     owner: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",

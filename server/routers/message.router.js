@@ -15,7 +15,7 @@ messageRouter.get("/get-messages/:mode/:id", protect, checkBan, getMessages);
 // Route to send message in chat / group
 messageRouter.post("/send-message/:mode/:id", protect, checkBan, sendMessage);
 // Route to delete message
-messageRouter.delete("/delete-message/:messageId", protect, checkBan, deleteMessage);
+messageRouter.delete("/delete-message/:mode/:messageId", protect, checkBan, deleteMessage);
 // Route to edit message
 messageRouter.patch("/edit-message/:mode/:messageId", protect, checkBan, editMessage);
 

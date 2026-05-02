@@ -1,8 +1,53 @@
+import { useEffect, useState } from "react";
+import { useForm } from "../hooks/useForm";
+import { useMessage } from "../hooks/useMessage";
+import { useParams } from "react-router";
+import MessageEditForm from "./MessageEditForm";
+
 const Chat = () => {
+    const { id } = useParams();
+    const [formData, handleChange, handleSubmit, resetForm] = useForm({
+        content: ""
+    })
+    const [editedMessageId, setEditedMessageId] = useState(null);
+
+    const { sendMessage, messages, deleteMessage, getMessages } = useMessage();
+
+    useEffect(() => {
+        getMessages("chat", id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [id]);
+
     return (
-        <form>
-            
-        </form>
+        <>
+            {
+                messages.map((m, index) => {
+                    return (
+                        <section key={index}>
+                            {
+                                editedMessageId === m._id ? (
+                                    <MessageEditForm mode={"chat"} editedMessageId={editedMessageId} setEditedMessageId={setEditedMessageId} />
+                                ) : (
+                                    <div key={index}>
+                                        <p>{m.senderId.name}</p>
+                                        <p>{m.content}</p>
+                                        <button onClick={() => deleteMessage("chat", m._id)}>Delete</button>
+                                        <button onClick={() => setEditedMessageId(m._id)}>Edit</button>
+                                    </div>
+                                )
+                            }
+                        </section>
+                        
+                    )
+                })
+            }
+
+            <form onSubmit={(e) => { handleSubmit(e, (data) => sendMessage("chat", id, data)); resetForm() }}>
+                <input type="text" name="content" placeholder="Type message..." value={formData.content} onChange={handleChange} />
+                <br />
+                <button type="submit">Send</button>
+            </form>
+        </>
     )
 }
 

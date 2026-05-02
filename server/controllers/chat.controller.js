@@ -15,7 +15,7 @@ const getChats = catchAsync(async (req, res, next) => {
         ]
     });
 
-    await Promise.all(chats.map(c => c.populate(["user1", "user2"])));
+    await Promise.all(chats.map(async c => await c.populate(["user1", "user2"])));
 
     res.status(200).json({
         status: "success",

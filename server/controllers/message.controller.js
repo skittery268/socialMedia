@@ -15,6 +15,8 @@ const getMessages = catchAsync(async (req, res, next) => {
     if (mode === "chat") messages = await Message.find({ chatId: id });
     if (mode === "group") messages = await Message.find({ groupId: id });
 
+    await Promise.all(messages.map(m => m.populate("senderId")));
+
     res.status(200).json({
         status: "success",
         message: "Messages successfully returned!",
@@ -29,7 +31,7 @@ const sendMessage = catchAsync(async (req, res, next) => {
     const { mode, id } = req.params;
     const { content } = req.body;
 
-    let newMessage = "";
+    let newMessage = {};
 
     if (mode === "chat") newMessage = await Message.create({ content, senderId: req.user._id, chatId: id });
     if (mode === "group") newMessage = await Message.create({ content, senderId: req.user._id, groupId: id });
@@ -37,6 +39,8 @@ const sendMessage = catchAsync(async (req, res, next) => {
     const messageForClient = await newMessage.populate("senderId");
 
     req.io.to(id.toString()).emit("new-message", messageForClient);
+
+    console.log(messageForClient);
 
     res.status(200).json({
         status: "success",
@@ -49,7 +53,7 @@ const deleteMessage = catchAsync(async (req, res, next) => {
     const { mode, messageId } = req.params;
 
     const message = await Message.findById(messageId);
-    let group = "";
+    let group = {};
 
     if (mode === "group") group = await Group.findById(message.groupId);
 
@@ -61,7 +65,7 @@ const deleteMessage = catchAsync(async (req, res, next) => {
         return next(new AppError("You cant delete this message!", 401));
     }
 
-    if (mode === "group" && !group.moderators.includes(req.user._id) && !group.admins.includes(req.user._id)) {
+    if (mode === "group" && !group.moderators.includes(req.user._id) && !group.admins.includes(req.user._id) && group.owner.toString() != req.user._id.toString() && message.senderId.toString() != req.user._id.toString()) {
         return next(new AppError("You cant delete this message!", 401));
     }
 
@@ -95,7 +99,7 @@ const editMessage = catchAsync(async (req, res, next) => {
     await message.save();
     await message.populate("senderId");
 
-    res.io.to(mode === "chat" ? message.chatId.toString() : message.groupId.toString()).emit("edit-message", message);
+    req.io.to(mode === "chat" ? message.chatId.toString() : message.groupId.toString()).emit("edit-message", message);
 
     res.status(200).json({
         status: "success",
