@@ -39,7 +39,7 @@ const removeFriend = catchAsync(async (req, res, next) => {
 
     await Friendship.findByIdAndDelete(friendshipId);
 
-    req.io.to(friendship.user1.toString()).to(friendship.user2.toString()).emit("remove-frient", friendshipId);
+    req.io.to(friendship.user1.toString()).to(friendship.user2.toString()).emit("remove-friend", friendshipId);
 
     res.status(200).json({
         status: "success",

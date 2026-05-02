@@ -51,6 +51,8 @@ export const ChatProvider = ({ children }) => {
             const res = await fetchCreateChat(user2);
 
             setChats(prev => [...prev, res.data.data.chat]);
+
+            return res.data.data.chat;
         } catch (err) {
             toast.error(err.response.data.message);
         }
@@ -68,12 +70,11 @@ export const ChatProvider = ({ children }) => {
     };
 
     // Function to open chat and join it in socket
-    const openChat = (user2) => {
-        const openedChat = chats.find(c => (c.user1._id === user._id && c.user2._id === user2) || (c.user2._id === user._id && c.user1._id === user2));
+    const openChat = async (user2) => {
+        let openedChat = chats.find(c => (c.user1._id === user._id && c.user2._id === user2) || (c.user2._id === user._id && c.user1._id === user2));
 
         if (!openedChat) {
-            toast.error("Chat not found!");
-            return;
+            openedChat = await addChat(user2);
         }
 
         socket.emit("join-chat", openedChat._id);

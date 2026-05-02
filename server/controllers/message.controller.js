@@ -44,7 +44,10 @@ const sendMessage = catchAsync(async (req, res, next) => {
 
     res.status(200).json({
         status: "success",
-        message: "Message successfully sended!"
+        message: "Message successfully sended!",
+        data: {
+            message: messageForClient
+        }
     })
 });
 

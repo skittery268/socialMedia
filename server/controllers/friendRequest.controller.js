@@ -8,7 +8,8 @@ const catchAsync = require("../utils/catchAsync");
 
 // Controller to get all user friend requests
 const getUserFriendRequests = catchAsync(async (req, res, next) => {
-    const friendRequests = await FriendRequest.find({ to: req.user._id });
+    const friendRequests = await FriendRequest.find();
+    await Promise.all(friendRequests.map(fr => fr.populate(["from", "to"])));
 
     res.status(200).json({
         status: "success",
@@ -88,7 +89,7 @@ const rejectFriendRequest = catchAsync(async (req, res, next) => {
 
     await FriendRequest.findByIdAndDelete(friendRequestId);
 
-    req.io.to(friendRequest.from.toString()).emit("reject-friend-request", friendRequestId);
+    req.io.to(friendRequest.from.toString()).emit("reject-friend-request", { friendRequestId, userId: friendRequest.to.toString() });
 
     res.status(200).json({
         status: "success",
@@ -115,7 +116,7 @@ const acceptFriendRequest = catchAsync(async (req, res, next) => {
 
     await FriendRequest.findByIdAndDelete(friendRequestId);
 
-    req.io.to(friendRequest.from.toString()).emit("accept-friend-request", friendshipForClient);
+    req.io.to(friendRequest.from.toString()).emit("accept-friend-request", { friendship: friendshipForClient, friendRequestId });
 
     res.status(200).json({
         status: "success",

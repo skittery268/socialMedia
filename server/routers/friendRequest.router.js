@@ -6,7 +6,7 @@ const protect = require("../middlewares/auth.middleware");
 const checkBan = require("../middlewares/checkBan.middleware");
 
 // Controllers
-const { getUserFriendRequests, sendFriendRequest, cancelFriendRequest, rejectFriendRequest } = require("../controllers/friendRequest.controller");
+const { getUserFriendRequests, sendFriendRequest, cancelFriendRequest, rejectFriendRequest, acceptFriendRequest } = require("../controllers/friendRequest.controller");
 
 const friendRequestRouter = express.Router();
 
@@ -19,6 +19,6 @@ friendRequestRouter.delete("/cancel-friend-request/:friendRequestId", protect, c
 // Route to reject friend request
 friendRequestRouter.delete("/reject-friend-request/:friendRequestId", protect, checkBan, rejectFriendRequest);
 // Route to accept friend request
-friendRequestRouter.get("/accept-friend-request/:friendRequestId", protect, checkBan, getUserFriendRequests);
+friendRequestRouter.get("/accept-friend-request/:friendRequestId", protect, checkBan, acceptFriendRequest);
 
 module.exports = friendRequestRouter;

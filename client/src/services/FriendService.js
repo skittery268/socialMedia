@@ -28,7 +28,7 @@ export const fetchRejectFriendRequest = async (friendRequestId) => {
 
 // Service to accept friend request from server
 export const fetchAcceptFriendRequest = async (friendRequestId) => {
-    return await api.put(`/friendRequests/accept-friend-request/${friendRequestId}`);
+    return await api.get(`/friendRequests/accept-friend-request/${friendRequestId}`);
 }
 
 // Service to remove friend from server

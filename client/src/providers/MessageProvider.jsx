@@ -21,7 +21,7 @@ export const MessageProvider = ({ children }) => {
     useEffect(() => {
         // Function to handle new message
         const handleSendMessage = (msg) => {
-            setMessages(prev => [...prev, msg]);
+            setMessages(prev => prev.some(m => m._id === msg._id) ? prev : [...prev, msg]);
         }
 
         // Function to handle delete message
@@ -61,7 +61,9 @@ export const MessageProvider = ({ children }) => {
     // Function to send message to server
     const sendMessage = async (mode, id, data) => {
         try {
-            await fetchSendMessage(mode, id, data);
+            const res = await fetchSendMessage(mode, id, data);
+            
+            setMessages(prev => prev.some(m => m._id === res.data.data.message._id) ? prev : [...prev, res.data.data.message]);
         } catch (err) {
             toast.error(err.response.data.message);
         }
@@ -71,6 +73,8 @@ export const MessageProvider = ({ children }) => {
     const deleteMessage = async (mode, messageId) => {
         try {
             await fetchDeleteMessage(mode, messageId);
+
+            setMessages(prev => prev.filter(m => m._id !== messageId));
         } catch (err) {
             toast.error(err.response.data.message);
         }
