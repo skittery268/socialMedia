@@ -26,8 +26,7 @@ const UsersProfile = () => {
         getUserChats();
         getFriendRequests();
         getFriends();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [id]);
+    }, [getFriendRequests, getFriends, getUser, getUserChats, id]);
 
     if (!user) {
         return <Loading />

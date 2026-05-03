@@ -1,5 +1,5 @@
 // React Tools
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 
 // Hooks
 import { usePost } from "../hooks/usePost";
@@ -11,7 +11,7 @@ import { useLike } from "../hooks/useLike";
 import Comments from "./Comments";
 
 // ViewPosts component to show all posts and allow liking, editing, and deleting posts
-const ViewPosts = ({ mode }) => {
+const ViewPosts = memo(({ mode }) => {
     const [formData, handleChange, handleSubmit, resetForm] = useForm({
         content: ""
     });
@@ -24,8 +24,7 @@ const ViewPosts = ({ mode }) => {
     useEffect(() => {
         getPosts();
         getLikes();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [getLikes, getPosts]);
 
     const likeOrUnLikePost = (p) => {
         const like = likes.find(l => l.authorId === user._id && l.postId === p._id);
@@ -111,6 +110,6 @@ const ViewPosts = ({ mode }) => {
             }
         </>
     )
-}
+});
 
 export default ViewPosts;

@@ -18,8 +18,7 @@ const Chats = () => {
     useEffect(() => {
         getUserChats();
         getGroups();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [user]);
+    }, [getGroups, getUserChats, user]);
 
     return (
         <>

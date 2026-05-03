@@ -1,5 +1,5 @@
 // React Tools
-import { useState } from "react"
+import { useCallback, useState } from "react"
 
 // Context
 import { CommentContext } from "../context/CommentContext"
@@ -19,7 +19,7 @@ export const CommentProvider = ({ children }) => {
     const { getPosts } = usePost();
 
     // Function to get comments from server and set it to state
-    const getComments = async () => {
+    const getComments = useCallback(async () => {
         try {
             const res = await fetchComments();
 
@@ -27,10 +27,10 @@ export const CommentProvider = ({ children }) => {
         } catch (err) {
             toast.error(err.response.data.message);
         }
-    }
+    }, []);
 
     // Function to add comment to server and set it to state
-    const addComment = async (postId, data) => {
+    const addComment = useCallback(async (postId, data) => {
         try {
             const res = await fetchAddComment(postId, data);
 
@@ -39,10 +39,10 @@ export const CommentProvider = ({ children }) => {
         } catch (err) {
             toast.error(err.response.data.message);
         }
-    }
+    }, [getPosts]);
 
     // Function to delete comment from server and remove it from state
-    const deleteComment = async (commentId, postId) => {
+    const deleteComment = useCallback(async (commentId, postId) => {
         try {
             await fetchDeleteComment(commentId, postId);
 
@@ -51,10 +51,10 @@ export const CommentProvider = ({ children }) => {
         } catch (err) {
             toast.error(err.response.data.message);
         }
-    }
+    }, [getPosts]);
 
     // Function to edit comment from server and update it in state
-    const editComment = async (commentId, postId, data) => {
+    const editComment = useCallback(async (commentId, postId, data) => {
         try {
             await fetchEditComment(commentId, postId, data);
 
@@ -62,7 +62,7 @@ export const CommentProvider = ({ children }) => {
         } catch (err) {
             toast.error(err.response.data.message);
         }
-    }
+    }, [getComments]);
 
     return (
         <CommentContext.Provider value={{ comments, getComments, addComment, deleteComment, editComment }}>

@@ -1,5 +1,5 @@
 // React Tools
-import { useState } from "react"
+import { useCallback, useState } from "react"
 
 // Context
 import { PostContext } from "../context/PostContext"
@@ -15,7 +15,7 @@ export const PostProvider = ({ children }) => {
     const [posts, setPosts] = useState([]);
 
     // Function to get posts from server and set it to state
-    const getPosts = async () => {
+    const getPosts = useCallback(async () => {
         try {
             const res = await fetchPosts();
 
@@ -23,10 +23,10 @@ export const PostProvider = ({ children }) => {
         } catch (err) {
             console.log(err);
         }
-    }
+    }, []);
 
     // Function to add post to server and set it to state
-    const addPost = async (data) => {
+    const addPost = useCallback(async (data) => {
         try {
             const res = await fetchAddPost(data);
 
@@ -35,10 +35,10 @@ export const PostProvider = ({ children }) => {
         } catch (err) {
             toast.error(err.response.data.message);
         }
-    }
+    }, []);
 
     // Function to delete post from server and remove it from state
-    const deletePost = async (postId) => {
+    const deletePost = useCallback(async (postId) => {
         try {
             const res = await fetchDeletePost(postId);
 
@@ -47,10 +47,10 @@ export const PostProvider = ({ children }) => {
         } catch (err) {
             toast.error(err.response.data.message);
         }
-    }
+    }, []);
 
     // Function to edit post from server and update it in state
-    const editPost = async (postId, data) => {
+    const editPost = useCallback(async (postId, data) => {
         try {
             const res = await fetchEditPost(data, postId);
 
@@ -59,7 +59,7 @@ export const PostProvider = ({ children }) => {
         } catch (err) {
             toast.error(err.response.data.message);
         }
-    }
+    }, []);
 
     return (
         <PostContext.Provider value={{ posts, setPosts, getPosts, addPost, deletePost, editPost }}>

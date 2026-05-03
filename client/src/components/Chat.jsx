@@ -25,8 +25,7 @@ const Chat = () => {
     useEffect(() => {
         getUserChats();
         getMessages("chat", id);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [id]);
+    }, [getMessages, getUserChats, id]);
 
     // console.log(messages);
     // console.log(chat);
@@ -39,7 +38,7 @@ const Chat = () => {
                         <section key={index}>
                             {
                                 editedMessageId === m._id ? (
-                                    <MessageEditForm mode={"chat"} editedMessageId={editedMessageId} setEditedMessageId={setEditedMessageId} />
+                                    <MessageEditForm mode={"chat"} editedMessageId={editedMessageId} setEditedMessageId={setEditedMessageId} initialContent={m.content} />
                                 ) : (
                                     <div key={index}>
                                         <p>{m.senderId.name}</p>

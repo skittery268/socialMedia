@@ -1,7 +1,8 @@
+import { memo } from "react";
 import { useForm } from "../hooks/useForm";
 import { useGroup } from "../hooks/useGroup";
 
-const CreateGroupForm = ({ isOpen, setIsOpen }) => {
+const CreateGroupForm = memo(({ isOpen, setIsOpen }) => {
     const [formData, handleChange, handleSubmit, resetForm] = useForm({
         name: ""
     });
@@ -22,6 +23,6 @@ const CreateGroupForm = ({ isOpen, setIsOpen }) => {
             }
         </>
     )
-}
+});
 
 export default CreateGroupForm;

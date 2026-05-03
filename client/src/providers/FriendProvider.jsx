@@ -1,5 +1,5 @@
 // React Tools
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 // Context
 import { FriendContext } from "../context/FriendContext"
@@ -26,8 +26,7 @@ export const FriendProvider = ({ children }) => {
 
     useEffect(() => {
         getUsers();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [friendRequests, friends]);
+    }, [friendRequests, friends, getUsers]);
 
     useEffect(() => {
         const handleNewFriendRequest = (friendRequest) => {
@@ -75,7 +74,7 @@ export const FriendProvider = ({ children }) => {
     }, [friendRequests.length, user?._id, users]);
 
     // Function to get friends from server and set it to state
-    const getFriends = async () => {
+    const getFriends = useCallback(async () => {
         try {
             const res = await fetchFriends();
 
@@ -83,10 +82,10 @@ export const FriendProvider = ({ children }) => {
         } catch (err) {
             console.log(err);
         }
-    }
+    }, []);
 
     // Function to get friend requests from server and set it to state
-    const getFriendRequests = async () => {
+    const getFriendRequests = useCallback(async () => {
         try {
             const res = await fetchFriendRequests();
 
@@ -94,10 +93,10 @@ export const FriendProvider = ({ children }) => {
         } catch (err) {
             console.log(err);
         }
-    }
+    }, []);
 
     // Function to send friend request from server
-    const sendFriendRequest = async (to) => {
+    const sendFriendRequest = useCallback(async (to) => {
         try {
             const res = await fetchSendFriendRequest(to);
 
@@ -106,10 +105,10 @@ export const FriendProvider = ({ children }) => {
         } catch (err) {
             toast.error(err.response.data.message);
         }
-    }
+    }, []);
 
     // Function to cancel friend request from server
-    const cancelFriendRequest = async (friendRequestId) => {
+    const cancelFriendRequest = useCallback(async (friendRequestId) => {
         try {
             const res = await fetchCancelFriendRequest(friendRequestId);
 
@@ -118,10 +117,10 @@ export const FriendProvider = ({ children }) => {
         } catch (err) {
             toast.error(err.response.data.message);
         }
-    }
+    }, []);
 
     // Function to reject friend request from server
-    const rejectFriendRequest = async (friendRequestId) => {
+    const rejectFriendRequest = useCallback(async (friendRequestId) => {
         try {
             const res = await fetchRejectFriendRequest(friendRequestId);
 
@@ -130,14 +129,12 @@ export const FriendProvider = ({ children }) => {
         } catch (err) {
             toast.error(err.response.data.message);
         }
-    }
+    }, []);
 
     // Function to accept friend request from server
-    const acceptFriendRequest = async (friendRequestId) => {
+    const acceptFriendRequest = useCallback(async (friendRequestId) => {
         try {
             const res = await fetchAcceptFriendRequest(friendRequestId);
-
-            console.log(res);
 
             setFriendRequests(prev => prev.filter(fr => fr._id.toString() !== friendRequestId.toString()));
             setFriends(prev => [...prev, res.data.data.friendship]);
@@ -145,10 +142,10 @@ export const FriendProvider = ({ children }) => {
         } catch (err) {
             toast.error(err.response.data.message);
         }
-    }
+    }, []);
 
     // Function to remove friend from server
-    const removeFriend = async (friendshipId) => {
+    const removeFriend = useCallback(async (friendshipId) => {
         try {
             const res = await fetchRemoveFriend(friendshipId);
 
@@ -157,7 +154,7 @@ export const FriendProvider = ({ children }) => {
         } catch (err) {
             toast.error(err.response.data.message);
         }
-    }
+    }, []);
 
     return (
         <FriendContext.Provider value={{ friends, friendRequests, getFriends, getFriendRequests, sendFriendRequest, cancelFriendRequest, rejectFriendRequest, acceptFriendRequest, removeFriend }}>

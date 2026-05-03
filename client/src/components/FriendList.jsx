@@ -8,8 +8,7 @@ const FriendList = () => {
 
     useEffect(() => {
         getFriends();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    }, [getFriends])
 
     return (
         <>

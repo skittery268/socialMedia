@@ -1,5 +1,5 @@
 // React Tools
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 
 // Context
 import { AuthContext } from "../context/AuthContext";
@@ -38,7 +38,7 @@ export const AuthProvider = ({ children }) => {
     }, []);
 
     // Function to login user
-    const login = async (formData) => {
+    const login = useCallback(async (formData) => {
         try {
             const res = await fetchLogin(formData);
 
@@ -48,10 +48,10 @@ export const AuthProvider = ({ children }) => {
         } catch (err) {
             toast.error(err.response.data.message);
         }
-    }
+    }, [navigate])
 
     // Function to register new user
-    const register = async (formData) => {
+    const register = useCallback(async (formData) => {
         try {
             const res = await fetchRegister(formData);
 
@@ -60,10 +60,10 @@ export const AuthProvider = ({ children }) => {
         } catch (err) {
             toast.error(err.response.data.message);
         }
-    }
+    }, [navigate]);
     
     // Function to logout (clear cookies section)
-    const logout = async () => {
+    const logout = useCallback(async () => {
         try {
             const res = await fetchLogout()
 
@@ -73,10 +73,10 @@ export const AuthProvider = ({ children }) => {
         } catch (err) {
             toast.error(err.response.data.message);
         }
-    }
+    }, [navigate]);
 
     // Function to edit user info (name, email, password)
-    const editUserInfo = async (data) => {
+    const editUserInfo = useCallback(async (data) => {
         try {
             const res = await fetchEditUserInfo(data);
 
@@ -85,7 +85,7 @@ export const AuthProvider = ({ children }) => {
         } catch (err) {
             toast.error(err.response.data.message);
         }
-    }
+    }, [])
 
     return (
         <AuthContext.Provider value={{ loading, user, login, register, logout, editUserInfo }}>

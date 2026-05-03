@@ -1,5 +1,5 @@
 // React Tools
-import { useState } from "react"
+import { useCallback, useState } from "react"
 
 // Context
 import { LikeContext } from "../context/LikeContext"
@@ -20,9 +20,10 @@ export const LikeProvider = ({ children }) => {
     const [likes, setLikes] = useState([]);
     const { getPosts } = usePost();
     const { user } = useAuth();
+    const userId = user?._id;
 
     // Function to get likes from server and set it to state
-    const getLikes = async () => {
+    const getLikes = useCallback(async () => {
         try {
             const res = await fetchLikes();
 
@@ -30,19 +31,24 @@ export const LikeProvider = ({ children }) => {
         } catch (err) {
             toast.error(err.response.data.message);
         }
-    }
+    }, []);
 
     // Function to like post from server and add it to state
-    const likePost = async (postId) => {
+    const likePost = useCallback(async (postId) => {
+        if (!userId) {
+            toast.error("User is not authenticated.");
+            return;
+        }
+
         try {
-            const res = await fetchLikePost(postId, user._id);
+            const res = await fetchLikePost(postId, userId);
 
             getPosts();
             setLikes(prev => [...prev, res.data.data.like]);
         } catch (err) {
             toast.error(err.response.data.message);
         }
-    }
+    }, [getPosts, userId]);
 
     // const likeComment = async (commentId) => {
     //     try {
@@ -55,7 +61,7 @@ export const LikeProvider = ({ children }) => {
     // }
 
     // Function to unlike from server and remove it from state
-    const unLike = async (likeId) => {
+    const unLike = useCallback(async (likeId) => {
         try {
             await fetchUnLike(likeId);
 
@@ -64,7 +70,7 @@ export const LikeProvider = ({ children }) => {
         } catch (err) {
             toast.error(err.response.data.message);
         }
-    }
+    }, [getPosts]);
 
     return (
         <LikeContext.Provider value={{ likes, getLikes, likePost, unLike }}>

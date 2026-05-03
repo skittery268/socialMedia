@@ -1,5 +1,5 @@
 // React Tools
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 
 // Context
 import { MessageContext } from "../context/MessageContext"
@@ -48,7 +48,7 @@ export const MessageProvider = ({ children }) => {
     }, [])
 
     // Function to get messages from server and set it to state
-    const getMessages = async (mode, id) => {
+    const getMessages = useCallback(async (mode, id) => {
         try {
             const res = await fetchMessages(mode, id);
 
@@ -56,10 +56,10 @@ export const MessageProvider = ({ children }) => {
         } catch (err) {
             console.log(err);
         }
-    }
+    }, []);
 
     // Function to send message to server
-    const sendMessage = async (mode, id, data) => {
+    const sendMessage = useCallback(async (mode, id, data) => {
         try {
             const res = await fetchSendMessage(mode, id, data);
             
@@ -67,10 +67,10 @@ export const MessageProvider = ({ children }) => {
         } catch (err) {
             toast.error(err.response.data.message);
         }
-    }
+    }, []);
 
     // Function to delete message from server
-    const deleteMessage = async (mode, messageId) => {
+    const deleteMessage = useCallback(async (mode, messageId) => {
         try {
             await fetchDeleteMessage(mode, messageId);
 
@@ -78,16 +78,17 @@ export const MessageProvider = ({ children }) => {
         } catch (err) {
             toast.error(err.response.data.message);
         }
-    }
+    }, []);
 
     // Function to edit message from server
-    const editMessage = async (mode, id, data) => {
+    const editMessage = useCallback(async (mode, id, data) => {
         try {
             await fetchEditMessage(mode, id, data);
+            setMessages(prev => prev.map(m => m._id === id ? { ...m, ...data } : m));
         } catch (err) {
             toast.error(err.response.data.message);
         }
-    }
+    }, []);
 
     return (
         <MessageContext.Provider value={{ messages, getMessages, sendMessage, deleteMessage, editMessage }}>

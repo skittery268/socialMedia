@@ -33,8 +33,7 @@ const Group = () => {
         getMessages("group", id);
         openGroup(id);
         getFriends();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [id])
+    }, [getFriends, getGroups, getMessages, id, openGroup])
 
     const group = groups.find(g => g._id === id);
 
@@ -101,7 +100,7 @@ const Group = () => {
                                     <section key={index}>
                                         {
                                             editedMessageId === m._id ? (
-                                                <MessageEditForm mode={"group"} editedMessageId={editedMessageId} setEditedMessageId={setEditedMessageId} />
+                                                <MessageEditForm mode={"group"} editedMessageId={editedMessageId} setEditedMessageId={setEditedMessageId} initialContent={m.content} />
                                             ) : (
                                                 <div key={index}>
                                                     <p>{m.senderId.name}</p>

@@ -1,5 +1,5 @@
 // React Tools
-import { useState } from "react"
+import { useCallback, useState } from "react"
 
 // Context
 import { GroupContext } from "../context/GroupContext"
@@ -20,7 +20,7 @@ export const GroupProvider = ({ children }) => {
     const navigate = useNavigate();
 
     // Function to get groups from server and set it to state
-    const getGroups = async () => {
+    const getGroups = useCallback(async () => {
         try {
             const res = await fetchGroups();
 
@@ -28,10 +28,10 @@ export const GroupProvider = ({ children }) => {
         } catch (err) {
             console.log(err);
         }
-    }
+    }, []);
 
     // Function to create group from server and add it to state
-    const createGroup = async (data) => {
+    const createGroup = useCallback(async (data) => {
         try {
             const res = await fetchCreateGroup(data);
 
@@ -41,10 +41,10 @@ export const GroupProvider = ({ children }) => {
         } catch (err) {
             toast.error(err.response.data.message);
         }
-    }
+    }, []);
 
     // Function to leave group from server and remove it from state
-    const leaveGroup = async (memberId, groupId) => {
+    const leaveGroup = useCallback(async (memberId, groupId) => {
         try {
             const res = await fetchLeaveGroup(memberId, groupId);
 
@@ -54,10 +54,10 @@ export const GroupProvider = ({ children }) => {
         } catch (err) {
             toast.error(err.response.data.message);
         }
-    }
+    }, [navigate]);
 
     // Function to delete group from server and remove it from state
-    const deleteGroup = async (groupId) => {
+    const deleteGroup = useCallback(async (groupId) => {
         try {
             const res = await fetchDeleteGroup(groupId);
 
@@ -66,10 +66,10 @@ export const GroupProvider = ({ children }) => {
         } catch (err) {
             toast.error(err.response.data.message);
         }
-    }
+    }, []);
 
     // Function to edit group from server and update it in state
-    const editGroup = async (groupId, data) => {
+    const editGroup = useCallback(async (groupId, data) => {
         try {
             const res = await fetchEditGroup(groupId, data);
 
@@ -78,10 +78,10 @@ export const GroupProvider = ({ children }) => {
         } catch (err) {
             toast.error(err.response.data.message);
         }
-    }
+    }, []);
 
     // Function to add member in group from server
-    const addMember = async (memberId, groupId) => {
+    const addMember = useCallback(async (memberId, groupId) => {
         try {
             const res = await fetchAddMember(memberId, groupId);
 
@@ -91,10 +91,10 @@ export const GroupProvider = ({ children }) => {
         } catch (err) {
             toast.error(err.response.data.message);
         }
-    }
+    }, [getGroups]);
 
     // Function to delete member from group from server
-    const deleteMember = async (memberId, groupId) => {
+    const deleteMember = useCallback(async (memberId, groupId) => {
         try {
             const res = await fetchDeleteMember(memberId, groupId);
 
@@ -104,17 +104,17 @@ export const GroupProvider = ({ children }) => {
         } catch (err) {
             toast.error(err.response.data.message);
         }
-    }
+    }, [getGroups]);
 
     // Function to open group chat by joining group room in socket
-    const openGroup = (groupId) => {
+    const openGroup = useCallback((groupId) => {
         socket.emit("join-group-chat", groupId);
-    }
+    }, []);
 
     // Function to close group chat by leaving group room in socket
-    const closeGroup = (groupId) => {
+    const closeGroup = useCallback((groupId) => {
         socket.emit("leave-group-chat", groupId);
-    }
+    }, []);
 
     return (
         <GroupContext.Provider value={{ groups, getGroups, createGroup, leaveGroup, deleteGroup, editGroup, addMember, deleteMember, openGroup, closeGroup }}>

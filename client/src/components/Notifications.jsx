@@ -10,8 +10,7 @@ const Notifications = () => {
 
     useEffect(() => {
         getFriendRequests()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    }, [getFriendRequests])
 
     const friendRequestsForAuthUser = friendRequests.filter(fr => fr.to._id === user._id);
 
