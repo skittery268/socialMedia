@@ -8,35 +8,45 @@ import ViewPosts from "../components/ViewPosts";
 // Hooks
 import { useAuth } from "../hooks/useAuth"
 import { useForm } from "../hooks/useForm";
-import { useGroup } from "../hooks/useGroup";
+import CreateGroupForm from "../components/CreateGroupForm";
 
 // Profile page
 const Profile = () => {
-    const { user } = useAuth();
+    const { user, editUserInfo } = useAuth();
     const [isOpen, setIsOpen] = useState(false);
     const [formData, handleChange, handleSubmit, resetForm] = useForm({
-        name: ""
+        name: "",
+        email: "",
+        password: ""
     });
-
-    const { createGroup } = useGroup();
+    const [isEdited, setIsEdited] = useState(false);
 
     return (
         <>
-            <p>{user?.name}</p>
-            <p>{user?.email}</p>
+            {
+                isEdited ? (
+                    <form onSubmit={(e) => { handleSubmit(e, editUserInfo); resetForm(); setIsEdited(false) }}>
+                        <input type="text" name="name" value={formData.name} onChange={handleChange} placeholder="Enter new name" />
+                        <br />
+                        <input type="email" name="email" value={formData.email} onChange={handleChange} placeholder="Enter new name" />
+                        <br />
+                        <input type="password" name="password" value={formData.password} onChange={handleChange} placeholder="Enter new name" />
+                        <br />
+                        <button type="submit">Save</button>
+                        <button type="button" onClick={() => setIsEdited(false)}>Cancel</button>
+                    </form>
+                ) : (
+                    <>
+                        <p>{user?.name}</p>
+                        <p>{user?.email}</p>
+                        <button onClick={() => setIsEdited(true)}>Edit</button>
+                    </>
+                )
+            }
 
             { !isOpen && <button onClick={() => setIsOpen(true)}>Create Group</button> }
 
-            {
-                isOpen && (
-                    <form onSubmit={(e) => { handleSubmit(e, createGroup); resetForm() }}>
-                        <input type="text" name="name" placeholder="Group name..." value={formData.name} onChange={handleChange} />
-                        <br />
-                        <button type="submit">Create</button>
-                        <button type="button" onClick={() => setIsOpen(false)}>Cancel</button>
-                    </form>
-                )
-            }
+            <CreateGroupForm isOpen={isOpen} setIsOpen={setIsOpen} />
 
             <UploadPost />
             <ViewPosts mode={"profile"} />

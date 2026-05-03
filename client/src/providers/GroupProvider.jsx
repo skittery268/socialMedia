@@ -12,10 +12,12 @@ import { toast } from "react-toastify";
 
 // Configs
 import { socket } from "../configs/socket";
+import { useNavigate } from "react-router";
 
 // Provider
 export const GroupProvider = ({ children }) => {
     const [groups, setGroups] = useState([]);
+    const navigate = useNavigate();
 
     // Function to get groups from server and set it to state
     const getGroups = async () => {
@@ -48,6 +50,7 @@ export const GroupProvider = ({ children }) => {
 
             setGroups(prev => prev.filter(group => group._id != groupId));
             toast.success(res.data.message);
+            navigate("/chats");
         } catch (err) {
             toast.error(err.response.data.message);
         }
@@ -80,8 +83,10 @@ export const GroupProvider = ({ children }) => {
     // Function to add member in group from server
     const addMember = async (memberId, groupId) => {
         try {
-            await fetchAddMember(memberId, groupId);
+            const res = await fetchAddMember(memberId, groupId);
 
+            setGroups(prev => prev.map(gr => gr._id === res.data.data.group._id ? res.data.data.group : gr));
+            await getGroups();
             toast.success("Member added successfully!");
         } catch (err) {
             toast.error(err.response.data.message);
@@ -91,8 +96,10 @@ export const GroupProvider = ({ children }) => {
     // Function to delete member from group from server
     const deleteMember = async (memberId, groupId) => {
         try {
-            await fetchDeleteMember(memberId, groupId);
+            const res = await fetchDeleteMember(memberId, groupId);
 
+            setGroups(prev => prev.map(gr => gr._id === res.data.data.group._id ? res.data.data.group : gr));
+            await getGroups();
             toast.success("Member deleted successfully!");
         } catch (err) {
             toast.error(err.response.data.message);

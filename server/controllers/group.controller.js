@@ -119,15 +119,21 @@ const addMember = catchAsync(async (req, res, next) => {
         return next(new AppError("Group not found!", 404));
     }
 
+    if (group.members.includes(memberId)) {
+        return next(new AppError("This user already exsists in group!", 404));
+    }
+
     group.members.push(memberId);
 
     await group.save();
+
+    const populatedGroup = await Group.findById(groupId).populate("members").populate("owner").populate("admins").populate("moderators");
 
     res.status(200).json({
         status: "success",
         message: "Member added in group successfully!",
         data: {
-            group
+            group: populatedGroup
         }
     })
 });
@@ -150,11 +156,13 @@ const deleteMember = catchAsync(async (req, res, next) => {
 
     await group.save();
 
+    const populatedGroup = await Group.findById(groupId).populate("members").populate("owner").populate("admins").populate("moderators");
+
     res.status(200).json({
         status: "success",
         message: "Memeber deleted from this group!",
         data: {
-            group
+            group: populatedGroup
         }
     })
 });

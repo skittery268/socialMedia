@@ -29,8 +29,10 @@ export const ChatProvider = ({ children }) => {
             const res = await fetchChats();
 
             setChats(res.data.data.chats);
+            return res.data.data.chats;
         } catch (err) {
             console.log(err);
+            return [];
         }
     };
 
@@ -71,7 +73,9 @@ export const ChatProvider = ({ children }) => {
 
     // Function to open chat and join it in socket
     const openChat = async (user2) => {
-        let openedChat = chats.find(c => (c.user1._id === user._id && c.user2._id === user2) || (c.user2._id === user._id && c.user1._id === user2));
+        const c = await getUserChats();
+
+        let openedChat = c.find(c => (c._id === user2) || (c.user1._id === user._id && c.user2._id === user2) || (c.user2._id === user._id && c.user1._id === user2));
 
         if (!openedChat) {
             openedChat = await addChat(user2);

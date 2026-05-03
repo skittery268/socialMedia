@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 // Hooks
 import { useForm } from "../hooks/useForm";
 import { useMessage } from "../hooks/useMessage";
+import { useChat } from "../hooks/useChat";
 
 // React Router
 import { useParams } from "react-router";
@@ -17,13 +18,18 @@ const Chat = () => {
     const [formData, handleChange, handleSubmit, resetForm] = useForm({
         content: ""
     })
+    const { getUserChats } = useChat();
     const { sendMessage, messages, deleteMessage, getMessages } = useMessage();
     const [editedMessageId, setEditedMessageId] = useState(null);
 
     useEffect(() => {
+        getUserChats();
         getMessages("chat", id);
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [id]);
+
+    // console.log(messages);
+    // console.log(chat);
 
     return (
         <>

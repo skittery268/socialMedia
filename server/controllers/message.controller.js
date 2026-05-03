@@ -40,8 +40,6 @@ const sendMessage = catchAsync(async (req, res, next) => {
 
     req.io.to(id.toString()).emit("new-message", messageForClient);
 
-    console.log(messageForClient);
-
     res.status(200).json({
         status: "success",
         message: "Message successfully sended!",

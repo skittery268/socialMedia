@@ -27,7 +27,7 @@ const Chats = () => {
                 chats.map((c, index) => {
                     return (
                         <div key={index}>
-                            <Link to={`/chat/${c._id}`} onClick={() => openChat(c.user1._id === user._id ? c.user2._id : c.user1._id)}>
+                            <Link to={`/chat/${c.user1._id === user._id ? c.user2._id : c.user1._id}`} onClick={() => openChat(c.user1._id === user._id ? c.user2._id : c.user1._id)}>
                                 { user._id === c.user1._id ? c.user2.name : c.user1.name }
                             </Link>
                         </div>

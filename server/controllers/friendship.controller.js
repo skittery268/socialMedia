@@ -14,6 +14,8 @@ const getAllFriends = catchAsync(async (req, res, next) => {
         ]
     })
 
+    await Promise.all(friendships.map(fr => fr.populate(["user1", "user2"])));
+
     res.status(200).json({
         status: "success",
         message: "Friendships successfully returned!",

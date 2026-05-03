@@ -12,6 +12,7 @@ import { toast } from "react-toastify";
 
 // React Router
 import { useNavigate } from "react-router";
+import { fetchEditUserInfo } from "../services/UserService";
 
 // Provider
 export const AuthProvider = ({ children }) => {
@@ -74,8 +75,20 @@ export const AuthProvider = ({ children }) => {
         }
     }
 
+    // Function to edit user info (name, email, password)
+    const editUserInfo = async (data) => {
+        try {
+            const res = await fetchEditUserInfo(data);
+
+            setUser(res.data.data.user);
+            toast.success(res.data.message);
+        } catch (err) {
+            toast.error(err.response.data.message);
+        }
+    }
+
     return (
-        <AuthContext.Provider value={{ loading, user, login, register, logout }}>
+        <AuthContext.Provider value={{ loading, user, login, register, logout, editUserInfo }}>
             {children}
         </AuthContext.Provider>
     )

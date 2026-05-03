@@ -19,6 +19,8 @@ const Nav = () => {
                                 <li><NavLink to={"/profile"}>Profile</NavLink></li>
                                 <li><NavLink to={"/users"}>Users</NavLink></li>
                                 <li><NavLink to={"/chats"}>Chats</NavLink></li>
+                                <li><NavLink to={"/noti"}>Notifications</NavLink></li>
+                                <li><NavLink to={"/friendlist"}>Friend List</NavLink></li>
                                 <li><button onClick={logout}>Logout</button></li>
                             </>
                         ) : (
