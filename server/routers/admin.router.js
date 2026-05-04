@@ -13,12 +13,12 @@ const adminRouter = express.Router();
 // Route to get all users
 adminRouter.get("/get-all-users", protect, checkBan, getAllUsers);
 // Route to delete user
-adminRouter.delete("/delete-user", protect, checkBan, deleteUser);
+adminRouter.delete("/delete-user/:userId", protect, checkBan, deleteUser);
 // Route to ban user
-adminRouter.patch("/ban-user", protect, checkBan, banUser);
+adminRouter.patch("/ban-user/:userId", protect, checkBan, banUser);
 // Route to warn user
-adminRouter.patch("/warn-user", protect, checkBan, warnUser);
+adminRouter.patch("/warn-user/:userId", protect, checkBan, warnUser);
 // Route to change user role
-adminRouter.patch("/change-role", protect, checkBan, changeRole);
+adminRouter.patch("/change-role/:userId", protect, checkBan, changeRole);
 
 module.exports = adminRouter;

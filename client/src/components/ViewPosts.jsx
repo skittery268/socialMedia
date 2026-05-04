@@ -9,6 +9,7 @@ import { useLike } from "../hooks/useLike";
 
 // Components
 import Comments from "./Comments";
+import { useSearch } from "../hooks/useSearch";
 
 // ViewPosts component to show all posts and allow liking, editing, and deleting posts
 const ViewPosts = memo(({ mode }) => {
@@ -16,11 +17,11 @@ const ViewPosts = memo(({ mode }) => {
         content: ""
     });
     const { likes, likePost, getLikes, unLike } = useLike();
-    const { posts, getPosts, deletePost, editPost } = usePost();
+    const { getPosts, deletePost, editPost } = usePost();
     const { user } = useAuth();
+    const { searchedPosts } = useSearch();
     const [editedPostId, setEditedPostId] = useState(null);
     
-
     useEffect(() => {
         getPosts();
         getLikes();
@@ -42,7 +43,7 @@ const ViewPosts = memo(({ mode }) => {
                 mode === "profile" ? (
                     <>
                         {
-                            posts.map((p, index) => {
+                            searchedPosts.map((p, index) => {
                                 if (p.authorId._id === user._id) {
                                     return (
                                         <section key={index}>
@@ -83,7 +84,7 @@ const ViewPosts = memo(({ mode }) => {
                 ) : (
                     <>
                         {
-                            posts.map((p, index) => {
+                            searchedPosts.map((p, index) => {
                                 return (
                                     <div key={index}>
                                         <p>{p.authorId.name}</p>

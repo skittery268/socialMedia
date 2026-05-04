@@ -28,6 +28,7 @@ const friendRequestRouter = require("./routers/friendRequest.router");
 const friendshipRouter = require("./routers/friendship.router");
 const adminRouter = require("./routers/admin.router");
 const userRouter = require("./routers/user.router");
+const searchRouter = require("./routers/search.router");
 
 // Servers
 const app = express();
@@ -92,6 +93,7 @@ app.use("/api/friendRequests", friendRequestRouter);
 app.use("/api/friendships", friendshipRouter);
 app.use("/api/admin", adminRouter);
 app.use("/api/users", userRouter);
+app.use("/api/search", searchRouter);
 
 // Global Error Handler
 app.use(globalErrorHandler);
