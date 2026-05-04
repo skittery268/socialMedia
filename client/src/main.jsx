@@ -23,6 +23,9 @@ import { FriendProvider } from './providers/FriendProvider.jsx';
 import { SearchProvider } from './providers/SearchProvider.jsx';
 import { AdminProvider } from './providers/AdminProvider.jsx';
 
+// CSS
+import "./main.css";
+
 // Connect all context providers to the app
 createRoot(document.getElementById('root')).render(
   <BrowserRouter>
