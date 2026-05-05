@@ -33,25 +33,27 @@ const App = () => {
 	}
 
     return (
-		<>
+		<main className="h-screen bg-[#F3F2EF]">
 			<Nav />
 
 			{/* All Routes */}
-			<Routes>
-				<Route path="/" element={<Home />} />
-				<Route path="/register" element={<Register />} />
-				<Route path="/login" element={<Login />} />
-				<Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
-				<Route path="/users" element={<ProtectedRoute><Users /></ProtectedRoute>} />
-				<Route path="/chat/:id" element={<ProtectedRoute><Chat /></ProtectedRoute>} />
-				<Route path="/group/:id" element={<ProtectedRoute><Group /></ProtectedRoute>} />
-				<Route path="/usersprofile/:id" element={<ProtectedRoute><UsersProfile /></ProtectedRoute>} />
-				<Route path="/chats" element={<ProtectedRoute><Chats /></ProtectedRoute>} />
-				<Route path="/noti" element={<ProtectedRoute><Notifications /></ProtectedRoute>} />
-				<Route path="/friendlist" element={<ProtectedRoute><FriendList /></ProtectedRoute>} />
-				<Route path="/adminpanel" element={<ProtectedRoute><AdminPanel /></ProtectedRoute>} />
-			</Routes>
-		</>
+			<div className="flex justify-center items-center">
+				<Routes>
+					<Route path="/" element={<Home />} />
+					<Route path="/register" element={<Register />} />
+					<Route path="/login" element={<Login />} />
+					<Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+					<Route path="/users" element={<ProtectedRoute><Users /></ProtectedRoute>} />
+					<Route path="/chat/:id" element={<ProtectedRoute><Chat /></ProtectedRoute>} />
+					<Route path="/group/:id" element={<ProtectedRoute><Group /></ProtectedRoute>} />
+					<Route path="/usersprofile/:id" element={<ProtectedRoute><UsersProfile /></ProtectedRoute>} />
+					<Route path="/chats" element={<ProtectedRoute><Chats /></ProtectedRoute>} />
+					<Route path="/noti" element={<ProtectedRoute><Notifications /></ProtectedRoute>} />
+					<Route path="/friendlist" element={<ProtectedRoute><FriendList /></ProtectedRoute>} />
+					<Route path="/adminpanel" element={<ProtectedRoute><AdminPanel /></ProtectedRoute>} />
+				</Routes>
+			</div>
+		</main>
     )
 }
 
