@@ -35,6 +35,10 @@ const userSchema = new mongoose.Schema({
     },
     banExpiresIn: {
         type: Date
+    },
+    image: {
+        url: String,
+        public_id: String
     }
 }, { timestamps: true });
 

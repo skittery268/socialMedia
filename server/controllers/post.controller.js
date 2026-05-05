@@ -38,7 +38,7 @@ const addPost = catchAsync(async (req, res, next) => {
 
     if (req.files && req.files.length > 0) {
         for (const file of req.files) {
-            const result = await uploadToCloudinary(file.buffer);
+            const result = await uploadToCloudinary(file.buffer, "posts");
 
             uploadedImages.push({
                 url: result.secure_url,

@@ -1,7 +1,11 @@
+// React tools
 import { useEffect } from "react";
+
+// Hooks
 import { useAuth } from "../hooks/useAuth";
 import { useFriend } from "../hooks/useFriend";
 
+// Component to view friend list
 const FriendList = () => {
     const { friends, removeFriend, getFriends } = useFriend();
     const { user } = useAuth();

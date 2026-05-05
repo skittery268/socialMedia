@@ -12,7 +12,7 @@ import { toast } from "react-toastify";
 
 // React Router
 import { useNavigate } from "react-router";
-import { fetchEditUserInfo } from "../services/UserService";
+import { fetchDeleteAvatar, fetchEditUserInfo } from "../services/UserService";
 
 // Provider
 export const AuthProvider = ({ children }) => {
@@ -48,7 +48,7 @@ export const AuthProvider = ({ children }) => {
         } catch (err) {
             toast.error(err.response.data.message);
         }
-    }, [navigate])
+    }, [navigate]);
 
     // Function to register new user
     const register = useCallback(async (formData) => {
@@ -85,10 +85,22 @@ export const AuthProvider = ({ children }) => {
         } catch (err) {
             toast.error(err.response.data.message);
         }
-    }, [])
+    }, []);
+
+    // Function to delete user avatar
+    const deleteUserAvatar = useCallback(async () => {
+        try {
+            const res = await fetchDeleteAvatar();
+
+            setUser(res.data.data.user);
+            toast.success(res.data.message);
+        } catch (err) {
+            toast.error(err.response.data.message);
+        }
+    }, []);
 
     return (
-        <AuthContext.Provider value={{ loading, user, login, register, logout, editUserInfo }}>
+        <AuthContext.Provider value={{ loading, user, login, register, logout, editUserInfo, deleteUserAvatar }}>
             {children}
         </AuthContext.Provider>
     )

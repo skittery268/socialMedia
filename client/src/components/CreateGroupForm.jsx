@@ -1,7 +1,11 @@
+// React tools
 import { memo } from "react";
+
+// Hooks
 import { useForm } from "../hooks/useForm";
 import { useGroup } from "../hooks/useGroup";
 
+// Component to create new group (form)
 const CreateGroupForm = memo(({ isOpen, setIsOpen }) => {
     const [formData, handleChange, handleSubmit, resetForm] = useForm({
         name: ""
