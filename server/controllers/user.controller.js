@@ -42,7 +42,7 @@ const editUserInfo = catchAsync(async (req, res, next) => {
         user.password = password;
     }
 
-    if (user.image.url) {
+    if (req.file && user.image.url) {
         await cloudinary.uploader.destroy(user.image.public_id);
 
         user.image = undefined;

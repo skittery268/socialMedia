@@ -37,12 +37,18 @@ const EditUserInfo = ({ setIsEdited }) => {
             className="fixed inset-0 z-50 flex items-center justify-center"
             onClick={() => setIsEdited(false)}
         >
-            <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" />
+            <div className="absolute inset-0 bg-black/50" />
             <form 
                 onSubmit={submitEditedUserInfo}
                 onClick={(e) => e.stopPropagation()}
                 className="relative z-10 w-90 max-w-[90vw] bg-white p-8 rounded-3xl shadow-2xl flex flex-col gap-4"
             >
+                <button 
+                    onClick={() => setIsEdited(false)}
+                    className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-2xl leading-none z-20 cursor-pointer"
+                >
+                    ×
+                </button>
                 <h1 className="text-center text-2xl font-semibold">Edit user information</h1>
                 <input 
                     type="text" 

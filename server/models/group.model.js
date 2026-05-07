@@ -22,6 +22,10 @@ const groupSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
         required: [true, "Owner ID is required!"]
+    },
+    image: {
+        url: String,
+        public_id: String
     }
 }, { timestamps: true });
 

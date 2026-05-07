@@ -8,7 +8,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import Users from "./components/Users";
 import Chat from "./components/Chat";
 import Group from "./components/Group";
-import Notifications from "./components/Notifications";
+
 
 // Hooks
 import { useAuth } from "./hooks/useAuth";
@@ -20,8 +20,8 @@ import Profile from "./pages/Profile";
 import Home from "./pages/Home";
 import UsersProfile from "./pages/UsersProfile";
 import Chats from "./pages/Chats";
-import FriendList from "./components/FriendList";
 import AdminPanel from "./pages/AdminPanel";
+import Notifications from "./pages/Notifications";
 
 const App = () => {
 	// Check if user is authenticated
@@ -49,7 +49,6 @@ const App = () => {
 					<Route path="/usersprofile/:id" element={<ProtectedRoute><UsersProfile /></ProtectedRoute>} />
 					<Route path="/chats" element={<ProtectedRoute><Chats /></ProtectedRoute>} />
 					<Route path="/noti" element={<ProtectedRoute><Notifications /></ProtectedRoute>} />
-					<Route path="/friendlist" element={<ProtectedRoute><FriendList /></ProtectedRoute>} />
 					<Route path="/adminpanel" element={<ProtectedRoute><AdminPanel /></ProtectedRoute>} />
 				</Routes>
 			</div>

@@ -1,6 +1,6 @@
 // Components
 import SearchBar from "../components/SearchBar";
-import UploadPost from "../components/UploadPost";
+// import UploadPost from "../components/UploadPost";
 import ViewPosts from "../components/ViewPosts";
 
 // Home page
@@ -8,7 +8,7 @@ const Home = () => {
     return (
         <>
             <SearchBar mode={"posts"} />
-            <UploadPost />
+            {/* <UploadPost /> */}
             <ViewPosts mode={"home"} />
         </>
     )

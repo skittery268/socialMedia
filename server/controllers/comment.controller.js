@@ -10,6 +10,8 @@ const catchAsync = require("../utils/catchAsync");
 const getPostComments = catchAsync(async (req, res, next) => {
     const comments = await Comment.find();
 
+    await Promise.all(comments.map(c => c.populate("authorId")));
+
     res.status(200).json({
         status: "success",
         message: "Comments returned successfully!",
@@ -31,6 +33,8 @@ const addCommentInPost = catchAsync(async (req, res, next) => {
     }
 
     const comment = await Comment.create({ content, authorId: req.user._id, postId });
+
+    await comment.populate("authorId");
 
     post.commentCount += 1;
 

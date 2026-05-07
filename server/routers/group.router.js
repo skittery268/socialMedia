@@ -4,9 +4,10 @@ const express = require("express");
 // Middlewares
 const protect = require("../middlewares/auth.middleware");
 const checkBan = require("../middlewares/checkBan.middleware");
+const upload = require("../middlewares/upload.moddleware");
 
 // Controllers
-const { getGroups, createGroup, deleteGroup, editGroup, addMember, deleteMember, joinGroup, leaveGroup } = require("../controllers/group.controller");
+const { getGroups, createGroup, deleteGroup, editGroup, addMember, deleteMember, leaveGroup } = require("../controllers/group.controller");
 
 const groupRouter = express.Router();
 
@@ -15,11 +16,11 @@ groupRouter.get("/get-groups", protect, checkBan, getGroups);
 // Route to leave from group
 groupRouter.delete("/leave-group/:memberId/:groupId", protect, checkBan, leaveGroup);
 // Route to create new group
-groupRouter.post("/create-group", protect, checkBan, createGroup);
+groupRouter.post("/create-group", protect, checkBan, upload.single("image"), createGroup);
 // Route to delete group
 groupRouter.delete("/delete-group/:groupId", protect, checkBan, deleteGroup);
 // Route to edit group
-groupRouter.patch("/edit-group/:groupId", protect, checkBan, editGroup);
+groupRouter.patch("/edit-group/:groupId", protect, checkBan, upload.single("image"), editGroup);
 // Route to add new member in group
 groupRouter.post("/add-member/:memberId/:groupId", protect, checkBan, addMember);
 // Route to delete member with group

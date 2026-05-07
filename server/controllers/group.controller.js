@@ -1,10 +1,12 @@
 // Models
+const cloudinary = require("../config/cloudinary");
 const Group = require("../models/group.model");
 const Message = require("../models/message.model");
 
 // Utils
 const AppError = require("../utils/appError");
 const catchAsync = require("../utils/catchAsync");
+const uploadToCloudinary = require("../utils/uploadToCloudinary");
 
 // Controller to get all user groups
 const getGroups = catchAsync(async (req, res, next) => {
@@ -48,6 +50,17 @@ const createGroup = catchAsync(async (req, res, next) => {
 
     const group = await Group.create({ name, members: [req.user._id], owner: req.user._id });
 
+    if (req.file) {
+        const result = await uploadToCloudinary(req.file.buffer, "GroupAvatars");
+
+        group.image = { 
+            url: result.secure_url, 
+            public_id: result.public_id 
+        };
+
+        await group.save();
+    }
+
     res.status(200).json({
         status: "success",
         message: "Group created successfully!",
@@ -69,6 +82,10 @@ const deleteGroup = catchAsync(async (req, res, next) => {
 
     if (group.owner.toString() != req.user._id.toString()) {
         return next(new AppError("You cant delete this group!", 401));
+    }
+
+    if (group.image.url) {
+        await cloudinary.uploader.destroy(group.image.public_id);
     }
 
     await Message.deleteMany({ groupId });
@@ -94,6 +111,19 @@ const editGroup = catchAsync(async (req, res, next) => {
 
     if (group.owner.toString() != req.user._id.toString()) {
         return next(new AppError("You cant edit this group!", 401));
+    }
+
+    if (req.file && group.image.url) {
+        await cloudinary.uploader.destroy(group.image.public_id);
+    }
+
+    if (req.file) {
+        const result = await uploadToCloudinary(req.file.buffer, "GroupAvatars");
+
+        user.image = {
+            url: result.secure_url,
+            public_id: result.public_id
+        }
     }
 
     if (name) group.name = name;
