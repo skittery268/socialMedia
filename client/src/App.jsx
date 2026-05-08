@@ -5,7 +5,6 @@ import { Route, Routes } from "react-router";
 import Nav from "./components/Nav";
 import Loading from "./components/Loading";
 import ProtectedRoute from "./components/ProtectedRoute";
-import Users from "./components/Users";
 import Chat from "./components/Chat";
 import Group from "./components/Group";
 
@@ -21,7 +20,6 @@ import Home from "./pages/Home";
 import UsersProfile from "./pages/UsersProfile";
 import Chats from "./pages/Chats";
 import AdminPanel from "./pages/AdminPanel";
-import Notifications from "./pages/Notifications";
 
 const App = () => {
 	// Check if user is authenticated
@@ -43,12 +41,10 @@ const App = () => {
 					<Route path="/register" element={<Register />} />
 					<Route path="/login" element={<Login />} />
 					<Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
-					<Route path="/users" element={<ProtectedRoute><Users /></ProtectedRoute>} />
 					<Route path="/chat/:id" element={<ProtectedRoute><Chat /></ProtectedRoute>} />
 					<Route path="/group/:id" element={<ProtectedRoute><Group /></ProtectedRoute>} />
 					<Route path="/usersprofile/:id" element={<ProtectedRoute><UsersProfile /></ProtectedRoute>} />
 					<Route path="/chats" element={<ProtectedRoute><Chats /></ProtectedRoute>} />
-					<Route path="/noti" element={<ProtectedRoute><Notifications /></ProtectedRoute>} />
 					<Route path="/adminpanel" element={<ProtectedRoute><AdminPanel /></ProtectedRoute>} />
 				</Routes>
 			</div>

@@ -1,12 +1,12 @@
 // React tools
-import { useState } from "react";
+import { memo, useState } from "react";
 
 // Hooks
 import { useAuth } from "../hooks/useAuth";
 import { useForm } from "../hooks/useForm";
 
 // Component to edit user info (form)
-const EditUserInfo = ({ setIsEdited }) => {
+const EditUserInfo = memo(({ setIsEdited }) => {
     const [formData, handleChange, , resetForm] = useForm({
         name: "",
         email: "",
@@ -88,6 +88,6 @@ const EditUserInfo = ({ setIsEdited }) => {
             </form>
         </section>
     )
-}
+})
 
 export default EditUserInfo;

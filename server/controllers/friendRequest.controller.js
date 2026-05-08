@@ -8,8 +8,8 @@ const catchAsync = require("../utils/catchAsync");
 
 // Controller to get all user friend requests
 const getUserFriendRequests = catchAsync(async (req, res, next) => {
-    const friendRequests = await FriendRequest.find();
-    await Promise.all(friendRequests.map(fr => fr.populate(["from", "to"])));
+    const friendRequests = await FriendRequest.find().sort({ createdAt: -1 });
+    await Promise.all(friendRequests.map(fr => fr.populate(["from", "to"])))
 
     res.status(200).json({
         status: "success",

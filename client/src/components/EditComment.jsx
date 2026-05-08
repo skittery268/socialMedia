@@ -1,7 +1,8 @@
+import { memo } from "react";
 import { useComment } from "../hooks/useComment";
 import { useForm } from "../hooks/useForm";
 
-const EditComment = ({ setEditedCommentId, c, p }) => {
+const EditComment = memo(({ setEditedCommentId, c, p }) => {
     const [formData, handleChange, handleSubmit, resetForm] = useForm({
         content: ""
     });
@@ -22,6 +23,6 @@ const EditComment = ({ setEditedCommentId, c, p }) => {
             <button type="button" onClick={() => setEditedCommentId(null)} className="px-4 py-2 bg-gray-400 text-white cursor-pointer rounded-lg hover:bg-gray-500 text-sm font-medium">Cancel</button>
         </form>
     )
-}
+})
 
 export default EditComment;

@@ -1,5 +1,5 @@
 // React Tools
-import { useState } from "react";
+import { memo, useState } from "react";
 
 // Hooks
 import { useForm } from "../hooks/useForm";
@@ -7,7 +7,7 @@ import { usePost } from "../hooks/usePost";
 import { useAuth } from "../hooks/useAuth";
 
 // UploadPost component to upload a new post
-const UploadPost = ({ setIsOpen2 }) => {
+const UploadPost = memo(({ setIsOpen2 }) => {
     const [formData, handleChange, , resetForm] = useForm({
         content: ""
     });
@@ -88,6 +88,6 @@ const UploadPost = ({ setIsOpen2 }) => {
             </form>
         </section>
     )
-}
+})
 
 export default UploadPost;

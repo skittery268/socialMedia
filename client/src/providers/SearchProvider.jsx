@@ -10,17 +10,20 @@ import { fetchSearchPosts, fetchSearchUsers } from "../services/SearchService"
 // React tools
 import { useCallback, useEffect, useState } from "react"
 import { usePost } from "../hooks/usePost"
+import { useChat } from "../hooks/useChat"
 
 // Provider
 export const SearchProvider = ({ children }) => {
     const { posts } = usePost();
+    const { users } = useChat();
     const [searchedPosts, setSearchedPosts] = useState([]);
     const [searchedUsers, setSearchedUsers] = useState([]);
 
     useEffect(() => {
         // eslint-disable-next-line react-hooks/set-state-in-effect
         setSearchedPosts(posts);
-    }, [posts]);
+        setSearchedUsers(users);
+    }, [posts, users]);
 
     // Function to search posts by content
     const searchPosts = useCallback(async (content) => {

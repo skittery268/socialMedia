@@ -13,6 +13,7 @@ import { useLike } from "../hooks/useLike";
 // Components
 import Comments from "./Comments";
 import { useSearch } from "../hooks/useSearch";
+import { Link } from "react-router";
 
 // ViewPosts component to show all posts and allow liking, editing, and deleting posts
 const ViewPosts = memo(({ mode }) => {
@@ -93,19 +94,23 @@ const ViewPosts = memo(({ mode }) => {
                                                         <div className="flex items-center gap-3 pb-3 border-b border-gray-200">
                                                             {
                                                                 p.authorId.image ? (
-                                                                    <img 
-                                                                        src={p.authorId.image.url} 
-                                                                        className="w-10 h-10 rounded-full object-cover" 
-                                                                        alt={p.authorId.name}
-                                                                    />
+                                                                    <div onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} className="rounded-full bg-black">
+                                                                        <img 
+                                                                            src={p.authorId.image.url} 
+                                                                            className="w-10 h-10 rounded-full object-cover hover:opacity-90 cursor-pointer" 
+                                                                            alt={p.authorId.name}
+                                                                        />
+                                                                    </div>
                                                                 ) : (
-                                                                    <div className="bg-linear-to-r from-blue-400 to-red-400 w-10 h-10 rounded-full flex justify-center items-center">
-                                                                        <p className="text-[12px] text-white font-bold">{p.authorId.name[0]}</p>
+                                                                    <div onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
+                                                                        <div className="bg-linear-to-r from-blue-400 to-red-400 w-10 h-10 rounded-full flex justify-center items-center cursor-pointer">
+                                                                            <p className="text-[12px] text-white font-bold">{p.authorId.name[0]}</p>
+                                                                        </div>
                                                                     </div>
                                                                 )
                                                             }
                                                             <div>
-                                                                <p className="font-semibold text-gray-800">{p.authorId.name}</p>
+                                                                <p onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} className="font-semibold cursor-pointer hover:underline transition duration-200 text-gray-800">{p.authorId.name}</p>
                                                                 <p className="text-[12px] text-gray-400">{ formatDistanceToNow(new Date(p.createdAt), { addSuffix: true }) }</p>
                                                             </div>
                                                         </div>
@@ -165,7 +170,7 @@ const ViewPosts = memo(({ mode }) => {
                         }
                     </div>
                 ) : (
-                    <div className="w-full flex justify-center">
+                    <div className="w-190 flex justify-center">
                         <div className="w-260 flex flex-col gap-4 mt-4">
                             {
                                 searchedPosts.map((p, index) => {
@@ -175,18 +180,25 @@ const ViewPosts = memo(({ mode }) => {
                                                 <div className="flex items-center gap-3 pb-3 border-b border-gray-200">
                                                     {
                                                         p.authorId.image ? (
-                                                            <img 
-                                                                src={p.authorId.image.url} 
-                                                                className="w-10 h-10 rounded-full object-cover" 
-                                                                alt={p.authorId.name}
-                                                            />
+                                                            <Link to={p.authorId._id === user._id ? "/profile" : `/usersprofile/${p.authorId._id}`} className="rounded-full bg-black">
+                                                                <img 
+                                                                    src={p.authorId.image.url} 
+                                                                    className="w-10 h-10 rounded-full object-cover hover:opacity-90" 
+                                                                    alt={p.authorId.name}
+                                                                />
+                                                            </Link>
                                                         ) : (
-                                                            <div className="bg-linear-to-r from-blue-400 to-red-400 w-10 h-10 rounded-full flex justify-center items-center">
-                                                                <p className="text-[12px] text-white font-bold">{p.authorId.name[0]}</p>
-                                                            </div>
+                                                            <Link to={p.authorId._id === user._id ? "/profile" : `/usersprofile/${p.authorId._id}`}>
+                                                                <div className="bg-linear-to-r from-blue-400 to-red-400 w-10 h-10 rounded-full flex justify-center items-center">
+                                                                    <p className="text-[12px] text-white font-bold">{p.authorId.name[0]}</p>
+                                                                </div>
+                                                            </Link>
                                                         )
                                                     }
-                                                    <p className="font-semibold text-gray-800">{p.authorId.name}</p>
+                                                    <div>
+                                                        <Link to={p.authorId._id === user._id ? "/profile" : `/usersprofile/${p.authorId._id}`} className="font-semibold hover:underline transition duration-200 text-gray-800">{p.authorId.name}</Link>
+                                                        <p className="text-[12px] text-gray-400">{ formatDistanceToNow(new Date(p.createdAt), { addSuffix: true }) }</p>
+                                                    </div>
                                                 </div>
                                                 <p className="text-gray-700 text-sm leading-relaxed wrap-break-word whitespace-pre-wrap">{p.content}</p>
                                                 {

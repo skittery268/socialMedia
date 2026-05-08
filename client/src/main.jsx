@@ -26,6 +26,9 @@ import { AdminProvider } from './providers/AdminProvider.jsx';
 // CSS
 import "./main.css";
 
+// Components
+import ScrollToTop from './components/ScrollToTop.jsx';
+
 // Connect all context providers to the app
 createRoot(document.getElementById('root')).render(
   <BrowserRouter>
@@ -40,6 +43,7 @@ createRoot(document.getElementById('root')).render(
                     <FriendProvider>
                       <SearchProvider>
                         <AdminProvider>
+                          <ScrollToTop />
                           <App />
                           <ToastContainer position='bottom-left' />
                         </AdminProvider>

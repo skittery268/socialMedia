@@ -19,7 +19,7 @@ const Profile = memo(() => {
     const [isOpen2, setIsOpen2] = useState(false);
 
     return (
-        <section className="bg-[#F3F2EF] mt-10 w-full flex items-center flex-col min-h-200">
+        <section className="bg-[#F3F2EF] mt-10 w-full flex items-center flex-col min-h-200 pb-15">
             { isEdited && <EditUserInfo setIsEdited={setIsEdited} /> }
             { isOpen && <CreateGroupForm setIsOpen={setIsOpen} /> }
             { isOpen2 && <UploadPost setIsOpen2={setIsOpen2} /> }
@@ -68,7 +68,7 @@ const Profile = memo(() => {
                             )
                         }
                         <div 
-                            className="w-115 h-10 bg-gray-300 hover:bg-gray-400 cursor-pointer rounded-[20px] pl-5 flex items-center"
+                            className="w-115 h-10 bg-gray-200 hover:bg-gray-300 transition duration-200 cursor-pointer rounded-[20px] pl-5 flex items-center"
                             onClick={() => setIsOpen2(true)}
                         >
                             <h1 className="text-gray-800">What's new with you {user.name.split(" ")[0]}?</h1>

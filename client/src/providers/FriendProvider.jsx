@@ -30,7 +30,7 @@ export const FriendProvider = ({ children }) => {
 
     useEffect(() => {
         const handleNewFriendRequest = (friendRequest) => {
-            setFriendRequests(prev => [...prev, friendRequest]);
+            setFriendRequests(prev => [friendRequest, ...prev ]);
             toast.info(`You have new friend request from ${friendRequest.from.name}!`);
         };
 
