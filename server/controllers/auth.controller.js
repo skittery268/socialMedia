@@ -17,7 +17,7 @@ const sendToken = (res, user) => {
         maxAge: process.env.COOKIE_EXPIRES * 24 * 60 * 60 * 1000,
         httpOnly: true,
         secure: process.env.NODE_MODE === "dev" ? false : true,
-        sameSite: process.env.NODE_MODE === "dev" ? "Lax" : "Strict"
+        sameSite: process.env.NODE_MODE === "dev" ? "None" : "Strict"
     })
 
     user.password = undefined;
