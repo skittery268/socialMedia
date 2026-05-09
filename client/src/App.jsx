@@ -27,7 +27,7 @@ const App = () => {
 	// If not user and still loading, show loading component
 	if (!user && loading) {
 		return <Loading />
-	}
+	} 
 
     return (
 		<main className="h-screen bg-[#F3F2EF]">
