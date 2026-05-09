@@ -36,7 +36,7 @@ const App = () => {
 			{/* All Routes */}
 			<div className="flex justify-center items-center">
 				<Routes>
-					<Route path="/" element={<Home />} />
+					<Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>} />
 					<Route path="/register" element={<Register />} />
 					<Route path="/login" element={<Login />} />
 					<Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
