@@ -8,7 +8,6 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import Chat from "./components/Chat";
 import Group from "./components/Group";
 
-
 // Hooks
 import { useAuth } from "./hooks/useAuth";
 
