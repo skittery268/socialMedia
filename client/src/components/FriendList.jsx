@@ -19,7 +19,7 @@ const FriendList = memo(() => {
         <section className="w-115 bg-white rounded-[20px] min-h-80 max-h-150 shadow">
             <h1 className="ml-5 pt-2 text-[27px]">Friends</h1>
             <h1 className="ml-5 text-gray-500">Friends: {friends.length}</h1>
-            <div className="flex ml-5 items-center flex-wrap mt-3">
+            <div className="flex ml-5 items-center flex-wrap mt-3 gap-5">
                 {
                     friends.length !== 0 && (
                         friends.map((fr, index) => {
