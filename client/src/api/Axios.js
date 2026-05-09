@@ -9,3 +9,4 @@ export const api = axios.create({
     baseURL: URL,
     withCredentials: true
 });
+
