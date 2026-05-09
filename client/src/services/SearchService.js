@@ -1,5 +1,5 @@
 // Axios
-import { api } from "../api/axios"
+import { api } from "../api/Axios"
 
 // Service to search posts by content
 export const fetchSearchPosts = async (content) => {

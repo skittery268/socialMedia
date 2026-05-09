@@ -1,5 +1,5 @@
 // Axios
-import { api } from "../api/axios"
+import { api } from "../api/Axios"
 
 // Service to fetch groups from server
 export const fetchGroups = async () => {

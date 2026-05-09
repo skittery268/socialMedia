@@ -1,5 +1,5 @@
 // Axios
-import { api } from "../api/axios"
+import { api } from "../api/Axios"
 
 // Service to fetch user by id from server
 export const fetchUserById = async (id) => {
