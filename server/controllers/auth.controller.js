@@ -18,7 +18,7 @@ const sendToken = (res, user) => {
         httpOnly: true,
         secure: true,
         sameSite: "None"
-    })
+    });
 
     user.password = undefined;
 
@@ -45,7 +45,11 @@ const register = catchAsync(async (req, res, next) => {
         return next(new AppError(error, 400));
     }
 
-    const newUser = await User.create({ name, email, password });
+    const newUser = await User.create({ 
+        name: name.trim(), 
+        email: email.trim(), 
+        password: password.trim() 
+    });
 
     res.status(201).json({
         status: "success",
