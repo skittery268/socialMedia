@@ -1,7 +1,7 @@
 // Loading component
 const Loading = () => {
     return (
-        <div className="flex h-screen flex-col items-center justify-center gap-5 bg-white">
+        <div className="flex h-screen flex-col items-center justify-center gap-5 bg-[#F3F2EF]">
             <p className="text-lg font-medium text-gray-600 tracking-wide">
                 Loading...
             </p>
