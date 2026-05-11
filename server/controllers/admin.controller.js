@@ -1,4 +1,10 @@
 // Models
+const Comment = require("../models/comment.model");
+const Friendship = require("../models/friendship.model");
+const Group = require("../models/group.model");
+const Like = require("../models/like.model");
+const Message = require("../models/message.model");
+const Post = require("../models/post.model");
 const User = require("../models/user.model");
 
 // Utils
@@ -16,6 +22,33 @@ const getAllUsers = catchAsync(async (req, res, next) => {
             users
         }
     })
+});
+
+// Controller to get analytic for admin
+const getAnalytic = catchAsync(async (req, res, next) => {
+    const users = await User.find();
+    const comments = await Comment.find();
+    const friendships = await Friendship.find();
+    const friendRequests = await FriendRequest.find();
+    const groups = await Group.find();
+    const likes = await Like.find();
+    const messages = await Message.find();
+    const posts = await Post.find();
+    
+    res.status(200).json({
+        status: "success",
+        message: "Information returned successfully!",
+        data: {
+            userCount: users.length,
+            commentCount: comments.length,
+            friendshipCount: friendships.length,
+            friendRequestCount: friendRequests.length,
+            groupCount: groups.length,
+            likeCount: likes.length,
+            messageCount: messages.length,
+            postCount: posts.length
+        }
+    });
 });
 
 // Controller to delete user
@@ -62,6 +95,31 @@ const banUser = catchAsync(async (req, res, next) => {
             user
         }
     })
+});
+
+// Controller to unbun user
+const unBunUser = catchAsync(async (req, res, next) => {
+    const { userId } = req.params;
+
+    const user = await User.findById(userId);
+
+    if (!user) {
+        return next(new AppError("User not found!", 404));
+    }
+
+    user.isBanned = false;
+    user.banReason = undefined;
+    user.banExpiresIn = undefined;
+
+    await user.save();
+
+    res.status(200).json({
+        status: "success",
+        message: "The ban has been successfully lifted!",
+        data: {
+            user
+        }
+    });
 });
 
 // Controller to warn user
@@ -129,4 +187,4 @@ const changeRole = catchAsync(async (req, res, next) => {
     })
 });
 
-module.exports = { getAllUsers, deleteUser, banUser, warnUser, changeRole };
+module.exports = { getAllUsers, getAnalytic, deleteUser, banUser, unBunUser, warnUser, changeRole };
