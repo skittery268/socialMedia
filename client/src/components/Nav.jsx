@@ -39,16 +39,21 @@ const Nav = () => {
             <header className="flex justify-center items-center w-full h-25 border-b border-b-[#dedddb] bg-[#FFFFFF] fixed z-50 top-0">
                 <nav className="flex justify-between items-center w-350">
                     <div className="flex justify-center items-center gap-5">
-                        <NavLink to={!user ? "/login" : "/"} className="text-[30px] ml-5">DevLink</NavLink>
+                        <NavLink to={!user ? "/user/login" : "/user/home"} className="text-[30px] ml-5">DevLink</NavLink>
                         <SearchBar mode={"users"} />
                     </div>
 
                     {
                         user ? (
                             <div className="flex justify-center items-center gap-4">
-                                <NavLink to={"/"} className={({ isActive }) => `${isActive ? "text-blue-400 border-b-2 border-b-blue-400" : "border-b-2 border-b-white"} p-2 flex justify-center items-center transition duration-200 cursor-auto`}><span className="hover:-translate-y-1 transition duration-200 h-full w-full cursor-pointer">Home</span></NavLink>
-                                <NavLink to={"/profile"} className={({ isActive }) => `${isActive ? "text-blue-400 border-b-2 border-b-blue-400" : "border-b-2 border-b-white"} p-2 flex justify-center items-center transition duration-200 cursor-auto`}><span className="hover:-translate-y-1 transition duration-200 h-full w-full cursor-pointer">Profile</span></NavLink>
-                                <NavLink to={"/chats"} className={({ isActive }) => `${isActive ? "text-blue-400 border-b-2 border-b-blue-400" : "border-b-2 border-b-white"} p-2 flex justify-center items-center transition duration-200 cursor-auto`}><span className="hover:-translate-y-1 transition duration-200 h-full w-full cursor-pointer">Chats</span></NavLink>
+                                <NavLink to={"/user/home"} className={({ isActive }) => `${isActive ? "text-blue-400 border-b-2 border-b-blue-400" : "border-b-2 border-b-white"} p-2 flex justify-center items-center transition duration-200 cursor-auto`}><span className="hover:-translate-y-1 transition duration-200 h-full w-full cursor-pointer">Home</span></NavLink>
+                                <NavLink to={"/user/profile"} className={({ isActive }) => `${isActive ? "text-blue-400 border-b-2 border-b-blue-400" : "border-b-2 border-b-white"} p-2 flex justify-center items-center transition duration-200 cursor-auto`}><span className="hover:-translate-y-1 transition duration-200 h-full w-full cursor-pointer">Profile</span></NavLink>
+                                <NavLink to={"/user/chats"} className={({ isActive }) => `${isActive ? "text-blue-400 border-b-2 border-b-blue-400" : "border-b-2 border-b-white"} p-2 flex justify-center items-center transition duration-200 cursor-auto`}><span className="hover:-translate-y-1 transition duration-200 h-full w-full cursor-pointer">Chats</span></NavLink>
+                                {
+                                    user.role === "admin" && (
+                                        <NavLink to={"/admin/analytic"} className={({ isActive }) => `${isActive ? "text-red-400 border-b-2 border-b-red-400" : "border-b-2 border-b-white"} p-2 flex justify-center items-center transition duration-200 cursor-auto`}><span className="hover:-translate-y-1 transition duration-200 h-full w-full cursor-pointer">Admin Mode</span></NavLink>
+                                    )
+                                }
                                 <div ref={notificationRef} className="relative">
                                     <button 
                                         className={`h-10 w-10 flex justify-center items-center cursor-pointer transition duration-200 rounded-full ${isOpen ? "bg-blue-200" : "bg-gray-200"}`} 
@@ -69,8 +74,8 @@ const Nav = () => {
                             </div>
                         ) : (
                             <div className="flex gap-4">
-                                <NavLink to={"/login"} className={({ isActive }) => `${isActive ? "text-blue-400 border-b-2 border-b-blue-400" : "border-b-2 border-b-white"} p-2 flex justify-center items-center transition duration-200 cursor-auto`}><span className="hover:-translate-y-1 transition duration-200 h-full w-full cursor-pointer">Sign in</span></NavLink>
-                                <NavLink to={"/register"} className={({ isActive }) => `${isActive ? "text-blue-400 border-b-2 border-b-blue-400" : "border-b-2 border-b-white"} p-2 flex justify-center items-center transition duration-200 cursor-auto`}><span className="hover:-translate-y-1 transition duration-200 h-full w-full cursor-pointer">Sign up</span></NavLink>
+                                <NavLink to={"/user/login"} className={({ isActive }) => `${isActive ? "text-blue-400 border-b-2 border-b-blue-400" : "border-b-2 border-b-white"} p-2 flex justify-center items-center transition duration-200 cursor-auto`}><span className="hover:-translate-y-1 transition duration-200 h-full w-full cursor-pointer">Sign in</span></NavLink>
+                                <NavLink to={"/user/register"} className={({ isActive }) => `${isActive ? "text-blue-400 border-b-2 border-b-blue-400" : "border-b-2 border-b-white"} p-2 flex justify-center items-center transition duration-200 cursor-auto`}><span className="hover:-translate-y-1 transition duration-200 h-full w-full cursor-pointer">Sign up</span></NavLink>
                             </div>
                         )
                     }

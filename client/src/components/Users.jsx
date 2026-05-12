@@ -29,7 +29,7 @@ const Users = memo(({ setIsSearching }) => {
                             <div 
                                 key={index} 
                                 className="border border-gray-100 bg-gray-100 p-3 hover:bg-gray-200 cursor-pointer"
-                                onClick={() => { navigate(`/usersprofile/${u._id}`); setIsSearching(false) }}
+                                onClick={() => { navigate(`/user/usersprofile/${u._id}`); setIsSearching(false) }}
                                 >
                                 <div className="text-sm text-gray-800 flex gap-3 w-90">
                                     {

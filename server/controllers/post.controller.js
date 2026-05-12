@@ -79,6 +79,10 @@ const deletePost = catchAsync(async (req, res, next) => {
         }
     }
 
+    await Like.deleteMany({ postId });
+
+    await Comment.deleteMany({ postId });
+
     await Post.findByIdAndDelete(postId);
 
     res.status(200).json({

@@ -1,5 +1,6 @@
 // Models
 const Comment = require("../models/comment.model");
+const FriendRequest = require("../models/friendRequest.model");
 const Friendship = require("../models/friendship.model");
 const Group = require("../models/group.model");
 const Like = require("../models/like.model");
@@ -34,7 +35,7 @@ const getAnalytic = catchAsync(async (req, res, next) => {
     const likes = await Like.find();
     const messages = await Message.find();
     const posts = await Post.find();
-    
+
     res.status(200).json({
         status: "success",
         message: "Information returned successfully!",
@@ -58,6 +59,16 @@ const deleteUser = catchAsync(async (req, res, next) => {
     if (req.user._id.toString() != userId && req.user.role !== "admin") {
         return next(new AppError("You cant delete users!", 401));
     }
+
+    await Post.deleteMany({ authorId: userId });
+
+    await Message.deleteMany({ senderId: userId });
+
+    await Like.deleteMany({ authorId: userId });
+
+    await Group.deleteMany({ owner: userId });
+
+    await Comment.deleteMany({ authorId: userId });
 
     await User.findByIdAndDelete(userId);
 

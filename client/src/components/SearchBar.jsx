@@ -50,7 +50,7 @@ const SearchBar = memo(({ mode }) => {
                                         src={user.image.url} 
                                         alt="User avatar"
                                         className="h-10 rounded-full hover:opacity-90 cursor-pointer"
-                                        onClick={() => navigate("/profile")}
+                                        onClick={() => navigate("/user/profile")}
                                     />
                                 </div>
                             ) : (

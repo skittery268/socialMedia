@@ -180,7 +180,7 @@ const ViewPosts = memo(({ mode }) => {
                                                 <div className="flex items-center gap-3 pb-3 border-b border-gray-200">
                                                     {
                                                         p.authorId.image ? (
-                                                            <Link to={p.authorId._id === user._id ? "/profile" : `/usersprofile/${p.authorId._id}`} className="rounded-full bg-black">
+                                                            <Link to={p.authorId._id === user._id ? "/user/profile" : `/user/usersprofile/${p.authorId._id}`} className="rounded-full bg-black">
                                                                 <img 
                                                                     src={p.authorId.image.url} 
                                                                     className="w-10 h-10 rounded-full object-cover hover:opacity-90" 
@@ -188,7 +188,7 @@ const ViewPosts = memo(({ mode }) => {
                                                                 />
                                                             </Link>
                                                         ) : (
-                                                            <Link to={p.authorId._id === user._id ? "/profile" : `/usersprofile/${p.authorId._id}`}>
+                                                            <Link to={p.authorId._id === user._id ? "/user/profile" : `/user/usersprofile/${p.authorId._id}`}>
                                                                 <div className="bg-linear-to-r from-blue-400 to-red-400 w-10 h-10 rounded-full flex justify-center items-center">
                                                                     <p className="text-[12px] text-white font-bold">{p.authorId.name[0]}</p>
                                                                 </div>
@@ -196,7 +196,7 @@ const ViewPosts = memo(({ mode }) => {
                                                         )
                                                     }
                                                     <div>
-                                                        <Link to={p.authorId._id === user._id ? "/profile" : `/usersprofile/${p.authorId._id}`} className="font-semibold hover:underline transition duration-200 text-gray-800">{p.authorId.name}</Link>
+                                                        <Link to={p.authorId._id === user._id ? "/user/profile" : `/user/usersprofile/${p.authorId._id}`} className="font-semibold hover:underline transition duration-200 text-gray-800">{p.authorId.name}</Link>
                                                         <p className="text-[12px] text-gray-400">{ formatDistanceToNow(new Date(p.createdAt), { addSuffix: true }) }</p>
                                                     </div>
                                                 </div>

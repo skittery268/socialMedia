@@ -45,8 +45,12 @@ const register = catchAsync(async (req, res, next) => {
         return next(new AppError(error, 400));
     }
 
+    const newName = name.trim();
+
+    const correctName = newName.split(" ").map(word => word[0].toUpperCase() + word.slice(1)).join(" ");
+
     const newUser = await User.create({ 
-        name: name.trim(), 
+        name: correctName, 
         email: email.trim(), 
         password: password.trim() 
     });

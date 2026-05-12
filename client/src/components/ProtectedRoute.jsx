@@ -8,7 +8,7 @@ import { useAuth } from "../hooks/useAuth"
 const ProtectedRoute = ({ children }) => {
     const { user } = useAuth();
 
-    return user ? children : <Navigate to={"/login"} />
+    return user ? children : <Navigate to={"/user/login"} />
 }
 
 export default ProtectedRoute;

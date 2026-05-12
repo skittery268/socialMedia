@@ -28,18 +28,18 @@ const FriendList = memo(() => {
                                 <div key={index}>
                                     {
                                         thisUser.image ? (
-                                            <Link to={`/usersprofile/${thisUser._id}`}>
+                                            <Link to={`/user/usersprofile/${thisUser._id}`}>
                                                 <img src={thisUser.image.url} className="w-30 h-30 rounded-[10px] bg-center bg-cover" alt="user avatar" />
                                             </Link>
                                         ) : (
-                                            <Link to={`/usersprofile/${thisUser._id}`}>
+                                            <Link to={`/user/usersprofile/${thisUser._id}`}>
                                                 <div className="bg-linear-to-r from-blue-400 to-red-400 w-30 h-30 rounded-[10px] flex justify-center items-center">
                                                     <p className="text-[40px] text-white">{thisUser.name[0]}</p>
                                                 </div>
                                             </Link>
                                         )
                                     }
-                                    <Link to={`/usersprofile/${thisUser._id}`} className="text-[13px] ml-1">{ thisUser.name }</Link>
+                                    <Link to={`/user/usersprofile/${thisUser._id}`} className="text-[13px] ml-1">{ thisUser.name }</Link>
                                 </div>
                             )
                         })

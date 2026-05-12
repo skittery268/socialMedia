@@ -43,7 +43,7 @@ export const AuthProvider = ({ children }) => {
             const res = await fetchLogin(formData);
 
             setUser(res.data.data.user);
-            navigate("/profile");
+            navigate("/user/profile");
             toast.success(res.data.message);
         } catch (err) {
             toast.error(err.response.data.message);
@@ -55,7 +55,7 @@ export const AuthProvider = ({ children }) => {
         try {
             const res = await fetchRegister(formData);
 
-            navigate("/login");
+            navigate("/user/login");
             toast.success(res.data.message);
         } catch (err) {
             toast.error(err.response.data.message);
@@ -65,11 +65,11 @@ export const AuthProvider = ({ children }) => {
     // Function to logout (clear cookies section)
     const logout = useCallback(async () => {
         try {
-            const res = await fetchLogout()
+            const res = await fetchLogout();
 
+            navigate("/user/login");
             toast.success(res.data.message);
             setUser(null);
-            navigate("/login");
         } catch (err) {
             toast.error(err.response.data.message);
         }
