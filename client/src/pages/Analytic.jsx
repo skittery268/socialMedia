@@ -9,7 +9,7 @@ const Analytic = () => {
     }, [getAnalytic]);
 
     return (
-        <section className="flex justify-center gap-30 flex-col p-8 min-h-screen bg-[#F3F2EF] text-white m-auto max-w-7xl">
+        <section className="flex justify-center flex-col p-8 min-h-screen bg-[#F3F2EF] text-white max-w-7xl">
             <h1 className="text-4xl font-bold ml-5 mb-10 text-black">
                 Analytic
             </h1>

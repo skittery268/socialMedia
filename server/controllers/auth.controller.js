@@ -91,7 +91,7 @@ const login = catchAsync(async (req, res, next) => {
             user.banExpiresIn = null;
             await user.save();
         } else {
-            return next(new AppError("You are permanently banned!", 403));
+            return next(new AppError(`You are permanently banned, reason: ${user.banReason}`, 403));
         }
     }
 

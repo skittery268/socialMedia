@@ -50,7 +50,7 @@ export const GroupProvider = ({ children }) => {
 
             setGroups(prev => prev.filter(group => group._id != groupId));
             toast.success(res.data.message);
-            navigate("/chats");
+            navigate("/user/chats");
         } catch (err) {
             toast.error(err.response.data.message);
         }

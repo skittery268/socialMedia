@@ -1,4 +1,5 @@
 // Models
+const cloudinary = require("../config/cloudinary");
 const Comment = require("../models/comment.model");
 const FriendRequest = require("../models/friendRequest.model");
 const Friendship = require("../models/friendship.model");
@@ -55,6 +56,16 @@ const getAnalytic = catchAsync(async (req, res, next) => {
 // Controller to delete user
 const deleteUser = catchAsync(async (req, res, next) => {
     const { userId } = req.params;
+
+    const user = await User.findById(userId);
+
+    if (!user) {
+        return next(new AppError("User not found!", 404));
+    }
+
+    if (user.role === "admin") {
+        return next(new AppError("You cant delete account of admin!", 401));
+    }
     
     if (req.user._id.toString() != userId && req.user.role !== "admin") {
         return next(new AppError("You cant delete users!", 401));
@@ -69,6 +80,10 @@ const deleteUser = catchAsync(async (req, res, next) => {
     await Group.deleteMany({ owner: userId });
 
     await Comment.deleteMany({ authorId: userId });
+
+    if (user.image.url) {
+        await cloudinary.uploader.destroy(user.image.public_id);
+    }
 
     await User.findByIdAndDelete(userId);
 
@@ -85,17 +100,22 @@ const banUser = catchAsync(async (req, res, next) => {
 
     const user = await User.findById(userId);
 
-    if (!reason || !duration) {
-        return next(new AppError("Ban reason and ban duration is required!", 400));
+    if (!reason) {
+        return next(new AppError("Ban reason is required!", 400));
     }
 
     if (!user) {
         return next(new AppError("User not found!", 404));
     }
 
+    if (user.role === "admin") {
+        return next(new AppError("You cant ban admin!", 401));
+    }
+
     user.isBanned = true;
     user.banReason = reason;
-    user.banExpiresIn = new Date(Date.now() + parseInt(duration) * 24 * 60 * 60 * 1000);
+    
+    if (duration) user.banExpiresIn = new Date(Date.now() + parseInt(duration) * 24 * 60 * 60 * 1000);
 
     await user.save();
 
@@ -148,6 +168,10 @@ const warnUser = catchAsync(async (req, res, next) => {
         return next(new AppError("Warn reason and warn duration is required!", 400));
     }
 
+    if (user.role === "admin") {
+        return next(new AppError("You cant warn admin!", 401));
+    }
+
     user.warnings.push({ reason, date: new Date(Date.now() + duration * 24 * 60 * 60 * 1000) });
 
     await user.save();
@@ -165,7 +189,7 @@ const warnUser = catchAsync(async (req, res, next) => {
     res.status(200).json({
         status: "success",
         message: "User successfully warning!",
-        date: {
+        data: {
             user
         }
     })

@@ -32,7 +32,7 @@ const Chats = () => {
                                 thisUser.image ? (
                                     <div 
                                         className="w-40 h-40 relative rounded-full bg-center bg-cover flex justify-center items-center"
-                                        onClick={() => navigate(`/chat/${thisUser._id}`)}
+                                        onClick={() => navigate(`/user/chat/${thisUser._id}`)}
                                         >
                                         <div className="absolute inset-0 bg-black rounded-full"></div>
                                         <img src={thisUser.image.url} className="w-full h-full z-40 hover:opacity-85 cursor-pointer transition duration-200 rounded-full bg-center bg-cover flex justify-center items-center" alt="user avatar" />
@@ -41,7 +41,7 @@ const Chats = () => {
                                     <>
                                         <div 
                                             className="bg-linear-to-r from-blue-400 to-red-400 w-40 h-40 relative rounded-full flex justify-center items-center"
-                                            onClick={() => navigate(`/chat/${thisUser._id}`)}
+                                            onClick={() => navigate(`/user/chat/${thisUser._id}`)}
                                             >
                                             <div className="absolute inset-0 bg-black rounded-full"></div>
                                             <div className="bg-linear-to-r from-blue-400 to-red-400 z-40 w-40 h-40 rounded-full absolute inset-0 hover:opacity-85 cursor-pointer"></div>
@@ -70,7 +70,7 @@ const Chats = () => {
                                 g.image ? (
                                     <div 
                                         className="w-40 h-40 relative rounded-full bg-center bg-cover flex justify-center items-center"
-                                        onClick={() => navigate(`/group/${g._id}`)}
+                                        onClick={() => navigate(`/user/group/${g._id}`)}
                                         >
                                         <div className="absolute inset-0 bg-black rounded-full"></div>
                                         <img src={g.image.url} className="w-full h-full z-50 hover:opacity-85 cursor-pointer transition duration-200 rounded-full bg-center bg-cover flex justify-center items-center" alt="user avatar" />
@@ -79,7 +79,7 @@ const Chats = () => {
                                     <>
                                         <div 
                                             className="bg-linear-to-r from-blue-400 to-red-400 w-40 h-40 relative rounded-full flex justify-center items-center"
-                                            onClick={() => navigate(`/group/${g._id}`)}
+                                            onClick={() => navigate(`/user/group/${g._id}`)}
                                             >
                                             <div className="absolute inset-0 bg-black rounded-full"></div>
                                             <div className="bg-linear-to-r from-blue-400 to-red-400 z-40 w-40 h-40 rounded-full absolute inset-0 hover:opacity-85 cursor-pointer"></div>

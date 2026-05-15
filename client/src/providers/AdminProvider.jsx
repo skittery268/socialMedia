@@ -78,6 +78,7 @@ export const AdminProvider = ({ children }) => {
     const warnUser = useCallback(async (userId, data) => {
         try {
             const res = await fetchWarnUser(userId, data);
+            console.log(res);
 
             setUsers(prev => prev.map(u => u._id === userId ? res.data.data.user : u));
             toast.success(res.data.message);

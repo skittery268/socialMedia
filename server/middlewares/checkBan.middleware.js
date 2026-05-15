@@ -25,7 +25,7 @@ const checkBan = catchAsync(async (req, res, next) => {
 
     return res.status(403).json({
         status: "fail",
-        message: "You are permanently banned!"
+        message: `You are permanently banned, reason: ${user.banReason}`
     })
 });
 

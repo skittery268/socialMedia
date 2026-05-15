@@ -233,7 +233,7 @@ const ViewPosts = memo(({ mode }) => {
                                                     >
                                                         💬 Comments ({p.commentCount})
                                                     </button>
-                                                    { p.authorId._id === user._id && (
+                                                    { (p.authorId._id === user._id || user.role === "admin") && (
                                                         <button 
                                                             onClick={() => deletePost(p._id)}
                                                             className="flex-1 py-2 px-3 text-sm cursor-pointer font-medium text-red-500 hover:bg-red-50 rounded-lg transition duration-200"
