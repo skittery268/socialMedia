@@ -22,7 +22,7 @@ const Login = () => {
 
     return (
         <form 
-            onSubmit={(e) => { handleSubmit(e, login), resetForm() }}
+            onSubmit={(e) => { handleSubmit(e, login); resetForm() }}
             className="mt-20 bg-white h-85 w-80 rounded-[20px] flex justify-center items-center flex-col relative shadow-2xl"
             >
             <h1 className="absolute top-5 text-[25px]">Sign in</h1>
