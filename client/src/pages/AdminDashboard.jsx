@@ -38,10 +38,10 @@ const Admin = () => {
     }
 
     return (
-        <section>
-            <div className="flex justify-between items-center">
-                <AdminNav />
+        <section className="min-h-screen bg-canvas">
+            <AdminNav />
 
+            <div className="lg:pl-60">
                 <Outlet />
             </div>
         </section>

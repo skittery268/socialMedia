@@ -1,13 +1,14 @@
 // React Router
-import { NavLink } from "react-router"
+import { NavLink } from "react-router";
 
 // Hooks
 import { useAuth } from "../hooks/useAuth";
 
-// Images
-import activeNotification from "../assets/icons/notificationActive.png";
-import inactiveNotification from "../assets/icons/notificationInactive.png";
+// React tools
 import { useEffect, useRef, useState } from "react";
+
+// Icons
+import { Home, User, MessageSquare, Shield, Bell, LogOut } from "lucide-react";
 
 // Components
 import Notifications from "./Notifications";
@@ -33,56 +34,106 @@ const Nav = () => {
         };
     }, []);
 
+    // Shared classes for top-level nav links (icon + label pill)
+    const linkClass = ({ isActive }) =>
+        `inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
+            isActive
+                ? "bg-surface-muted text-ink"
+                : "text-muted hover:bg-surface-muted hover:text-ink"
+        }`;
+
     return (
         <>
-            <div className="w-full h-25"></div>
-            <header className="flex justify-center items-center w-full h-25 border-b border-b-[#dedddb] bg-[#FFFFFF] fixed z-50 top-0">
-                <nav className="flex justify-between items-center w-350">
-                    <div className="flex justify-center items-center gap-5">
-                        <NavLink to={!user ? "/user/login" : "/user/home"} className="text-[30px] ml-5">DevLink</NavLink>
-                        <SearchBar mode={"users"} />
+            <div className="h-16 w-full" />
+            <header className="fixed top-0 z-50 w-full border-b border-line bg-surface/80 backdrop-blur-md">
+                <nav className="mx-auto flex h-16 w-full max-w-7xl items-center justify-between gap-4 px-5">
+                    {/* Brand + search */}
+                    <div className="flex items-center gap-3">
+                        <NavLink
+                            to={!user ? "/user/login" : "/user/home"}
+                            className="flex items-center gap-2 pr-1"
+                        >
+                            <span className="h-2.5 w-2.5 rounded-full bg-primary" />
+                            <span className="text-lg font-semibold tracking-tight text-ink">
+                                DevLink
+                            </span>
+                        </NavLink>
+                        {user && <SearchBar mode={"users"} />}
                     </div>
 
-                    {
-                        user ? (
-                            <div className="flex justify-center items-center gap-4">
-                                <NavLink to={"/user/home"} className={({ isActive }) => `${isActive ? "text-blue-400 border-b-2 border-b-blue-400" : "border-b-2 border-b-white"} p-2 flex justify-center items-center transition duration-200 cursor-auto`}><span className="hover:-translate-y-1 transition duration-200 h-full w-full cursor-pointer">Home</span></NavLink>
-                                <NavLink to={"/user/profile"} className={({ isActive }) => `${isActive ? "text-blue-400 border-b-2 border-b-blue-400" : "border-b-2 border-b-white"} p-2 flex justify-center items-center transition duration-200 cursor-auto`}><span className="hover:-translate-y-1 transition duration-200 h-full w-full cursor-pointer">Profile</span></NavLink>
-                                <NavLink to={"/user/chats"} className={({ isActive }) => `${isActive ? "text-blue-400 border-b-2 border-b-blue-400" : "border-b-2 border-b-white"} p-2 flex justify-center items-center transition duration-200 cursor-auto`}><span className="hover:-translate-y-1 transition duration-200 h-full w-full cursor-pointer">Chats</span></NavLink>
-                                {
-                                    user.role === "admin" && (
-                                        <NavLink to={"/admin/analytic"} className={({ isActive }) => `${isActive ? "text-red-400 border-b-2 border-b-red-400" : "border-b-2 border-b-white"} p-2 flex justify-center items-center transition duration-200 cursor-auto`}><span className="hover:-translate-y-1 transition duration-200 h-full w-full cursor-pointer">Admin Mode</span></NavLink>
-                                    )
-                                }
-                                <div ref={notificationRef} className="relative">
-                                    <button 
-                                        className={`h-10 w-10 flex justify-center items-center cursor-pointer transition duration-200 rounded-full ${isOpen ? "bg-blue-200" : "bg-gray-200"}`} 
-                                        onClick={() => setIsOpen(!isOpen)}
-                                        >
-                                        {
-                                            isOpen ? (
-                                                <img className="h-5" src={activeNotification} />
-                                            ) : (
-                                                <img className="h-5" src={inactiveNotification} />
-                                            )
-                                        }
-                                    </button>
-                                    
-                                    { isOpen && <Notifications setIsOpen={setIsOpen} /> }
-                                </div>
-                                <button onClick={logout} className="cursor-pointer w-20 h-10 bg-red-700 rounded-[30px] mr-5 text-white hover:bg-red-600">Logout</button>
+                    {user ? (
+                        <div className="flex items-center gap-1">
+                            <NavLink to={"/user/home"} className={linkClass}>
+                                <Home size={17} strokeWidth={2} />
+                                <span className="hidden sm:inline">Home</span>
+                            </NavLink>
+                            <NavLink to={"/user/profile"} className={linkClass}>
+                                <User size={17} strokeWidth={2} />
+                                <span className="hidden sm:inline">Profile</span>
+                            </NavLink>
+                            <NavLink to={"/user/chats"} className={linkClass}>
+                                <MessageSquare size={17} strokeWidth={2} />
+                                <span className="hidden sm:inline">Chats</span>
+                            </NavLink>
+                            {user.role === "admin" && (
+                                <NavLink
+                                    to={"/admin/analytic"}
+                                    className={({ isActive }) =>
+                                        `inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
+                                            isActive
+                                                ? "bg-danger-soft text-danger"
+                                                : "text-muted hover:bg-danger-soft hover:text-danger"
+                                        }`
+                                    }
+                                >
+                                    <Shield size={17} strokeWidth={2} />
+                                    <span className="hidden sm:inline">Admin</span>
+                                </NavLink>
+                            )}
+
+                            <div className="mx-1 h-6 w-px bg-line" />
+
+                            <div ref={notificationRef} className="relative">
+                                <button
+                                    aria-label="Notifications"
+                                    onClick={() => setIsOpen(!isOpen)}
+                                    className={`flex h-9 w-9 items-center justify-center rounded-lg transition-colors ${
+                                        isOpen
+                                            ? "bg-primary-soft text-primary"
+                                            : "text-muted hover:bg-surface-muted hover:text-ink"
+                                    }`}
+                                >
+                                    <Bell size={18} strokeWidth={2} />
+                                </button>
+
+                                {isOpen && <Notifications setIsOpen={setIsOpen} />}
                             </div>
-                        ) : (
-                            <div className="flex gap-4">
-                                <NavLink to={"/user/login"} className={({ isActive }) => `${isActive ? "text-blue-400 border-b-2 border-b-blue-400" : "border-b-2 border-b-white"} p-2 flex justify-center items-center transition duration-200 cursor-auto`}><span className="hover:-translate-y-1 transition duration-200 h-full w-full cursor-pointer">Sign in</span></NavLink>
-                                <NavLink to={"/user/register"} className={({ isActive }) => `${isActive ? "text-blue-400 border-b-2 border-b-blue-400" : "border-b-2 border-b-white"} p-2 flex justify-center items-center transition duration-200 cursor-auto`}><span className="hover:-translate-y-1 transition duration-200 h-full w-full cursor-pointer">Sign up</span></NavLink>
-                            </div>
-                        )
-                    }
+
+                            <button
+                                onClick={logout}
+                                className="ml-1 inline-flex h-9 items-center gap-2 rounded-lg px-3 text-sm font-medium text-muted transition-colors hover:bg-danger-soft hover:text-danger"
+                            >
+                                <LogOut size={17} strokeWidth={2} />
+                                <span className="hidden sm:inline">Logout</span>
+                            </button>
+                        </div>
+                    ) : (
+                        <div className="flex items-center gap-2">
+                            <NavLink to={"/user/login"} className={linkClass}>
+                                Sign in
+                            </NavLink>
+                            <NavLink
+                                to={"/user/register"}
+                                className="btn-primary px-4 py-2 text-sm"
+                            >
+                                Sign up
+                            </NavLink>
+                        </div>
+                    )}
                 </nav>
             </header>
         </>
-    )
-}
+    );
+};
 
 export default Nav;

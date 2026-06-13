@@ -10,17 +10,19 @@ const EditComment = memo(({ setEditedCommentId, c, p }) => {
     const { editComment } = useComment();
 
     return (
-        <form onSubmit={(e) => { handleSubmit(e, (data) => editComment(c._id, p._id, data)); resetForm(); setEditedCommentId(null) }} className="flex gap-2">
-            <input 
-                type="text" 
-                name="content" 
-                placeholder="Edit comment" 
-                value={formData.content} 
+        <form onSubmit={(e) => { handleSubmit(e, (data) => editComment(c._id, p._id, data)); resetForm(); setEditedCommentId(null) }} className="flex flex-col gap-2">
+            <input
+                type="text"
+                name="content"
+                placeholder="Edit comment…"
+                value={formData.content}
                 onChange={handleChange}
-                className="flex-1 px-3 py-2 bg-white border border-gray-300 rounded-lg outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-200 text-sm"
+                className="field h-9 bg-surface px-3 text-sm"
             />
-            <button type="submit" className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 cursor-pointer text-sm font-medium">Edit</button>
-            <button type="button" onClick={() => setEditedCommentId(null)} className="px-4 py-2 bg-gray-400 text-white cursor-pointer rounded-lg hover:bg-gray-500 text-sm font-medium">Cancel</button>
+            <div className="flex justify-end gap-2">
+                <button type="button" onClick={() => setEditedCommentId(null)} className="btn-ghost h-8 px-3 text-xs">Cancel</button>
+                <button type="submit" className="btn-primary h-8 px-3 text-xs">Save</button>
+            </div>
         </form>
     )
 })

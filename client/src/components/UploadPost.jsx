@@ -6,6 +6,12 @@ import { useForm } from "../hooks/useForm";
 import { usePost } from "../hooks/usePost";
 import { useAuth } from "../hooks/useAuth";
 
+// Components
+import Avatar from "./Avatar";
+
+// Icons
+import { X, ImagePlus } from "lucide-react";
+
 // UploadPost component to upload a new post
 const UploadPost = memo(({ setIsOpen2 }) => {
     const [formData, handleChange, , resetForm] = useForm({
@@ -31,63 +37,82 @@ const UploadPost = memo(({ setIsOpen2 }) => {
 
         resetForm();
         setFiles([]);
-    }
+    };
 
     return (
-        <section 
-            className="fixed inset-0 z-50 flex justify-center" 
+        <section
+            className="fixed inset-0 z-50 flex animate-fade-in items-start justify-center overflow-y-auto p-4 sm:items-center"
             onClick={() => setIsOpen2(false)}
-            >
-            <div className="absolute inset-0 bg-black/50" />
-            
-            <form 
+        >
+            <div className="absolute inset-0 bg-ink/40 backdrop-blur-sm" />
+
+            <form
                 onSubmit={(e) => { submitPost(e); setIsOpen2(false) }}
-                className="relative z-10 w-130 h-100 bg-white p-4 pl-8 pr-8 rounded-xl shadow-2xl flex flex-col gap-4 mt-35"
+                className="card relative z-10 mt-16 flex w-full max-w-lg animate-scale-in flex-col sm:mt-0"
                 onClick={(e) => e.stopPropagation()}
-                >
-                <button 
-                    onClick={() => setIsOpen2(false)}
-                    className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-2xl leading-none z-20 cursor-pointer"
-                >
-                    ×
-                </button>
-                <h1 className="text-center text-[30px] p-0 m-0">Upload Post</h1>
-                <hr className="-translate-x-8 w-130 border-gray-300" />
-                <div className="flex gap-3">
-                    {
-                        user.image ? (
-                            <div className="w-10 h-10 rounded-full bg-center bg-cover flex justify-center items-center">
-                                <img src={user.image.url} className="w-full h-full rounded-full bg-center bg-cover flex justify-center items-center" alt="user avatar" />
-                            </div>
-                        ) : (
-                            <>
-                                <div className="bg-linear-to-r from-blue-400 to-red-400 w-10 h-10 rounded-full flex justify-center items-center">
-                                    <p className="text-[40px] text-white">{user.name[0]}</p>
-                                </div>
-                            </>
-                        )
-                    }
-                    <h1>{user.name}</h1>
+            >
+                {/* Header */}
+                <div className="flex items-center justify-between border-b border-line px-5 py-4">
+                    <h2 className="text-base font-semibold">Create post</h2>
+                    <button
+                        type="button"
+                        onClick={() => setIsOpen2(false)}
+                        className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg text-muted transition-colors hover:bg-surface-muted hover:text-ink"
+                    >
+                        <X size={18} />
+                    </button>
                 </div>
-                <textarea 
-                    type="text" 
-                    name="content" 
-                    placeholder={`What's new with you ${user.name.split(" ")[0]}?`}
-                    value={formData.content} 
-                    onChange={handleChange}
-                    className="w-full h-30 px-4 pt-2 bg-[#F8FAFC] border border-gray-300 rounded-2xl outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-200 transition duration-200"
-                ></textarea>
-                <input 
-                    type="file" 
-                    multiple 
-                    placeholder="Upload files" 
-                    onChange={(e) => setFiles([...e.target.files])}
-                    className="block text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
-                />
-                <button className="w-full bg-blue-600 text-white h-10 rounded-[5px] cursor-pointer hover:bg-blue-500">Upload</button>
+
+                {/* Body */}
+                <div className="flex flex-col gap-4 px-5 py-4">
+                    <div className="flex items-center gap-3">
+                        <Avatar src={user.image?.url} name={user.name} size={40} />
+                        <div>
+                            <p className="text-sm font-semibold text-ink">{user.name}</p>
+                            <p className="text-xs text-faint">Posting publicly</p>
+                        </div>
+                    </div>
+
+                    <textarea
+                        name="content"
+                        placeholder={`What's new with you, ${user.name.split(" ")[0]}?`}
+                        value={formData.content}
+                        onChange={handleChange}
+                        className="field min-h-32 resize-none px-4 py-3 text-sm leading-relaxed"
+                    />
+
+                    <label className="flex cursor-pointer items-center gap-2.5 rounded-xl border border-dashed border-line-strong px-4 py-3 text-sm text-muted transition-colors hover:border-primary hover:text-primary">
+                        <ImagePlus size={18} />
+                        <span>
+                            {files.length > 0
+                                ? `${files.length} file${files.length > 1 ? "s" : ""} selected`
+                                : "Add photos"}
+                        </span>
+                        <input
+                            type="file"
+                            multiple
+                            onChange={(e) => setFiles([...e.target.files])}
+                            className="hidden"
+                        />
+                    </label>
+                </div>
+
+                {/* Footer */}
+                <div className="flex items-center justify-end gap-2 border-t border-line px-5 py-4">
+                    <button
+                        type="button"
+                        onClick={() => setIsOpen2(false)}
+                        className="btn-ghost h-10 px-4 text-sm"
+                    >
+                        Cancel
+                    </button>
+                    <button type="submit" className="btn-primary h-10 px-5 text-sm">
+                        Publish
+                    </button>
+                </div>
             </form>
         </section>
-    )
-})
+    );
+});
 
 export default UploadPost;

@@ -7,79 +7,93 @@ import { useFriend } from "../hooks/useFriend";
 import { formatDistanceToNow } from "date-fns";
 import { Link } from "react-router";
 
+// Components
+import Avatar from "./Avatar";
+
+// Icons
+import { Bell } from "lucide-react";
+
 // Notifications component
 const Notifications = memo(({ setIsOpen }) => {
     const { friendRequests, acceptFriendRequest, rejectFriendRequest, getFriendRequests } = useFriend();
     const { user } = useAuth();
 
     useEffect(() => {
-        getFriendRequests()
-    }, [getFriendRequests])
+        getFriendRequests();
+    }, [getFriendRequests]);
 
     const friendRequestsForAuthUser = friendRequests.filter(fr => fr.to._id === user._id);
 
     return (
-        <section className="absolute top-15 -right-25 z-50 min-h-54 w-100 rounded-3xl border border-gray-200 bg-white p-4 shadow-2xl">
-            <div className="mb-3 flex items-center border-b border-gray-100 pb-3">
-                <div>
-                    <h1 className="text-lg font-semibold text-gray-900">Notifications</h1>
-                    <span className="text-sm text-gray-500">{friendRequestsForAuthUser.length}</span>
-                </div>
+        <section className="absolute right-0 top-12 z-50 w-80 origin-top-right animate-scale-in overflow-hidden rounded-2xl border border-line bg-surface shadow-lg sm:w-96">
+            <div className="flex items-center justify-between border-b border-line px-4 py-3">
+                <h2 className="text-sm font-semibold text-ink">Notifications</h2>
+                {friendRequestsForAuthUser.length > 0 && (
+                    <span className="rounded-full bg-primary-soft px-2 py-0.5 text-xs font-semibold text-primary">
+                        {friendRequestsForAuthUser.length} new
+                    </span>
+                )}
             </div>
 
-            <div className="min-h-54 max-h-150 overflow-y-auto overflow-x-hidden">
-                {
-                    friendRequestsForAuthUser.length === 0 ? (
-                        <p className="text-sm text-gray-600">No new notifications.</p>
-                    ) : (
-                        <div className="space-y-3">
-                            {friendRequestsForAuthUser.map((fr, index) => {
-                                return (
-                                    <div key={index} className="rounded-2xl border border-gray-100 bg-gray-50 p-3">
-                                        <div className="text-sm text-gray-800 flex gap-3 w-90">
-                                            {
-                                                fr.from.image ? (
-                                                    <Link to={`/usersprofile/${fr.from._id}`} onClick={() => setIsOpen(false)} className="rounded-full ml-1 hover:bg-black h-10 w-10">
-                                                        <img 
-                                                            src={fr.from.image.url} 
-                                                            alt="User avatar"
-                                                            className="h-10 w-10 rounded-full hover:opacity-90 cursor-pointer"
-                                                        />
-                                                    </Link>
-                                                ) : (
-                                                    <Link to={`/usersprofile/${fr.from._id}`} onClick={() => setIsOpen(false)} className="ml-1 bg-linear-to-r from-blue-400 to-red-400 w-10 h-10 rounded-full flex justify-center items-center">
-                                                        <p className="text-[12px] font-bold text-white">{fr.from.name[0]}</p>
-                                                    </Link>
-                                                )
-                                            }
-                                            <div>
-                                                <p><Link to={`/usersprofile/${fr.from._id}`} onClick={() => setIsOpen(false)} className="hover:underline">{fr.from.name}</Link> <span className="text-gray-500">sent you a friend request.</span></p>
-                                                <p className="text-[12px] text-gray-400">{ formatDistanceToNow(new Date(fr.createdAt), { addSuffix: true }) }</p>
-                                            </div>
-                                        </div>
-                                        <div className="mt-3 flex gap-2">
-                                            <button
-                                                onClick={() => acceptFriendRequest(fr._id)}
-                                                className="rounded-full bg-blue-600 px-3 py-1 cursor-pointer text-sm font-semibold text-white transition hover:bg-blue-700"
+            <div className="max-h-[60vh] overflow-y-auto p-2">
+                {friendRequestsForAuthUser.length === 0 ? (
+                    <div className="flex flex-col items-center gap-2 px-4 py-10 text-center">
+                        <Bell size={24} className="text-faint" />
+                        <p className="text-sm font-medium text-body">You&apos;re all caught up</p>
+                        <p className="text-xs text-faint">New friend requests will appear here.</p>
+                    </div>
+                ) : (
+                    <div className="space-y-1">
+                        {friendRequestsForAuthUser.map((fr, index) => (
+                            <div
+                                key={index}
+                                className="rounded-xl p-3 transition-colors hover:bg-surface-muted"
+                            >
+                                <div className="flex gap-3">
+                                    <Link
+                                        to={`/user/usersprofile/${fr.from._id}`}
+                                        onClick={() => setIsOpen(false)}
+                                        className="shrink-0"
+                                    >
+                                        <Avatar src={fr.from.image?.url} name={fr.from.name} size={40} />
+                                    </Link>
+                                    <div className="min-w-0">
+                                        <p className="text-sm leading-snug text-body">
+                                            <Link
+                                                to={`/user/usersprofile/${fr.from._id}`}
+                                                onClick={() => setIsOpen(false)}
+                                                className="font-semibold text-ink hover:underline"
                                             >
-                                                Accept
-                                            </button>
-                                            <button
-                                                onClick={() => rejectFriendRequest(fr._id)}
-                                                className="rounded-full border border-gray-300 cursor-pointer bg-white px-3 py-1 text-sm font-semibold text-gray-700 transition hover:bg-gray-100"
-                                            >
-                                                Reject
-                                            </button>
-                                        </div>
+                                                {fr.from.name}
+                                            </Link>{" "}
+                                            sent you a friend request.
+                                        </p>
+                                        <p className="mt-0.5 text-xs text-faint">
+                                            {formatDistanceToNow(new Date(fr.createdAt), { addSuffix: true })}
+                                        </p>
                                     </div>
-                                )
-                            })}
-                        </div>
-                    )
-                }
+                                </div>
+                                <div className="mt-2.5 flex gap-2 pl-13">
+                                    <button
+                                        onClick={() => acceptFriendRequest(fr._id)}
+                                        className="btn-primary h-8 flex-1 text-xs"
+                                    >
+                                        Accept
+                                    </button>
+                                    <button
+                                        onClick={() => rejectFriendRequest(fr._id)}
+                                        className="btn-ghost h-8 flex-1 text-xs"
+                                    >
+                                        Decline
+                                    </button>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                )}
             </div>
         </section>
-    )
-})
+    );
+});
 
 export default Notifications;

@@ -1,44 +1,43 @@
 import { useAdmin } from "../hooks/useAdmin";
+import { AlertTriangle } from "lucide-react";
 
 const DeleteUser = ({ setIsOpen, userId }) => {
     const { deleteUser } = useAdmin();
 
     return (
-        <section 
-            className="fixed inset-0 z-50 flex items-center justify-center"
+        <section
+            className="fixed inset-0 z-50 flex animate-fade-in items-center justify-center p-4"
             onClick={() => setIsOpen(false)}
-            >
-            <div className="absolute inset-0 bg-black/50" />
-            <div 
-                className="relative z-10 w-90 max-w-[90vw] bg-white p-8 rounded-3xl shadow-2xl flex flex-col gap-4"
+        >
+            <div className="absolute inset-0 bg-ink/40 backdrop-blur-sm" />
+            <div
+                className="card relative z-10 w-full max-w-sm animate-scale-in p-6"
                 onClick={(e) => e.stopPropagation()}
-                >
-                <button 
-                    type="button"
-                    onClick={() => setIsOpen(false)}
-                    className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-2xl leading-none z-20 cursor-pointer"
-                >
-                    ×
-                </button>
-                <h1 className="text-center text-[30px] relative -top-3">Delete User</h1>
-                <p className="text-[19px]">Are you sure you want to do this? The action cannot be reversed.</p>
-                <div className="flex justify-center items-center gap-5">
-                    <button 
-                        onClick={() => { deleteUser(userId); setIsOpen(false) }} 
-                        className="px-10 py-2 text-sm font-medium text-red-600 hover:bg-red-50 border border-red-200 hover:border-red-300 rounded-xl transition cursor-pointer"
-                        >
-                        Delete
-                    </button>
-                    <button 
+            >
+                <div className="mx-auto mb-4 flex h-11 w-11 items-center justify-center rounded-full bg-danger-soft text-danger">
+                    <AlertTriangle size={20} />
+                </div>
+                <h2 className="text-center text-lg font-semibold">Delete user</h2>
+                <p className="mt-2 text-center text-sm text-muted">
+                    Are you sure? This action is permanent and cannot be undone.
+                </p>
+                <div className="mt-6 flex gap-2">
+                    <button
                         onClick={() => setIsOpen(false)}
-                        className="px-10 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 border border-gray-200 hover:border-gray-300 rounded-xl transition cursor-pointer"
-                        >
+                        className="btn-ghost h-10 flex-1 text-sm"
+                    >
                         Cancel
+                    </button>
+                    <button
+                        onClick={() => { deleteUser(userId); setIsOpen(false) }}
+                        className="inline-flex h-10 flex-1 items-center justify-center rounded-lg bg-danger text-sm font-medium text-white transition-colors hover:bg-danger-hover"
+                    >
+                        Delete
                     </button>
                 </div>
             </div>
         </section>
-    )
-}
+    );
+};
 
 export default DeleteUser;

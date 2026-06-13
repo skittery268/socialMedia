@@ -1,5 +1,5 @@
 // React Router
-import { Link, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 
 // Hooks
 import { useAuth } from "../hooks/useAuth";
@@ -8,6 +8,12 @@ import { useGroup } from "../hooks/useGroup";
 
 // React Tools
 import { useEffect } from "react";
+
+// Components
+import Avatar from "../components/Avatar";
+
+// Icons
+import { ChevronRight, MessageSquare } from "lucide-react";
 
 // Chats page
 const Chats = () => {
@@ -21,86 +27,70 @@ const Chats = () => {
         getGroups();
     }, [getGroups, getUserChats, user]);
 
-    return (
-        <section className="w-340 min-h-60 mt-10 bg-white shadow border border-gray-400 rounded-xl p-3 gap-5 flex flex-wrap">
-            {
-                chats.map((c, index) => {
-                    const thisUser = c.user1._id === user._id ? c.user2 : c.user1
-                    return (
-                        <div key={index} className="flex justify-center items-center flex-col">
-                            {
-                                thisUser.image ? (
-                                    <div 
-                                        className="w-40 h-40 relative rounded-full bg-center bg-cover flex justify-center items-center"
-                                        onClick={() => navigate(`/user/chat/${thisUser._id}`)}
-                                        >
-                                        <div className="absolute inset-0 bg-black rounded-full"></div>
-                                        <img src={thisUser.image.url} className="w-full h-full z-40 hover:opacity-85 cursor-pointer transition duration-200 rounded-full bg-center bg-cover flex justify-center items-center" alt="user avatar" />
-                                    </div>
-                                ) : (
-                                    <>
-                                        <div 
-                                            className="bg-linear-to-r from-blue-400 to-red-400 w-40 h-40 relative rounded-full flex justify-center items-center"
-                                            onClick={() => navigate(`/user/chat/${thisUser._id}`)}
-                                            >
-                                            <div className="absolute inset-0 bg-black rounded-full"></div>
-                                            <div className="bg-linear-to-r from-blue-400 to-red-400 z-40 w-40 h-40 rounded-full absolute inset-0 hover:opacity-85 cursor-pointer"></div>
-                                            <p className="text-[50px] z-50 text-white">{thisUser.name[0]}</p>
-                                        </div>
-                                    </>
-                                )
-                            }
-                            <Link 
-                                to={`/chat/${thisUser._id}`} 
-                                onClick={() => openChat(thisUser._id)}
-                                className="hover:underline"
-                                >
-                                { thisUser.name }
-                            </Link>
-                        </div>
-                    )
-                })
-            }
+    const isEmpty = chats.length === 0 && groups.length === 0;
 
-            {
-                groups.map((g, index) => {
-                    return (
-                        <div key={index} className="flex justify-center items-center flex-col">
-                            {
-                                g.image ? (
-                                    <div 
-                                        className="w-40 h-40 relative rounded-full bg-center bg-cover flex justify-center items-center"
-                                        onClick={() => navigate(`/user/group/${g._id}`)}
-                                        >
-                                        <div className="absolute inset-0 bg-black rounded-full"></div>
-                                        <img src={g.image.url} className="w-full h-full z-50 hover:opacity-85 cursor-pointer transition duration-200 rounded-full bg-center bg-cover flex justify-center items-center" alt="user avatar" />
-                                    </div>
-                                ) : (
-                                    <>
-                                        <div 
-                                            className="bg-linear-to-r from-blue-400 to-red-400 w-40 h-40 relative rounded-full flex justify-center items-center"
-                                            onClick={() => navigate(`/user/group/${g._id}`)}
-                                            >
-                                            <div className="absolute inset-0 bg-black rounded-full"></div>
-                                            <div className="bg-linear-to-r from-blue-400 to-red-400 z-40 w-40 h-40 rounded-full absolute inset-0 hover:opacity-85 cursor-pointer"></div>
-                                            <p className="text-[50px] z-50 text-white">{g.name[0]}</p>
-                                        </div>
-                                    </>
-                                )
-                            }
-                            <Link 
-                                to={`/group/${g._id}`} 
-                                onClick={() => openGroup(g._id)}
-                                className="hover:underline"
-                                >
-                                { g.name }
-                            </Link>
-                        </div>
-                    )
-                })
-            }
+    const Row = ({ src, name, badge, onClick }) => (
+        <button
+            onClick={onClick}
+            className="group flex w-full items-center gap-3 px-4 py-3 text-left transition-colors hover:bg-surface-muted"
+        >
+            <Avatar src={src} name={name} size={44} shape={badge ? "square" : "circle"} />
+            <div className="min-w-0 flex-1">
+                <p className="truncate text-sm font-semibold text-ink">{name}</p>
+                {badge && <p className="text-xs text-faint">Group conversation</p>}
+            </div>
+            <ChevronRight
+                size={18}
+                className="text-faint transition-transform group-hover:translate-x-0.5"
+            />
+        </button>
+    );
+
+    return (
+        <section className="mx-auto w-full max-w-2xl px-4 py-6">
+            <h1 className="mb-4 text-xl font-semibold tracking-tight">Messages</h1>
+
+            {isEmpty ? (
+                <div className="card flex flex-col items-center gap-2 px-6 py-16 text-center">
+                    <MessageSquare size={26} className="text-faint" />
+                    <p className="text-sm font-medium text-body">No conversations yet</p>
+                    <p className="text-xs text-faint">
+                        Start a chat from someone&apos;s profile to see it here.
+                    </p>
+                </div>
+            ) : (
+                <div className="card divide-y divide-line overflow-hidden">
+                    {chats.map((c, index) => {
+                        const thisUser = c.user1._id === user._id ? c.user2 : c.user1;
+                        return (
+                            <Row
+                                key={`c-${index}`}
+                                src={thisUser.image?.url}
+                                name={thisUser.name}
+                                onClick={() => {
+                                    openChat(thisUser._id);
+                                    navigate(`/user/chat/${thisUser._id}`);
+                                }}
+                            />
+                        );
+                    })}
+
+                    {groups.map((g, index) => (
+                        <Row
+                            key={`g-${index}`}
+                            src={g.image?.url}
+                            name={g.name}
+                            badge
+                            onClick={() => {
+                                openGroup(g._id);
+                                navigate(`/user/group/${g._id}`);
+                            }}
+                        />
+                    ))}
+                </div>
+            )}
         </section>
-    )
-}
+    );
+};
 
 export default Chats;

@@ -70,15 +70,15 @@ io.use((socket, next) => {
 
     const correctToken = token.split("=")[1];
 
-    const payload = jwt.verify(correctToken, process.env.JWT_SECRET);
+    try {
+        const payload = jwt.verify(correctToken, process.env.JWT_SECRET);
 
-    if (!payload) {
-        return next(new AppError("Your token expires!", 400));
+        socket.userId = payload.id;
+
+        next();
+    } catch (err) {
+        return next(new AppError("We cant identify you!", 401));
     }
-
-    socket.userId = payload.id;
-
-    next();
 });
 
 // Routers

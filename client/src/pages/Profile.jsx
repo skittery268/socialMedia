@@ -7,9 +7,13 @@ import ViewPosts from "../components/ViewPosts";
 import CreateGroupForm from "../components/CreateGroupForm";
 import EditUserInfo from "../components/EditUserInfo";
 import FriendList from "../components/FriendList";
+import Avatar from "../components/Avatar";
 
 // Hooks
-import { useAuth } from "../hooks/useAuth"
+import { useAuth } from "../hooks/useAuth";
+
+// Icons
+import { Pencil, UsersRound, ImagePlus } from "lucide-react";
 
 // Profile page
 const Profile = memo(() => {
@@ -19,66 +23,78 @@ const Profile = memo(() => {
     const [isOpen2, setIsOpen2] = useState(false);
 
     return (
-        <section className="bg-[#F3F2EF] mt-10 w-full flex items-center flex-col min-h-200 pb-15">
-            { isEdited && <EditUserInfo setIsEdited={setIsEdited} /> }
-            { isOpen && <CreateGroupForm setIsOpen={setIsOpen} /> }
-            { isOpen2 && <UploadPost setIsOpen2={setIsOpen2} /> }
-            <div className="w-260 h-50 bg-[#E5E5E5] rounded-2xl"></div>
-            <div className="bg-white w-260 h-50 -translate-y-5 rounded-b-2xl relative shadow">
-                <div className="absolute left-10 flex justify-center items-center bg-center bg-cover rounded-full w-40 h-40 -top-20">
-                    {
-                        user.image ? (
-                            <div className="w-full h-full rounded-full bg-center bg-cover flex justify-center items-center">
-                                <img src={user.image.url} className="w-full h-full rounded-full bg-center bg-cover flex justify-center items-center" alt="user avatar" />
-                            </div>
-                        ) : (
-                            <>
-                                <div className="bg-linear-to-r from-blue-400 to-red-400 w-full h-full rounded-full flex justify-center items-center">
-                                    <p className="text-[50px] text-white">{user.name[0]}</p>
-                                </div>
-                            </>
-                        )
-                    }
-                </div>
-                <div className="absolute left-60 flex justify-center flex-col">
-                    <p className="text-[35px]">{user?.name}</p>
-                    <p className="text-gray-500">{user?.email}</p>
-                </div>
-                <button onClick={() => setIsEdited(true)} className="absolute bottom-10 right-10 bg-gray-400 border border-gray-500 w-20 h-10 rounded-full text-white cursor-pointer hover:bg-gray-300 transition duration-200">Edit</button>
-                <button onClick={() => setIsOpen(true)} className="absolute bottom-10 right-35 bg-gray-400 border border-gray-500 w-30 h-10 rounded-full text-white cursor-pointer hover:bg-gray-300 transition duration-200">Create Group</button>
-            </div>
+        <section className="w-full">
+            {isEdited && <EditUserInfo setIsEdited={setIsEdited} />}
+            {isOpen && <CreateGroupForm setIsOpen={setIsOpen} />}
+            {isOpen2 && <UploadPost setIsOpen2={setIsOpen2} />}
 
-            <div className="flex justify-center gap-10 w-260 min-h-100">
-                <div>
-                    <FriendList /> 
-                </div>
-                <div>
-                    <div className="flex justify-center items-center gap-3 bg-white w-135 h-15 rounded-2xl shadow">
-                        {
-                            user.image ? (
-                                <img 
-                                    src={user.image.url} 
-                                    alt="User avatar"
-                                    className="ml-1 h-10 rounded-full " 
-                                />
-                            ) : (
-                                <div className="ml-1 bg-linear-to-r from-blue-400 to-red-400 w-10 h-10 rounded-full flex justify-center items-center">
-                                    <p className="text-[12px] font-bold text-white">{user.name[0]}</p>
+            <div className="mx-auto w-full max-w-5xl px-4 py-6">
+                {/* Profile header */}
+                <div className="card overflow-hidden">
+                    <div className="h-36 bg-linear-to-br from-primary-soft via-surface-muted to-primary-soft sm:h-44" />
+                    <div className="px-6 pb-6">
+                        <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+                            <div className="flex items-end gap-4">
+                                <div className="-mt-14 shrink-0 rounded-full ring-4 ring-surface">
+                                    <Avatar src={user.image?.url} name={user.name} size={112} />
                                 </div>
-                            )
-                        }
-                        <div 
-                            className="w-115 h-10 bg-gray-200 hover:bg-gray-300 transition duration-200 cursor-pointer rounded-[20px] pl-5 flex items-center"
-                            onClick={() => setIsOpen2(true)}
-                        >
-                            <h1 className="text-gray-800">What's new with you {user.name.split(" ")[0]}?</h1>
+                                <div className="pb-1">
+                                    <h1 className="text-xl font-semibold tracking-tight">{user?.name}</h1>
+                                    <p className="text-sm text-muted">{user?.email}</p>
+                                </div>
+                            </div>
+
+                            <div className="flex gap-2">
+                                <button
+                                    onClick={() => setIsOpen(true)}
+                                    className="btn-ghost h-9 gap-1.5 px-3 text-sm"
+                                >
+                                    <UsersRound size={16} />
+                                    Create group
+                                </button>
+                                <button
+                                    onClick={() => setIsEdited(true)}
+                                    className="btn-primary h-9 gap-1.5 px-4 text-sm"
+                                >
+                                    <Pencil size={15} />
+                                    Edit profile
+                                </button>
+                            </div>
                         </div>
                     </div>
-                    <ViewPosts mode={"profile"} />
+                </div>
+
+                {/* Body */}
+                <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-[320px_1fr]">
+                    <aside className="lg:sticky lg:top-20 lg:self-start">
+                        <FriendList />
+                    </aside>
+
+                    <div className="flex flex-col gap-4">
+                        {/* Composer */}
+                        <div className="card flex items-center gap-3 p-3">
+                            <Avatar src={user.image?.url} name={user.name} size={40} />
+                            <button
+                                onClick={() => setIsOpen2(true)}
+                                className="h-10 flex-1 cursor-pointer rounded-full bg-surface-muted px-4 text-left text-sm text-muted transition-colors hover:bg-line"
+                            >
+                                What&apos;s new with you, {user.name.split(" ")[0]}?
+                            </button>
+                            <button
+                                onClick={() => setIsOpen2(true)}
+                                className="btn-ghost h-10 gap-1.5 px-3 text-sm"
+                            >
+                                <ImagePlus size={17} />
+                                <span className="hidden sm:inline">Photo</span>
+                            </button>
+                        </div>
+
+                        <ViewPosts mode={"profile"} />
+                    </div>
                 </div>
             </div>
         </section>
-    )
-})
+    );
+});
 
 export default Profile;

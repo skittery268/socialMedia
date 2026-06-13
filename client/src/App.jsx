@@ -34,7 +34,7 @@ const App = () => {
 	} 
 
     return (
-		<main className="h-screen bg-[#F3F2EF]">
+		<main className="min-h-screen bg-canvas">
 			{/* All Routes */}
 			<Routes>
 				<Route path="/" element={<Navigate to={"/user"} />} />

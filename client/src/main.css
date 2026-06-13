@@ -1,1 +1,232 @@
 @import "tailwindcss";
+
+/* ==========================================================================
+   DevLink Design System
+   A calm, neutral, "expensive" surface inspired by Linear / Vercel / Notion.
+   All design decisions live here as tokens so the UI stays consistent.
+   ========================================================================== */
+
+@theme {
+    /* Typography ----------------------------------------------------------- */
+    --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+        sans-serif;
+
+    /* Color · surfaces ----------------------------------------------------- */
+    --color-canvas: #f7f7f6; /* app background — never pure white */
+    --color-surface: #ffffff; /* cards, sheets, menus */
+    --color-surface-muted: #f4f4f5; /* subtle inset fills, hovers */
+    --color-surface-sunken: #fafafa; /* inputs, sunken wells */
+
+    /* Color · borders ------------------------------------------------------ */
+    --color-line: #ececec; /* hairline dividers & card borders */
+    --color-line-strong: #e0e0e0; /* emphasised borders */
+
+    /* Color · text --------------------------------------------------------- */
+    --color-ink: #18181b; /* headings */
+    --color-body: #3f3f46; /* body copy */
+    --color-muted: #71717a; /* secondary text */
+    --color-faint: #a1a1aa; /* captions, timestamps */
+
+    /* Color · brand -------------------------------------------------------- */
+    --color-primary: #4f46e5; /* indigo 600 */
+    --color-primary-hover: #4338ca; /* indigo 700 */
+    --color-primary-soft: #eef2ff; /* tinted surface */
+    --color-primary-fg: #ffffff;
+
+    /* Color · semantic ----------------------------------------------------- */
+    --color-success: #16a34a;
+    --color-success-soft: #f0fdf4;
+    --color-warning: #d97706;
+    --color-warning-soft: #fffbeb;
+    --color-danger: #e11d48;
+    --color-danger-hover: #be123c;
+    --color-danger-soft: #fff1f2;
+    --color-like: #f43f5e; /* rose — active like state */
+
+    /* Radii ---------------------------------------------------------------- */
+    --radius-lg: 12px;
+    --radius-xl: 14px;
+    --radius-2xl: 16px;
+
+    /* Soft, low-contrast elevation ---------------------------------------- */
+    --shadow-xs: 0 1px 2px 0 rgb(24 24 27 / 0.04);
+    --shadow-sm: 0 1px 2px 0 rgb(24 24 27 / 0.05),
+        0 1px 3px 0 rgb(24 24 27 / 0.05);
+    --shadow-md: 0 2px 6px -2px rgb(24 24 27 / 0.06),
+        0 6px 16px -6px rgb(24 24 27 / 0.10);
+    --shadow-lg: 0 4px 12px -4px rgb(24 24 27 / 0.08),
+        0 16px 40px -12px rgb(24 24 27 / 0.16);
+
+    /* Brand gradient for avatar fallbacks --------------------------------- */
+    --color-avatar-from: #6366f1;
+    --color-avatar-to: #a855f7;
+
+    /* Motion --------------------------------------------------------------- */
+    --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+
+    --animate-fade-in: fade-in 0.18s var(--ease-out-soft);
+    --animate-scale-in: scale-in 0.16s var(--ease-out-soft);
+    --animate-slide-up: slide-up 0.22s var(--ease-out-soft);
+}
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes scale-in {
+    from {
+        opacity: 0;
+        transform: scale(0.97) translateY(4px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+@keyframes slide-up {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Base layer ------------------------------------------------------------- */
+@layer base {
+    html {
+        -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+        font-family: var(--font-sans);
+        background-color: var(--color-canvas);
+        color: var(--color-body);
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+        text-rendering: optimizeLegibility;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4 {
+        color: var(--color-ink);
+        letter-spacing: -0.011em;
+    }
+
+    ::selection {
+        background-color: color-mix(in oklab, var(--color-primary) 18%, white);
+        color: var(--color-ink);
+    }
+
+    /* Refined, unobtrusive scrollbars */
+    * {
+        scrollbar-width: thin;
+        scrollbar-color: var(--color-line-strong) transparent;
+    }
+
+    *::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+    }
+
+    *::-webkit-scrollbar-thumb {
+        background-color: var(--color-line-strong);
+        border-radius: 9999px;
+    }
+
+    *::-webkit-scrollbar-thumb:hover {
+        background-color: var(--color-faint);
+    }
+}
+
+/* Reusable component classes --------------------------------------------- */
+@layer components {
+    /* Card surface */
+    .card {
+        background-color: var(--color-surface);
+        border: 1px solid var(--color-line);
+        border-radius: var(--radius-2xl);
+        box-shadow: var(--shadow-sm);
+    }
+
+    /* Text input / textarea */
+    .field {
+        width: 100%;
+        background-color: var(--color-surface-sunken);
+        border: 1px solid var(--color-line-strong);
+        border-radius: var(--radius-lg);
+        color: var(--color-ink);
+        outline: none;
+        transition: border-color 0.15s, box-shadow 0.15s, background-color 0.15s;
+    }
+
+    .field::placeholder {
+        color: var(--color-faint);
+    }
+
+    .field:focus {
+        background-color: var(--color-surface);
+        border-color: var(--color-primary);
+        box-shadow: 0 0 0 3px
+            color-mix(in oklab, var(--color-primary) 16%, transparent);
+    }
+
+    /* Primary action button */
+    .btn-primary {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        background-color: var(--color-primary);
+        color: var(--color-primary-fg);
+        border-radius: var(--radius-lg);
+        font-weight: 500;
+        box-shadow: var(--shadow-xs);
+        cursor: pointer;
+        transition: background-color 0.15s, transform 0.12s, box-shadow 0.15s;
+    }
+
+    .btn-primary:hover {
+        background-color: var(--color-primary-hover);
+    }
+
+    .btn-primary:active {
+        transform: translateY(0.5px) scale(0.99);
+    }
+
+    .btn-primary:disabled {
+        opacity: 0.55;
+        cursor: not-allowed;
+    }
+
+    /* Neutral / secondary button */
+    .btn-ghost {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        background-color: var(--color-surface);
+        color: var(--color-body);
+        border: 1px solid var(--color-line-strong);
+        border-radius: var(--radius-lg);
+        font-weight: 500;
+        cursor: pointer;
+        transition: background-color 0.15s, border-color 0.15s, color 0.15s;
+    }
+
+    .btn-ghost:hover {
+        background-color: var(--color-surface-muted);
+        color: var(--color-ink);
+    }
+}

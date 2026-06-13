@@ -56,7 +56,7 @@ const UserDashboard = () => {
     
     return (
         <section>
-            <div className="flex justify-center items-center flex-col bg-[#F3F2EF]">
+            <div className="flex min-h-screen flex-col items-center bg-canvas">
                 <Nav />
 
                 <Outlet />

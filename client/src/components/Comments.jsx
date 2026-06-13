@@ -11,6 +11,10 @@ import { useAuth } from "../hooks/useAuth";
 
 // Components
 import EditComment from "./EditComment";
+import Avatar from "./Avatar";
+
+// Icons
+import { X, SendHorizontal, MessageCircle } from "lucide-react";
 
 // Comment component
 const Comments = memo(({ p, setCommentsModalPost }) => {
@@ -25,7 +29,7 @@ const Comments = memo(({ p, setCommentsModalPost }) => {
         getComments();
     }, [getComments]);
 
-    const thisPostComments = comments.filter(c => p._id === c.postId)
+    const thisPostComments = comments.filter(c => p._id === c.postId);
 
     const submitComment = async (e) => {
         e.preventDefault();
@@ -34,142 +38,142 @@ const Comments = memo(({ p, setCommentsModalPost }) => {
     };
 
     return (
-        <section 
-            className="fixed inset-0 z-50 flex justify-center items-center" 
+        <section
+            className="fixed inset-0 z-50 flex animate-fade-in items-center justify-center p-4"
             onClick={() => setCommentsModalPost(false)}
         >
-            <div className="absolute inset-0 bg-black/50" />
-            
-            <div 
-                className="relative z-10 w-130 max-h-[80vh] bg-white rounded-xl shadow-2xl overflow-hidden"
+            <div className="absolute inset-0 bg-ink/40 backdrop-blur-sm" />
+
+            <div
+                className="card relative z-10 flex max-h-[85vh] w-full max-w-lg animate-scale-in flex-col overflow-hidden"
                 onClick={(e) => e.stopPropagation()}
             >
-                <div className="p-4 border-b border-gray-200 flex justify-between items-center">
-                    <h2 className="text-xl font-semibold text-gray-800">Comments</h2>
-                    <button 
+                {/* Header */}
+                <div className="flex items-center justify-between border-b border-line px-5 py-4">
+                    <h2 className="text-base font-semibold">Comments</h2>
+                    <button
                         onClick={() => setCommentsModalPost(false)}
-                        className="text-gray-400 hover:text-gray-600 cursor-pointer text-2xl leading-none"
+                        className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg text-muted transition-colors hover:bg-surface-muted hover:text-ink"
                     >
-                        ×
+                        <X size={18} />
                     </button>
                 </div>
 
-                <div className="p-4 border-b border-gray-200">
-                    <div className="flex items-center gap-3 mb-3">
-                        {
-                            p.authorId.image ? (
-                                <img 
-                                    src={p.authorId.image.url} 
-                                    className="w-10 h-10 rounded-full object-cover" 
-                                    alt={p.authorId.name}
-                                />
-                            ) : (
-                                <div className="bg-linear-to-r from-blue-400 to-red-400 w-10 h-10 rounded-full flex justify-center items-center">
-                                    <p className="text-[12px] text-white font-bold">{p.authorId.name[0]}</p>
-                                </div>
-                            )
-                        }
+                {/* Original post */}
+                <div className="border-b border-line px-5 py-4">
+                    <div className="mb-3 flex items-center gap-3">
+                        <Avatar src={p.authorId.image?.url} name={p.authorId.name} size={40} />
                         <div>
-                            <p className="font-semibold text-gray-800">{p.authorId.name}</p>
-                            <p className="text-[12px] text-gray-400">{ formatDistanceToNow(new Date(p.createdAt), { addSuffix: true }) }</p>
+                            <p className="text-sm font-semibold text-ink">{p.authorId.name}</p>
+                            <p className="text-xs text-faint">
+                                {formatDistanceToNow(new Date(p.createdAt), { addSuffix: true })}
+                            </p>
                         </div>
                     </div>
-                    <p className="text-gray-700 text-sm leading-relaxed wrap-break-word whitespace-pre-wrap mb-3">{p.content}</p>
-                    {
-                        p.images.length >= 1 && (
-                            <div className="flex flex-wrap gap-2">
-                                {
-                                    p.images.map((img, imgIndex) => {
-                                        return (
-                                            <img 
-                                                key={imgIndex}
-                                                src={img.url} 
-                                                width={200} 
-                                                alt="postImage"
-                                                className="rounded-lg object-cover max-h-48"
-                                            />
-                                        )
-                                    })
-                                }
-                            </div>
-                        )
-                    }
+                    {p.content && (
+                        <p className="mb-3 whitespace-pre-wrap wrap-break-word text-sm leading-relaxed text-body">
+                            {p.content}
+                        </p>
+                    )}
+                    {p.images?.length >= 1 && (
+                        <div className="flex flex-wrap gap-2">
+                            {p.images.map((img, i) => (
+                                <img
+                                    key={i}
+                                    src={img.url}
+                                    alt="post media"
+                                    className="max-h-48 rounded-lg border border-line object-cover"
+                                />
+                            ))}
+                        </div>
+                    )}
                 </div>
 
-                <div className="max-h-60 overflow-y-auto p-4 space-y-3">
-                    {
+                {/* Comments list */}
+                <div className="flex-1 space-y-2.5 overflow-y-auto px-5 py-4">
+                    {thisPostComments.length === 0 ? (
+                        <div className="flex flex-col items-center gap-2 py-8 text-center">
+                            <MessageCircle size={26} className="text-faint" />
+                            <p className="text-sm text-muted">No comments yet</p>
+                            <p className="text-xs text-faint">Be the first to share your thoughts.</p>
+                        </div>
+                    ) : (
                         thisPostComments.map((c, index) => (
-                            <div key={index} className="bg-gray-50 rounded-lg p-3">
-                                {
-                                    editedCommentId === c._id ? (
-                                        <EditComment setEditedCommentId={setEditedCommentId} c={c} p={p} />
-                                    ) : (
-                                        <div>
-                                            <div className="flex items-center gap-2 mb-2">
-                                                {
-                                                    c.authorId?.image ? (
-                                                        <img 
-                                                            src={c.authorId.image.url} 
-                                                            className="w-6 h-6 rounded-full object-cover" 
-                                                            alt={c.authorId.name}
-                                                        />
-                                                    ) : (
-                                                        <div className="bg-linear-to-r from-blue-400 to-red-400 w-6 h-6 rounded-full flex justify-center items-center">
-                                                            <p className="text-[8px] text-white font-bold">{c.authorId?.name?.[0] || '?'}</p>
-                                                        </div>
-                                                    )
-                                                }
-                                                <div>
-                                                    <p className="font-medium text-gray-800 text-sm">{c.authorId?.name || 'Unknown'}</p>
-                                                    <p className="text-[12px] text-gray-400">{ formatDistanceToNow(new Date(c.createdAt), { addSuffix: true }) }</p>
-                                                </div>
+                            <div key={index} className="rounded-xl bg-surface-muted p-3">
+                                {editedCommentId === c._id ? (
+                                    <EditComment
+                                        setEditedCommentId={setEditedCommentId}
+                                        c={c}
+                                        p={p}
+                                    />
+                                ) : (
+                                    <div>
+                                        <div className="mb-1.5 flex items-center gap-2">
+                                            <Avatar
+                                                src={c.authorId?.image?.url}
+                                                name={c.authorId?.name || "?"}
+                                                size={28}
+                                            />
+                                            <div>
+                                                <p className="text-sm font-semibold text-ink">
+                                                    {c.authorId?.name || "Unknown"}
+                                                </p>
+                                                <p className="text-[11px] text-faint">
+                                                    {formatDistanceToNow(new Date(c.createdAt), {
+                                                        addSuffix: true,
+                                                    })}
+                                                </p>
                                             </div>
-                                            <p className="text-gray-700 text-sm leading-relaxed wrap-break-word whitespace-pre-wrap mb-2">{c.content}</p>
-                                            {c.authorId?._id === user._id && (
-                                                <div className="flex gap-2">
-                                                    <button 
-                                                        onClick={() => setEditedCommentId(c._id)} 
-                                                        className="text-xs text-blue-500 cursor-pointer hover:text-blue-700 font-medium"
-                                                    >
-                                                        Edit
-                                                    </button>
-                                                    <button 
-                                                        onClick={() => deleteComment(c._id, p._id)} 
-                                                        className="text-xs text-red-500 cursor-pointer hover:text-red-700 font-medium"
-                                                    >
-                                                        Delete
-                                                    </button>
-                                                </div>
-                                            )}
                                         </div>
-                                    )
-                                }
+                                        <p className="whitespace-pre-wrap wrap-break-word pl-9 text-sm leading-relaxed text-body">
+                                            {c.content}
+                                        </p>
+                                        {c.authorId?._id === user._id && (
+                                            <div className="mt-2 flex gap-3 pl-9">
+                                                <button
+                                                    onClick={() => setEditedCommentId(c._id)}
+                                                    className="cursor-pointer text-xs font-medium text-muted transition-colors hover:text-primary"
+                                                >
+                                                    Edit
+                                                </button>
+                                                <button
+                                                    onClick={() => deleteComment(c._id, p._id)}
+                                                    className="cursor-pointer text-xs font-medium text-muted transition-colors hover:text-danger"
+                                                >
+                                                    Delete
+                                                </button>
+                                            </div>
+                                        )}
+                                    </div>
+                                )}
                             </div>
                         ))
-                    }
+                    )}
                 </div>
 
-                <div className="p-4 border-t border-gray-200">
-                    <form onSubmit={submitComment} className="flex gap-2">
-                        <input 
-                            type="text" 
-                            name="content" 
-                            placeholder="Write a comment..." 
-                            value={formData.content} 
+                {/* Composer */}
+                <div className="border-t border-line px-5 py-4">
+                    <form onSubmit={submitComment} className="flex items-center gap-2">
+                        <input
+                            type="text"
+                            name="content"
+                            placeholder="Write a comment…"
+                            value={formData.content}
                             onChange={handleChange}
-                            className="flex-1 px-4 py-2 bg-[#F8FAFC] border border-gray-300 rounded-lg outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-200 text-sm"
+                            className="field h-10 px-4 text-sm"
                         />
-                        <button 
-                            type="submit" 
-                            className="px-6 py-2 bg-blue-500 cursor-pointer text-white rounded-lg hover:bg-blue-600 font-medium text-sm"
+                        <button
+                            type="submit"
+                            className="btn-primary h-10 w-10 shrink-0 px-0"
+                            aria-label="Send comment"
                         >
-                            Comment
+                            <SendHorizontal size={17} />
                         </button>
                     </form>
                 </div>
             </div>
         </section>
-    )
+    );
 });
 
 export default Comments;

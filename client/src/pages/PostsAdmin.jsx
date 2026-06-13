@@ -2,13 +2,14 @@ import ViewPosts from "../components/ViewPosts";
 
 const PostsAdmin = () => {
     return (
-        <section className="bg-[#F3F2EF] w-full flex justify-center items-center pb-10 mt-10 flex-col">
-            <div className="flex justify-center flex-col">
-                <p className="text-[25px] font-bold">Posts</p>
-                <ViewPosts mode="home" />
+        <section className="mx-auto w-full max-w-2xl px-4 py-8">
+            <div className="mb-6">
+                <h1 className="text-2xl font-semibold tracking-tight">Posts</h1>
+                <p className="mt-1 text-sm text-muted">Moderate posts across the platform.</p>
             </div>
+            <ViewPosts mode="home" />
         </section>
-    )
-}
+    );
+};
 
 export default PostsAdmin;

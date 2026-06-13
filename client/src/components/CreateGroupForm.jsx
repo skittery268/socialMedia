@@ -5,6 +5,9 @@ import { memo, useState } from "react";
 import { useForm } from "../hooks/useForm";
 import { useGroup } from "../hooks/useGroup";
 
+// Icons
+import { X, ImagePlus } from "lucide-react";
+
 // Component to create new group (form)
 const CreateGroupForm = memo(({ setIsOpen }) => {
     const [formData, handleChange, , resetForm] = useForm({
@@ -29,41 +32,63 @@ const CreateGroupForm = memo(({ setIsOpen }) => {
     }
 
     return (
-        <section 
-            className="fixed inset-0 z-50 flex items-center justify-center"
+        <section
+            className="fixed inset-0 z-50 flex animate-fade-in items-center justify-center p-4"
             onClick={() => setIsOpen(false)}
-            >
-            <div className="absolute inset-0 bg-black/50" />
-            <form 
+        >
+            <div className="absolute inset-0 bg-ink/40 backdrop-blur-sm" />
+            <form
                 onSubmit={submitFormInformation}
                 onClick={(e) => e.stopPropagation()}
-                className="relative z-10 w-90 max-w-[90vw] bg-white p-8 rounded-3xl shadow-2xl flex flex-col gap-4"
-                >
-                <button 
-                    onClick={() => setIsOpen(false)}
-                    className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-2xl leading-none z-20 cursor-pointer"
-                >
-                    ×
-                </button>
-                <h1 className="text-center text-[30px] relative -top-3">Create Group</h1>
-                <input 
-                    type="text" 
-                    name="name" 
-                    placeholder="Group Name" 
-                    value={formData.name} 
-                    onChange={handleChange}
-                    className="w-full h-12 px-4 bg-[#F8FAFC] border border-gray-300 rounded-2xl outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-200 transition duration-200"
-                />
-                <input 
-                    type="file" 
-                    name="image" 
-                    onChange={(e) => setFile(e.target.files)}
-                    className="block text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
-                />
-                <br />
-                <div className="flex flex-col gap-3 sm:flex-row sm:justify-between sm:gap-4">
-                    <button type="submit" className="h-10 cursor-pointer w-full sm:w-[48%] text-white bg-green-500 rounded-2xl hover:bg-green-600 transition duration-200">Create</button>
-                    <button type="button" onClick={() => setIsOpen(false)} className="h-10 cursor-pointer w-full sm:w-[48%] text-white bg-red-500 rounded-2xl hover:bg-red-600 transition duration-200">Cancel</button>
+                className="card relative z-10 w-full max-w-md animate-scale-in"
+            >
+                <div className="flex items-center justify-between border-b border-line px-5 py-4">
+                    <h2 className="text-base font-semibold">Create group</h2>
+                    <button
+                        type="button"
+                        onClick={() => setIsOpen(false)}
+                        className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg text-muted transition-colors hover:bg-surface-muted hover:text-ink"
+                    >
+                        <X size={18} />
+                    </button>
+                </div>
+
+                <div className="flex flex-col gap-4 px-5 py-4">
+                    <label className="flex flex-col gap-1.5">
+                        <span className="text-sm font-medium text-body">Group name</span>
+                        <input
+                            type="text"
+                            name="name"
+                            placeholder="e.g. Frontend Guild"
+                            value={formData.name}
+                            onChange={handleChange}
+                            className="field h-11 px-3.5 text-sm"
+                        />
+                    </label>
+
+                    <label className="flex cursor-pointer items-center gap-2.5 rounded-xl border border-dashed border-line-strong px-4 py-3 text-sm text-muted transition-colors hover:border-primary hover:text-primary">
+                        <ImagePlus size={18} />
+                        <span>{file && file[0] ? file[0].name : "Group image"}</span>
+                        <input
+                            type="file"
+                            name="image"
+                            onChange={(e) => setFile(e.target.files)}
+                            className="hidden"
+                        />
+                    </label>
+                </div>
+
+                <div className="flex items-center justify-end gap-2 border-t border-line px-5 py-4">
+                    <button
+                        type="button"
+                        onClick={() => setIsOpen(false)}
+                        className="btn-ghost h-10 px-4 text-sm"
+                    >
+                        Cancel
+                    </button>
+                    <button type="submit" className="btn-primary h-10 px-5 text-sm">
+                        Create group
+                    </button>
                 </div>
             </form>
         </section>

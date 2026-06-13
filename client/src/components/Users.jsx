@@ -9,6 +9,12 @@ import { useSearch } from "../hooks/useSearch";
 // React router
 import { useNavigate } from "react-router";
 
+// Components
+import Avatar from "./Avatar";
+
+// Icons
+import { Search } from "lucide-react";
+
 // Users component to show all users and link to their profile
 const Users = memo(({ setIsSearching }) => {
     const { getUsers } = useChat();
@@ -18,44 +24,34 @@ const Users = memo(({ setIsSearching }) => {
 
     useEffect(() => {
         getUsers();
-    }, [getUsers])
+    }, [getUsers]);
+
+    const results = searchedUsers.filter((u) => u._id !== user._id);
 
     return (
-        <section className="absolute bg-white rounded-2xl -left-10 top-15 w-70 min-h-60 max-h-150 overflow-y-auto overflow-x-hidden border border-gray-300 shadow-2xl flex flex-col">
-            {
-                searchedUsers.map((u, index) => {
-                    if (u._id !== user._id) {
-                        return (
-                            <div 
-                                key={index} 
-                                className="border border-gray-100 bg-gray-100 p-3 hover:bg-gray-200 cursor-pointer"
-                                onClick={() => { navigate(`/user/usersprofile/${u._id}`); setIsSearching(false) }}
-                                >
-                                <div className="text-sm text-gray-800 flex gap-3 w-90">
-                                    {
-                                        u.image ? (
-                                            <img 
-                                                src={u.image.url} 
-                                                alt="User avatar"
-                                                className="h-10 w-10 rounded-full"
-                                            />
-                                        ) : (
-                                            <div className="ml-1 bg-linear-to-r from-blue-400 to-red-400 w-10 h-10 rounded-full flex justify-center items-center">
-                                                <p className="text-[12px] font-bold text-white">{u.name[0]}</p>
-                                            </div>
-                                        )
-                                    }
-                                    <div>
-                                        <p>{u.name}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        )
-                    }
-                })
-            }
+        <section className="absolute left-0 top-12 z-50 max-h-[60vh] w-72 origin-top-left animate-scale-in overflow-y-auto rounded-2xl border border-line bg-surface p-1.5 shadow-lg">
+            {results.length === 0 ? (
+                <div className="flex flex-col items-center gap-2 px-4 py-8 text-center">
+                    <Search size={22} className="text-faint" />
+                    <p className="text-sm text-muted">No people found</p>
+                </div>
+            ) : (
+                results.map((u, index) => (
+                    <button
+                        key={index}
+                        onClick={() => {
+                            navigate(`/user/usersprofile/${u._id}`);
+                            setIsSearching(false);
+                        }}
+                        className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left transition-colors hover:bg-surface-muted"
+                    >
+                        <Avatar src={u.image?.url} name={u.name} size={36} />
+                        <span className="truncate text-sm font-medium text-body">{u.name}</span>
+                    </button>
+                ))
+            )}
         </section>
-    )
-})
+    );
+});
 
 export default Users;

@@ -7,8 +7,7 @@ import { useAuth } from "../hooks/useAuth";
 import { useForm } from "../hooks/useForm";
 
 // Icons
-import eyeIcon from "../assets/icons/eye.png";
-import hidedEyeIcon from "../assets/icons/hide.png";
+import { Mail, Lock, Eye, EyeOff } from "lucide-react";
 
 // Login page
 const Login = () => {
@@ -21,36 +20,69 @@ const Login = () => {
     const { login } = useAuth();
 
     return (
-        <form 
-            onSubmit={(e) => { handleSubmit(e, login); resetForm() }}
-            className="mt-20 bg-white h-85 w-80 rounded-[20px] flex justify-center items-center flex-col relative shadow-2xl"
+        <div className="flex min-h-[calc(100vh-4rem)] w-full items-center justify-center px-4 py-12">
+            <form
+                onSubmit={(e) => { handleSubmit(e, login); resetForm() }}
+                className="card w-full max-w-sm animate-scale-in p-8"
             >
-            <h1 className="absolute top-5 text-[25px]">Sign in</h1>
-            <input 
-                type="email" 
-                name="email" 
-                placeholder="Email" 
-                value={formData.email} 
-                onChange={handleChange}
-                className="w-60 h-10 flex justify-center items-center pl-5 pr-5 bg-[#F8FAFC] border border-gray-300 rounded-[10px] outline-none focus:border-2 focus:border-blue-300 focus:ring-2 focus:ring-blue-200 transition-all duration-200"
-            />
-            <br />
-            <div className="relative">
-                <input 
-                    type={isHidden ? "password" : "text"} 
-                    name="password" 
-                    placeholder="Password" 
-                    value={formData.password} 
-                    onChange={handleChange}
-                    className="w-60 h-10 flex justify-center items-center pl-5 pr-9 bg-[#F8FAFC] border border-gray-300 rounded-[10px] outline-none focus:border-2 focus:border-blue-300 focus:ring-2 focus:ring-blue-200 transition-all duration-200" 
-                />
-                <button type="button" className="absolute top-2.5 cursor-pointer right-3" onClick={() => setIsHidden(!isHidden)}><img className="h-5 opacity-50" src={isHidden ? hidedEyeIcon : eyeIcon} /></button>
-            </div>
-            <br />
-            <button className="absolute bottom-17 bg-[#3B82F6] text-white w-60 h-10 rounded-[10px] cursor-pointer transition duration-200 hover:scale-102 hover:bg-[#2b7cfe]">Login</button>
-            <p className="absolute bottom-5 text-[13px] text-gray-500">Dont have an account? <Link className="text-blue-700" to={"/register"}>Register</Link></p>
-        </form>
-    )
-}
+                <div className="mb-7 flex flex-col gap-1.5">
+                    <h1 className="text-2xl font-semibold tracking-tight">Welcome back</h1>
+                    <p className="text-sm text-muted">Sign in to continue to DevLink.</p>
+                </div>
+
+                <div className="flex flex-col gap-4">
+                    <label className="flex flex-col gap-1.5">
+                        <span className="text-sm font-medium text-body">Email</span>
+                        <div className="relative">
+                            <Mail size={16} className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-faint" />
+                            <input
+                                type="email"
+                                name="email"
+                                placeholder="you@example.com"
+                                value={formData.email}
+                                onChange={handleChange}
+                                className="field h-11 pl-10 pr-3.5 text-sm"
+                            />
+                        </div>
+                    </label>
+
+                    <label className="flex flex-col gap-1.5">
+                        <span className="text-sm font-medium text-body">Password</span>
+                        <div className="relative">
+                            <Lock size={16} className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-faint" />
+                            <input
+                                type={isHidden ? "password" : "text"}
+                                name="password"
+                                placeholder="••••••••"
+                                value={formData.password}
+                                onChange={handleChange}
+                                className="field h-11 pl-10 pr-10 text-sm"
+                            />
+                            <button
+                                type="button"
+                                onClick={() => setIsHidden(!isHidden)}
+                                className="absolute right-2.5 top-1/2 -translate-y-1/2 cursor-pointer rounded-md p-1 text-faint transition-colors hover:text-body"
+                                aria-label={isHidden ? "Show password" : "Hide password"}
+                            >
+                                {isHidden ? <EyeOff size={17} /> : <Eye size={17} />}
+                            </button>
+                        </div>
+                    </label>
+
+                    <button type="submit" className="btn-primary mt-1 h-11 w-full text-sm">
+                        Sign in
+                    </button>
+                </div>
+
+                <p className="mt-6 text-center text-sm text-muted">
+                    Don&apos;t have an account?{" "}
+                    <Link className="font-medium text-primary hover:text-primary-hover" to={"/user/register"}>
+                        Create one
+                    </Link>
+                </p>
+            </form>
+        </div>
+    );
+};
 
 export default Login;

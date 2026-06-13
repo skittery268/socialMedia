@@ -8,6 +8,10 @@ import { useAdmin } from "../hooks/useAdmin";
 import DeleteUser from "../components/DeleteUser";
 import BanUserForm from "../components/BanUserForm";
 import WarnUserForm from "../components/WarnUserForm";
+import Avatar from "../components/Avatar";
+
+// Icons
+import { AlertTriangle, Ban, Trash2, RotateCcw } from "lucide-react";
 
 // Users list for admin actions
 const UsersAdmin = () => {
@@ -18,103 +22,106 @@ const UsersAdmin = () => {
     const [selectedUserId, setSelectedUserId] = useState(null);
 
     return (
-        <section className="flex justify-center items-start p-8 pt-0 min-h-screen m-auto">
-            { isOpen && <DeleteUser setIsOpen={setIsOpen} userId={selectedUserId} /> }
-            { isOpenBan && <BanUserForm setIsOpenBan={setIsOpenBan} userId={selectedUserId} /> }
-            { isOpenWarn && <WarnUserForm setIsOpenWarn={setIsOpenWarn} userId={selectedUserId} /> }
-            <div className="w-full max-w-6xl flex flex-col gap-5 m-auto">
-                <h1 className="text-3xl font-semibold text-gray-800">Users</h1>
+        <section className="mx-auto w-full max-w-6xl px-6 py-8">
+            {isOpen && <DeleteUser setIsOpen={setIsOpen} userId={selectedUserId} />}
+            {isOpenBan && <BanUserForm setIsOpenBan={setIsOpenBan} userId={selectedUserId} />}
+            {isOpenWarn && <WarnUserForm setIsOpenWarn={setIsOpenWarn} userId={selectedUserId} />}
 
-                <div className="bg-white rounded-2xl shadow-sm max-h-143 overflow-y-scroll scroll-auto overflow-hidden border border-gray-100">
-                    <table className="w-full">
-                        <thead>
-                            <tr className="border-b border-gray-100">
-                                <th className="px-8 py-5 text-left text-sm font-medium text-gray-500">User</th>
-                                <th className="px-6 py-5 text-center text-sm font-medium text-gray-500">Role</th>
-                                <th className="px-6 py-5 text-center text-sm font-medium text-gray-500">Status</th>
-                                <th className="px-8 py-5 text-center text-sm font-medium text-gray-500">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody className="divide-y divide-gray-100">
-                            {
-                                users.map((u, index) => {
-                                    const isBanned = u.isBanned;
-                                    const isWarned = u.warnings.length > 0 && !isBanned;
+            <div className="mb-6">
+                <h1 className="text-2xl font-semibold tracking-tight">Users</h1>
+                <p className="mt-1 text-sm text-muted">Manage roles and moderate members.</p>
+            </div>
 
-                                    return (
-                                        <tr key={index} className="hover:bg-gray-50 transition-colors">
-                                            <td className="px-8 py-5">
-                                                <div className="flex items-center gap-3">
-                                                    <div className="w-9 h-9 rounded-full flex items-center justify-center text-sm font-medium bg-blue-100 text-blue-600">
-                                                        {u?.name[0]}
-                                                    </div>
-                                                    <div>
-                                                        <div className="font-medium text-gray-900">{u.name}</div>
-                                                        <div className="text-sm text-gray-500">{u.email}</div>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td className="px-6 py-5">
-                                                <button 
-                                                    className="text-sm text-gray-700 font-medium cursor-pointer hover:text-red-400 transition duration-150"
-                                                    onClick={() => changeRole(u._id)}
-                                                    >
-                                                    {u.role}
+            <div className="card max-h-[70vh] overflow-auto">
+                <table className="w-full min-w-160">
+                    <thead className="sticky top-0 z-10 bg-surface">
+                        <tr className="border-b border-line">
+                            <th className="px-6 py-3.5 text-left text-xs font-semibold uppercase tracking-wide text-faint">User</th>
+                            <th className="px-4 py-3.5 text-left text-xs font-semibold uppercase tracking-wide text-faint">Role</th>
+                            <th className="px-4 py-3.5 text-left text-xs font-semibold uppercase tracking-wide text-faint">Status</th>
+                            <th className="px-6 py-3.5 text-right text-xs font-semibold uppercase tracking-wide text-faint">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody className="divide-y divide-line">
+                        {users.map((u, index) => {
+                            const isBanned = u.isBanned;
+                            const isWarned = u.warnings.length > 0 && !isBanned;
+
+                            return (
+                                <tr key={index} className="transition-colors hover:bg-surface-sunken">
+                                    <td className="px-6 py-4">
+                                        <div className="flex items-center gap-3">
+                                            <Avatar src={u.image?.url} name={u.name} size={36} />
+                                            <div className="min-w-0">
+                                                <div className="truncate text-sm font-semibold text-ink">{u.name}</div>
+                                                <div className="truncate text-xs text-muted">{u.email}</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td className="px-4 py-4">
+                                        <button
+                                            onClick={() => changeRole(u._id)}
+                                            title="Toggle role"
+                                            className="cursor-pointer rounded-md border border-line-strong px-2.5 py-1 text-xs font-medium capitalize text-body transition-colors hover:border-primary hover:text-primary"
+                                        >
+                                            {u.role}
+                                        </button>
+                                    </td>
+                                    <td className="px-4 py-4">
+                                        <span
+                                            className={`inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium ${
+                                                isBanned
+                                                    ? "bg-danger-soft text-danger"
+                                                    : isWarned
+                                                    ? "bg-warning-soft text-warning"
+                                                    : "bg-success-soft text-success"
+                                            }`}
+                                        >
+                                            {isBanned ? "Banned" : isWarned ? "Warned" : "Active"}
+                                        </span>
+                                    </td>
+                                    <td className="px-6 py-4">
+                                        <div className="flex items-center justify-end gap-1.5">
+                                            {isBanned ? (
+                                                <button
+                                                    onClick={() => unBunUser(u._id)}
+                                                    className="inline-flex h-8 items-center gap-1.5 rounded-lg bg-success-soft px-3 text-xs font-medium text-success transition-colors hover:bg-success hover:text-white"
+                                                >
+                                                    <RotateCcw size={14} />
+                                                    Unban
                                                 </button>
-                                            </td>
-                                            <td className="px-6 py-5">
-                                                <span className={`inline-flex items-center px-3.5 py-1 rounded-full text-sm font-medium
-                                                    ${isBanned 
-                                                        ? 'bg-red-100 text-red-700' 
-                                                        : isWarned 
-                                                            ? 'bg-amber-100 text-amber-700' 
-                                                            : 'bg-emerald-100 text-emerald-700'
-                                                    }`}>
-                                                    {isBanned ? "Banned" : isWarned ? "Warned" : "Active"}
-                                                </span>
-                                            </td>
-                                            <td className="px-8 py-5 text-right">
-                                                <div className="flex items-center justify-end gap-3">
-                                                    {
-                                                        isBanned ? (
-                                                            <button 
-                                                                className="px-5 py-2 text-sm font-medium text-white bg-emerald-400 hover:bg-emerald-500 rounded-xl transition cursor-pointer"
-                                                                onClick={() => unBunUser(u._id)}
-                                                                >
-                                                                Unban
-                                                            </button>
-                                                        ) : (
-                                                            <>
-                                                                <button 
-                                                                    className="px-5 py-2 text-sm font-medium text-amber-600 hover:bg-amber-50 border border-amber-200 hover:border-amber-300 rounded-xl transition cursor-pointer"
-                                                                    onClick={() => { setSelectedUserId(u._id); setIsOpenWarn(true) }}
-                                                                    >
-                                                                    Warn
-                                                                </button>
-                                                                <button 
-                                                                    className="px-5 py-2 text-sm font-medium text-red-600 hover:bg-red-50 border border-red-200 hover:border-red-300 rounded-xl transition cursor-pointer"
-                                                                    onClick={() => { setSelectedUserId(u._id); setIsOpenBan(true) }}
-                                                                    >
-                                                                    Ban
-                                                                </button>
-                                                                <button 
-                                                                    className="px-5 py-2 text-sm font-medium text-red-600 hover:bg-red-50 border border-red-200 hover:border-red-300 rounded-xl transition cursor-pointer"
-                                                                    onClick={() => { setSelectedUserId(u._id); setIsOpen(true) }}
-                                                                    >
-                                                                    Delete
-                                                                </button>
-                                                            </>
-                                                        )
-                                                    }
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    );
-                                })
-                            }
-                        </tbody>
-                    </table>
-                </div>
+                                            ) : (
+                                                <>
+                                                    <button
+                                                        onClick={() => { setSelectedUserId(u._id); setIsOpenWarn(true) }}
+                                                        className="inline-flex h-8 items-center gap-1.5 rounded-lg border border-line-strong px-3 text-xs font-medium text-muted transition-colors hover:border-warning hover:bg-warning-soft hover:text-warning"
+                                                    >
+                                                        <AlertTriangle size={14} />
+                                                        Warn
+                                                    </button>
+                                                    <button
+                                                        onClick={() => { setSelectedUserId(u._id); setIsOpenBan(true) }}
+                                                        className="inline-flex h-8 items-center gap-1.5 rounded-lg border border-line-strong px-3 text-xs font-medium text-muted transition-colors hover:border-danger hover:bg-danger-soft hover:text-danger"
+                                                    >
+                                                        <Ban size={14} />
+                                                        Ban
+                                                    </button>
+                                                    <button
+                                                        onClick={() => { setSelectedUserId(u._id); setIsOpen(true) }}
+                                                        className="inline-flex h-8 items-center gap-1.5 rounded-lg border border-line-strong px-3 text-xs font-medium text-muted transition-colors hover:border-danger hover:bg-danger-soft hover:text-danger"
+                                                    >
+                                                        <Trash2 size={14} />
+                                                        Delete
+                                                    </button>
+                                                </>
+                                            )}
+                                        </div>
+                                    </td>
+                                </tr>
+                            );
+                        })}
+                    </tbody>
+                </table>
             </div>
         </section>
     );
